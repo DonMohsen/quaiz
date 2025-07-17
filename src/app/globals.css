@@ -10,17 +10,62 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
+    --font-inter: var(--font-inter);
+  --font-open-sans: var(--font-open-sans);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+}
+/* globals.css */
+@layer utilities {
+  .bottom-clipped{
+  
+  clip-path: polygon(0% 0%, 100% 0%, 100% 70%, 0% 100%);
+  }
+  .bottom-clipped-small{
+  
+  clip-path: polygon(0% 0%, 100% 0%, 100% 70%, 0% 100%);
+  }
+  .top-right-poly{
+    clip-path: polygon(0% 30%, 100% 0%, 100% 70%, 0% 100%);
+  
+  }
+  .middle-poly{
+    clip-path: polygon(0% 60%, 100% 0%, 100% 40%, 0% 100%);
+  
+  }
+  .top-left-poly{
+        clip-path: polygon(0% 30%, 100% 0%, 100% 70%, 0% 100%);
+
+  }
+  .bottom-left-poly{
+        clip-path: polygon(0% 30%, 100% 0%, 100% 70%, 0% 100%);
+
+  }
+
+  .clipped{
+    width: 1550px;
+    height: 770px;
+    clip-path: polygon(0 0, 1550 0, 1550 550, 0 770);
+
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #aeaeae;
+  border-radius: 9999px; /* fully rounded */
+  border: 0px solid transparent; /* creates padding */
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
 }
