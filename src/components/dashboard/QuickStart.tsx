@@ -11,7 +11,7 @@ const QuickStart = () => {
         </p>
         <div className='flex max-md:flex-col w-full gap-8'>
       {quickStarts.map((quickStart)=>(
-        <Link href={quickStart.href} key={quickStart.title} className='rounded-[12px] p-4 w-full bg-white flex flex-col gap-3'>
+        <Link href={"/documents"} key={quickStart.title} className='rounded-[12px] p-4 w-full bg-white flex flex-col gap-3'>
           <div className='rounded-[10px] w-14 h-14 bg-[#c7d2fd]'>
 
           <Image alt={quickStart.title} src={quickStart.imageUrl} width={1000} height={1000} className='w-full h-full p-1'/>

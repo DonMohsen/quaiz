@@ -5,7 +5,7 @@ export default function Page() {
 
     
     <div className='w-full h-screen flex items-center justify-center'>
-<SignIn forceRedirectUrl={'/dashboard'}/>
+<SignIn fallbackRedirectUrl={'/dashboard'}/>
   </div> 
 
 )

@@ -1,49 +1,74 @@
-import React from 'react'
-import { Button } from '../ui/Button'
+"use server";
+import React from "react";
+import { Button } from "../ui/Button";
+import Demo from "./Demo";
 
 const Hero = () => {
   return (
-<div className='overflow-x-hidden w-full h-screen overflow-y-hidden flex relative items-start justify-center '>
-<div className='absolute w-full h-screen overflow-x-hidden top-0 right-0'>
+    <div className="w-full min-h-screen  flex flex-col items-center justify-start relative overflow-hidden">
+      <div className="bg-[#1c3ca9] clipped absolute flex items-center justify-center">
+        {/* //!The 3 gradients.....  */}
+        <div
+          className="absolute top-0 right-0 w-[400px] h-[400px] pointer-events-none z-0"
+          style={{
+            background:
+              "radial-gradient(circle at top right, rgba(192, 132, 252, 0.3) 0%, transparent 70%)",
+          }}
+        />
+        <div
+          className="absolute top-0 left-0 w-[400px] h-[400px] pointer-events-none z-0"
+          style={{
+            background:
+              "radial-gradient(circle at top left, rgba(147, 197, 253, 0.3) 6%, transparent 70%)",
+          }}
+        />
+        <div
+          className="absolute top-0 left-[50%] w-[400px] h-[400px] pointer-events-none z-0"
+          style={{
+            background:
+              "radial-gradient(circle at top, rgba(192, 132, 252, 0.3) 0%, transparent 30%)",
+          }}
+        />
 
-<div className='bg-[#1c3ca9] clipped relative flex items-center justify-center'>
-    <div className='absolute bottom-0 left-0 bottom-left-poly bg-gradient-to-r from-[#098af2] to-[#165bc8] w-[200px] h-[100px]'/>
-   <div className='absolute top-[300px] right-[200px] middle-poly bg-gradient-to-r from-[#1c3ca9] to-[#2a48ac] w-[800px] h-[200px]'/>
-    <div className='absolute right-0 top-[200px] top-right-poly bg-gradient-to-r from-[#098af2] to-[#0062ff] w-[200px] h-[100px]'/>
-  {/* Simulated Border */}
-<div className="absolute top-[200px] left-0 w-[300px] h-[200px]">
-  <div className="absolute w-full h-full top-left-poly border-box bg-white/[0.1]" />
+        {/* //!The clipped shard shits..... */}
+        <div className="absolute bottom-0 left-0 bottom-left-poly bg-gradient-to-r from-[#098af2] to-[#165bc8] w-[200px] h-[100px]" />
+        <div className="absolute top-[300px] right-[200px] middle-poly bg-gradient-to-r from-[#1c3ca9] to-[#2a48ac] w-[800px] h-[200px]" />
+        <div className="absolute right-0 top-[200px] top-right-poly bg-gradient-to-r from-[#098af2] to-[#0062ff] w-[200px] h-[100px]" />
+        {/* //! An illusion of a white border polygon!!!!!!!! */}
+        <div className="absolute top-[200px] left-0 w-[300px] h-[200px]">
+          <div className="absolute w-full h-full top-left-poly border-box bg-white/[0.1]" />
 
-  {/* Inner Content Layer */}
-  <div className=" absolute w-[calc(100%-4px)] h-[calc(100%-4px)] top-[2px] left-[2px] top-left-poly bg-[#173da8]" />
- </div> 
- </div>
+          <div className=" absolute w-[calc(100%-4px)] h-[calc(100%-4px)] top-[2px] left-[2px] top-left-poly bg-[#173da8]" />
+        </div>
+      </div>
+      {/* //!Finally!!!!! A Hero!!!!!! */}
+      <div className="text-white z-10 max-md:mt-[100px] px-4 mt-[150px] text-center flex flex-col items-center justify-start w-full">
+        <p className="text-[40px] font-medium">
+          Advanced quiz generator with AI
+        </p>
+        <p className="text-[20px] font-light mt-2 max-w-[400px] mx-auto">
+          Quaiz is a fantastic way to start your learning journies. Just give us
+          the documents and get ready to solve Quaizzes with variety of
+          difficulities!
+        </p>
 
-</div>
-<div className='text-white z-[50] w-full  mt-[150px] max-md:mt-[100px] px-[15px] text-center md:px-[400px]'>
-  <p className='text-[40px] font-medium'>
-    
-  Advanced quiz generator with AI
-  </p>
-  <p className='text-[20px] font-light mt-2 max-w-[400px] mx-auto'>
-    Quaiz is a fantastic way to start your learning journies. Just give us the documents and get ready to solve Quaizzes with variety of difficulities!
-  </p>
-<div className='w-full flex items-center justify-center max-md:flex-col gap-4'>
+        <div className="w-full flex items-center justify-center max-md:flex-col gap-4 mt-7">
+          <Button className="max-md:w-full py-5 bg-gradient-to-br from-[#7939fc] to-[#a35be5] font-semibold md:px-[40px]">
+            Start Now
+          </Button>
+          <Button
+            redirect={"/#about"}
+            className="max-md:w-full py-5 bg-transparent border font-semibold md:px-[40px]"
+          >
+            About us
+          </Button>
+        </div>
+      </div>
 
-  <Button className='max-md:w-full py-5 bg-gradient-to-br from-[#7939fc] to-[#a35be5] font-semibold mt-7 md:px-[40px]'>
-    Start Now
-  </Button>
-   <Button className='max-md:w-full py-5 bg-transparent border font-semibold md:mt-7  md:px-[40px]'>
-    About us
-  </Button>
-</div>
+      {/* Demo Scrollable Section */}
+      <Demo />
+    </div>
+  );
+};
 
-
-</div>
-</div>
- 
-
-  )
-}
-
-export default Hero
+export default Hero;

@@ -6,9 +6,9 @@ export default function Home() {
   return (
   <div className="min-h-[200vh]">
     <Hero/>
-    <div className="md:px-[300px] px-5">
+    <div className="md:px-[150px] px-5">
 
-    <Demo/>
+    {/* <Demo/> */}
     </div>
   </div>
   );
