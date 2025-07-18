@@ -26,7 +26,7 @@ const Hero = () => {
   Advanced quiz generator with AI
   </p>
   <p className='text-[20px] font-light mt-2 max-w-[400px] mx-auto'>
-    Quaiz is a fantastic way to start your learning journies. Just give us the documents and get ready to solve Quaizes with variety of difficulities!
+    Quaiz is a fantastic way to start your learning journies. Just give us the documents and get ready to solve Quaizzes with variety of difficulities!
   </p>
 <div className='w-full flex items-center justify-center max-md:flex-col gap-4'>
 
