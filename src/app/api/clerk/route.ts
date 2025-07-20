@@ -60,9 +60,12 @@ export async function POST(req: Request) {
       await prisma.user.create({
         data: {
           id: evt.data.id,
-          userName: JSON.parse(body).data.username||null,
-          email: JSON.parse(body).data.email_addresses[0].email_address||null,
-          image: JSON.parse(body).image_url || null
+          userName: JSON.parse(body)?.data?.username||null,
+          email: JSON.parse(body)?.data?.email_addresses[0]?.email_address||null,
+          image: JSON.parse(body)?.image_url || null,
+                    firstName: JSON.parse(body)?.first_name || null,
+                    lastName: JSON.parse(body)?.last_name || null
+
         },
       });
       return new Response("User created", { status: 200 });
