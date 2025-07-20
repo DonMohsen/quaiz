@@ -1,18 +1,14 @@
-// app/api/documents/route.ts
-import { PrismaClient } from '@/generated/prisma'
-import { NextResponse } from 'next/server'
+import { prisma } from "@/prisma";
+
 
 export async function GET() {
-
-const prisma = new PrismaClient()
-
-  const docs = await prisma.document.findMany({
-    include: {
-      user: true,
-      flashCards: true,
-      quaizzes: true,
-    },
-  })
-
-  return NextResponse.json(docs)
+  try {
+    const users = await prisma.user.findMany();
+    return Response.json(users);
+  } catch (error) {
+    console.error("Failed to fetch users:", error);
+    return new Response("Failed to fetch users", { status: 500 });
+  } finally {
+    await prisma.$disconnect();
+  }
 }
