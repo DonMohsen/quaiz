@@ -3,5 +3,4 @@ export type QuickStartType={
     description:string;
     imageUrl:string;
     href:string
-
 }

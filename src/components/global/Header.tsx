@@ -24,10 +24,11 @@ const Header = () => {
   return (
 <header
   className={clsx(
-    "fixed z-[50] top-0 w-full h-[70px] flex items-center justify-between px-[100px] font-inter text-white transition-colors duration-300 max-md:px-[10px]",
-    scrolled ? "bg-[#1f3dab]/70 backdrop-blur-md shadow-md" : "bg-transparent"
+    "fixed z-[50] top-0 w-full h-[70px] flex items-center justify-between px-[100px] font-inter text-white transition-all duration-500 max-md:px-[10px]",
+    scrolled ? "bg-[#1f3dab]/70 backdrop-blur-md shadow-md" : "bg-transparent shadow-none"
   )}
 >
+
       <div className="w-[30%] max-md:w-full  text-[26px] font-bold h-full flex items-center justify-center  ">
         <Image
           onClick={() => router.push("/")}
@@ -35,11 +36,11 @@ const Header = () => {
           src={"/logo.png"}
           width={512}
           height={512}
-          className="w-12 h-12 cursor-pointer"
+          className="w-16 h-16 cursor-pointer"
         />
         <p
           onClick={() => router.push("/")}
-          className="-translate-x-3 cursor-pointer"
+          className="-translate-x-3 cursor-pointer "
         >
           uaiz
         </p>

@@ -6,7 +6,7 @@ export async function POST(req: NextRequest) {
   try {
     // Placeholder: parse input
     const body = await req.json()
-
+    
     // Placeholder: logic for future AI task (e.g., chatbot, summarization, etc.)
     const result = {
       message: 'AI processing will be implemented here.',
