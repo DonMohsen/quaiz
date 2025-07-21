@@ -1,4 +1,3 @@
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -13,7 +12,7 @@ model Document {
   title String?
   text  String?
   image String?
-
+  slug String @unique
   chats      Chat[]
   flashCards FlashCard[]
   quaizzes   Quaiz[]

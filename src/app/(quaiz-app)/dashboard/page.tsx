@@ -1,4 +1,5 @@
 "use server"
+import DocumentsPreview from '@/components/dashboard/DocumentsPreview';
 import QuickStart from '@/components/dashboard/QuickStart'
 import Welcome from '@/components/dashboard/Welcome'
 import { currentUser } from '@clerk/nextjs/server';
@@ -21,6 +22,7 @@ const DashboardPage = () => {
         
       <Welcome/>
       <QuickStart/>
+      <DocumentsPreview/>
     </div>
   )
 }
