@@ -35,9 +35,16 @@ export function useDocuments(params: UseDocumentsParams) {
         }
 
         setData(response?.data ?? null)
-      } catch (err: any) {
-        setError(err.response?.data?.error || err.message)
-      } finally {
+      } catch (err: unknown) {
+  if (err instanceof Error) {
+    setError(err.message)
+  } else if (typeof err === "object" && err !== null && "response" in err) {
+    const errorResponse = err as { response?: { data?: { error?: string } } }
+    setError(errorResponse.response?.data?.error ?? "Unknown error occurred")
+  } else {
+    setError("Unknown error occurred")
+  }
+}finally {
         setLoading(false)
       }
     }
