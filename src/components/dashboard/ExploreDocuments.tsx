@@ -4,16 +4,18 @@ import { useDocumentById } from '@/hooks/useDocumentById';
 import { useDocumentsByUserId } from '@/hooks/useDocumentByUserId';
 import Image from 'next/image'
 import Link from 'next/link'
-import React from 'react'
+import React, { useState } from 'react'
 import DocumentCard from '../global/DocumentCard';
-import { Plus } from 'lucide-react';
+import { Book, Plus } from 'lucide-react';
+import clsx from 'clsx';
 
 const ExploreDocuments = ({userId}:{userId:string}) => {
+  const [isopen, setIsopen] = useState(false)
   const {data,error,loading}=useDocumentsByUserId(userId);
   return (
-    <div className='mt-5'>
+    <div className='mt-5 '>
         
-<div className="w-full mb-5 flex items-center justify-between">
+<div className={clsx(`w-full mb-5 flex items-center justify-between transition-all duration-500`,isopen?'pl-20':'p-0')}>
   <h2 className="text-[24px] font-bold">Documents</h2>
   
   <button
@@ -30,7 +32,8 @@ const ExploreDocuments = ({userId}:{userId:string}) => {
       ))}
       
         </div>
-        
+                    <Book className='rotate-90 cursor-pointer' onClick={()=>setIsopen((prev)=>!prev)}/>
+
     </div>
   )
 }

@@ -2,7 +2,6 @@
 
 import getAllDocuments from "@/actions/getAllDocuments";
 import getDocumentById from "@/actions/getDocumentBySlug";
-import DocumentsTable from "@/components/dashboard/DocumentsTable";
 import { currentUser } from "@clerk/nextjs/server";
 import { Metadata } from "next";
 type Props = {

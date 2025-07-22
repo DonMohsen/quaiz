@@ -1,4 +1,5 @@
 "use server"
+import Dashboard from '@/components/dashboard/Dashboard';
 import ExploreDocuments from '@/components/dashboard/ExploreDocuments';
 import QuickStart from '@/components/dashboard/QuickStart'
 import Welcome from '@/components/dashboard/Welcome'
@@ -18,19 +19,18 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 const DashboardPage = async() => {
-    const user = await currentUser();
+  const user = await currentUser();
+  
+    
 
   if (!user) {
     return unauthorized()
   }
 
   return (
-    <div className='w-[80%] max-lg:w-[95%] mx-auto min-h-screen h-full pt-[40px] '>
+      <Dashboard user={{email:user.emailAddresses[0].emailAddress,firstName:user.firstName,id:user.id,image:user.imageUrl,lastName:user.lastName,userName:user.username}}/>
         
-      <Welcome/>
-      <QuickStart/>
-      <ExploreDocuments userId={user.id}/>
-    </div>
+   
   )
 }
 

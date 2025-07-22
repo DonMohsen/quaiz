@@ -1,3 +1,4 @@
+import Header from '@/components/global/Header'
 import { type Metadata } from 'next'
 import { Inter } from 'next/font/google'
 
@@ -12,7 +13,8 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-     <div className={`${inter.variable} bg-[#f1f4f9]`}>
+     <div className={`${inter.variable} bg-white`}>
+      <Header varient="app" />
           {children}
      </div>
        

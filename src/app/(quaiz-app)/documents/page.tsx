@@ -1,7 +1,6 @@
 "use server"
 
 import getAllDocuments from "@/actions/getAllDocuments";
-import DocumentsTable from "@/components/dashboard/DocumentsTable";
 import { currentUser } from "@clerk/nextjs/server";
 import { Metadata } from "next";
 
@@ -28,7 +27,6 @@ const DocumentsPage = async() => {
     {/* <div onClick={handleClick}>
       Add
     </div> */}
-    <DocumentsTable/>
     </div>
 
   )

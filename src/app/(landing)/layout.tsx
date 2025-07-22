@@ -14,7 +14,7 @@ export default function RootLayout({
 }>) {
   return (
      <div>
-        <Header/>
+        <Header varient='landing'/>
           {children}
      </div>
        
