@@ -23,10 +23,21 @@ export function useDocumentsByUserId(userId: string) {
           `/api/document/user/${userId}`
         );
         setData(res.data);
-      } catch (err: any) {
-        setError(
-          err?.response?.data?.error || "Error fetching user documents."
-        );
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          setError(err.message)
+        } else if (
+          typeof err === "object" &&
+          err !== null &&
+          "response" in err
+        ) {
+          const errorResponse = err as {
+            response?: { data?: { error?: string } }
+          }
+          setError(errorResponse.response?.data?.error ?? "Unknown error occurred")
+        } else {
+          setError("Unknown error occurred")
+        }
       } finally {
         setLoading(false);
       }
