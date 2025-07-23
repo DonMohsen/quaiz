@@ -1,0 +1,1 @@
+export const SPACE_FRROM_LEFT_FOR_NAVBAR:string='165px'

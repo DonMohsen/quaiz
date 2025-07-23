@@ -1,7 +1,7 @@
-import { RouteType } from "@/types/route.types"
+import { LandingRouteType } from "@/types/route.types"
 
 export const useRoutes = () => {
-  const routes: RouteType[] = [
+  const routes: LandingRouteType[] = [
     {
       label: 'Home',
       path: '/',
