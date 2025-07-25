@@ -1,1 +1,1 @@
-export const SPACE_FRROM_LEFT_FOR_NAVBAR:string='165px'
+export const SPACE_FROM_LEFT_FOR_NAVBAR:string='165px'
