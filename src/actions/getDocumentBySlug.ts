@@ -3,8 +3,13 @@ import { prisma } from "@/lib/prisma";
 export const getDocumentBySlug = async (slug: string) => {
   try {
     const document = await prisma.document.findUnique({
-      where: {
-        slug,
+      where: { slug },
+      include: {
+        user: true,
+        views: true,
+        flashCards: true,
+        chats: true,
+        quaizzes: true,
       },
     });
 

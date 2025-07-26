@@ -28,7 +28,7 @@ const DashboardPage = async() => {
   }
 
   return (
-      <Dashboard user={{email:user.emailAddresses[0].emailAddress,firstName:user.firstName,id:user.id,image:user.imageUrl,lastName:user.lastName,userName:user.username}}/>
+      <Dashboard user={{email:user?.emailAddresses[0]?.emailAddress,firstName:user.firstName,id:user.id,image:user.imageUrl,lastName:user.lastName,userName:user.username}}/>
         
    
   )

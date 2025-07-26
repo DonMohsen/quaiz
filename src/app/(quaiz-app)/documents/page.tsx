@@ -18,15 +18,8 @@ const DocumentsPage = async() => {
  
   const docs=await getAllDocuments();
   return (
-    <div>{docs.map((doc)=>(
-      <div key={doc.id}>
-        {doc.slug}
-      </div>
-      
-    ))}
-    {/* <div onClick={handleClick}>
-      Add
-    </div> */}
+    <div>
+    
     </div>
 
   )

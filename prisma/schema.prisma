@@ -21,18 +21,31 @@ model Document {
   userId String
   user   User @relation(fields: [userId], references: [id])
 }
-
 model Chat {
-  id    Int     @id @default(autoincrement())
-  text  String?
-  image String?
+  id        Int      @id @default(autoincrement())
+  text      String?
+  image     String?
 
-  documentId Int
-  document   Document @relation(fields: [documentId], references: [id])
+  messages    Message[]  // 1 Chat → many Messages
 
-  userId String?
-  user   User? @relation(fields: [userId], references: [id])
+  documentSlug String
+  document   Document @relation(fields: [documentSlug], references: [slug])
+
+  userId     String?
+  user       User?    @relation(fields: [userId], references: [id])
+
+  @@unique([userId, documentSlug])
 }
+model Message {
+  id        Int      @id @default(autoincrement())
+  chatId    Int
+  role      String   // "user" or "assistant"
+  content   String
+  createdAt DateTime @default(now())
+
+  chat      Chat     @relation(fields: [chatId], references: [id])
+}
+
 
 model FlashCard {
   id    Int     @id @default(autoincrement())

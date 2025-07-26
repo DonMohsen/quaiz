@@ -1,9 +1,10 @@
 "use server"
 
-import getAllDocuments from "@/actions/getAllDocuments";
 import getDocumentById from "@/actions/getDocumentBySlug";
+import DocumentDetails from "@/components/document/DocumentDetails";
 import { currentUser } from "@clerk/nextjs/server";
 import { Metadata } from "next";
+import { notFound } from "next/navigation";
 type Props = {
   params: Promise<{ documentSlug: string }>
 }
@@ -17,17 +18,23 @@ export async function generateMetadata({params}:Props): Promise<Metadata> {
     if (!doc) return { title: "Doc Not Found" };
     
   return {
-    title: doc.slug,
+    title: doc.title,
     description: `The ${doc.title} document is ready to use by ${user.fullName||user.username}`,
   };
 }
-const DocumentsPage = async() => {
- 
-  
-  return (
-    <div>
+const DocumentsPage = async({params}:Props) => {
+      const slug = (await params).documentSlug
+
+  const user = await currentUser();
+    const doc=await getDocumentById(slug)
+   if (!user) return (notFound())
+    if (!doc) return (
+    notFound()
+    )
     
-    </div>
+  return (
+         <DocumentDetails doc={doc}/>
+
 
   )
 }

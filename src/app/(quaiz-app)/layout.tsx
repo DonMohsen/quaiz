@@ -1,6 +1,5 @@
 import Header from '@/components/global/Header'
 import LeftNavbar from '@/components/global/LeftNavbar'
-import { type Metadata } from 'next'
 import { Inter } from 'next/font/google'
 
 const inter = Inter({
@@ -14,7 +13,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-     <div className={`${inter.variable} bg-white flex`}>
+     <div className={`${inter.variable} bg-white`}>
       <Header varient="app" />
       <LeftNavbar/>
           {children}

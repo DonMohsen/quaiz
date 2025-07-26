@@ -1,6 +1,7 @@
 import { type Metadata } from 'next'
 
 import Header from '@/components/global/Header'
+import LeftNavbar from '@/components/global/LeftNavbar'
 
 export const metadata: Metadata = {
   title: 'Clerk Next.js Quickstart',
@@ -15,6 +16,7 @@ export default function RootLayout({
   return (
      <div>
         <Header varient='landing'/>
+        <LeftNavbar/>
           {children}
      </div>
        

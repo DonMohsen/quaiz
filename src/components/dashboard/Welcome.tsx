@@ -1,8 +1,7 @@
 import { auth, currentUser } from '@clerk/nextjs/server';
 import { User } from '@prisma/client';
-import { Book } from 'lucide-react';
-import Image from 'next/image'
 import { unauthorized } from 'next/navigation';
+import Image from 'next/image'
 import React from 'react'
 
 const Welcome = ({user}:{user:User} ) => {

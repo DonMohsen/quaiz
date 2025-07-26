@@ -35,7 +35,7 @@ const QuickStart = () => {
           </p>
         </div>
 
-        <Button onClick={()=>router.push(quickStart.href)} className="mx-10 bg-gradient-to-br from-[#763cfc] from-[1%] to-[#a65ce7] to-[99%]">
+        <Button onClick={()=>router.push(quickStart.href)} className="mx-10 bg-gradient-to-br from-[#763cfc] text-white from-[1%] to-[#a65ce7] to-[99%]">
 <span>Let&apos;s Go!</span>
         </Button>
       </div>

@@ -2,11 +2,11 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Document } from "@prisma/client"
+import { Document, Prisma } from "@prisma/client"
 import axios from "axios"
 
-export function useDocumentById({id}:{id:string}) {
-  const [data, setData] = useState<Document[] | null>(null)
+export function useDocumentBySlug({slug}:{slug:string}) {
+  const [data, setData] = useState<Prisma.DocumentCreateInput[] | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<string | null>(null)
 
@@ -18,8 +18,8 @@ export function useDocumentById({id}:{id:string}) {
       setError(null)
 
       try {
-        const response = await axios.get<Document[]>(`/api/document/${id}`)
-        setData(response.data ?? null)
+        const response = await axios.get<Prisma.DocumentCreateInput[]|null>(`/api/document/${slug}`)
+        setData(response.data)
       } catch (err: unknown) {
         if (err instanceof Error) {
           setError(err.message)

@@ -2,13 +2,14 @@
 
 import { useState } from 'react'
 import clsx from 'clsx'
+import useMenuStore from '@/store/useMenuStore'
 
 export const HamMenu = () => {
   const [active, setActive] = useState(false)
-
+  const{menuState,toggleMenuState,setMenuState}=useMenuStore();
   return (
-  <div className={clsx(`translate-x-[50px] scale-40 overflow-hidden`,active?'active':'hamContainer')}
-  onClick={()=>setActive((prev)=>!prev)}
+  <div className={clsx(`translate-x-[50px] scale-40 overflow-hidden cursor-pointer`,menuState?'active':'hamContainer')}
+  onClick={toggleMenuState}
   >
   <svg xmlns="http://www.w3.org/2000/svg" width="150" height="150" viewBox="0 0 200 200">
         <g strokeWidth="6.5" strokeLinecap="round">

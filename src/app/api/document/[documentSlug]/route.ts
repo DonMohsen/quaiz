@@ -29,8 +29,16 @@ export async function GET(
 
     if (!documentSlug) return NextResponse.json({ error: 'Invalid documentSlug' }, { status: 400 });
 
-    const found = await prisma.document.findUnique({ where: { slug:documentSlug } });
-
+  const found = await prisma.document.findUnique({
+    where: { slug: documentSlug },
+    include: {
+      user: true,
+      chats: true,
+      flashCards: true,
+      quaizzes: true,
+      views: true,
+    },
+  });
     return NextResponse.json(found, { status: 200 });
   } catch (error) {
     console.error("Find unique error:", error);

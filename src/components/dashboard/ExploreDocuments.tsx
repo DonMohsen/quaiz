@@ -1,6 +1,5 @@
 "use client"
 import { useAllDocuments } from '@/hooks/useAllDocuments';
-import { useDocumentById } from '@/hooks/useDocumentById';
 import { useDocumentsByUserId } from '@/hooks/useDocumentByUserId';
 import Image from 'next/image'
 import Link from 'next/link'

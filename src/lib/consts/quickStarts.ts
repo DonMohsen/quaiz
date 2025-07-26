@@ -5,7 +5,7 @@ export const quickStarts:QuickStartType[]=[
         title:"Chat to document",
         description:"you can analaize your imported document and chat with it like your friend! maybe even generate something from it",
         imageUrl:"/chat.png",
-        href:"/documents/chat"
+        href:"chat"
 
     },
     {
