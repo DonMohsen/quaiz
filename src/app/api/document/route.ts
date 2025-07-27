@@ -32,7 +32,6 @@ export async function POST(req: NextRequest) {
 export async function GET() {
   try {
     const documents = await prisma.document.findMany({
-      orderBy: { id: "desc" },
     });
 
     return NextResponse.json(documents, { status: 200 });
