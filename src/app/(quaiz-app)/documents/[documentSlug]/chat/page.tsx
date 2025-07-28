@@ -11,19 +11,20 @@ type Props = {
 const DocumantChatPage = async({params}:Props) => {
           const slug = (await params).documentSlug
           const user=await currentUser();
-          const doc=await getDocumentBySlug(slug)
+          // const doc=await getDocumentBySlug(slug)
           if (!user) {
             return unauthorized()
           }
-          if (!doc) {
-            return notFound()
+          // if (!doc) {
+          //   return notFound()
             
-          }
-          const chat=await getChatByDocumentSlugOrCreate({slug,userId:user?.id})
+          // }
+          // const chat=await getChatByDocumentSlugOrCreate({slug,userId:user?.id})
 
   return (
     <div>
-        <ChatWithDoc chatId={chat.id}  doc={doc} user={{email:user?.emailAddresses[0]?.emailAddress,firstName:user?.firstName,id:user?.id,image:user?.imageUrl,lastName:user?.lastName
+      
+        <ChatWithDoc documentSlug={slug} user={{email:user?.emailAddresses[0]?.emailAddress,firstName:user?.firstName,id:user?.id,image:user?.imageUrl,lastName:user?.lastName
           ,userName:user?.username
         } }  />
     </div>

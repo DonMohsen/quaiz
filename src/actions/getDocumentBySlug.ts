@@ -8,7 +8,11 @@ export const getDocumentBySlug = async (slug: string) => {
         user: true,
         views: true,
         flashCards: true,
-        chats: true,
+        chats:{
+          include:{
+            messages:true
+          },
+        },
         quaizzes: true,
       },
     });

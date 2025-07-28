@@ -5,6 +5,7 @@ import {
 import { Geist, Geist_Mono,Open_Sans,Inter } from 'next/font/google'
 import './globals.css'
 import Header from '@/components/global/Header'
+import ReactQueryProvider from '@/providers/ReactQueryProvider'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -37,9 +38,12 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
+
       <html lang="en">
         <body className={inter.variable}>
+      <ReactQueryProvider>
           {children}
+      </ReactQueryProvider>
         </body>
       </html>
     </ClerkProvider>
