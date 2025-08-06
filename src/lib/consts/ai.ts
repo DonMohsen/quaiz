@@ -1,0 +1,1 @@
+export const HF_MODEL="openai/gpt-oss-120b:cerebras";

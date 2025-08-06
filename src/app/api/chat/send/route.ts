@@ -4,9 +4,9 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
-  const { content, documentSlug,userId} = body;
+  const { content, documentSlug,userId,role} = body;
 
-  if (!content || !documentSlug||!userId) {
+  if (!content || !documentSlug||!userId||!role) {
     return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
   }
 
@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
   const newMessage = await prisma.message.create({
     data: {
       content,
-      role: "user", // or "assistant" if you're streaming AI response
+      role,// or "assistant" if you're streaming AI response
       chatId: chat.id,
     },
   });

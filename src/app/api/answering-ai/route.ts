@@ -1,27 +1,42 @@
-// app/api/ai/route.ts
-import { NextResponse } from 'next/server'
-import type { NextRequest } from 'next/server'
+import { HF_MODEL } from "@/lib/consts/ai";
+import { NextRequest } from "next/server";
+import { OpenAI } from "openai";
+
+// Create HF client
+const client = new OpenAI({
+  baseURL: "https://router.huggingface.co/v1",
+  apiKey: process.env.HF_TOKEN,
+});
 
 export async function POST(req: NextRequest) {
-  try {
-    // Placeholder: parse input
-    const body = await req.json()
+  const { prompt } = await req.json();
 
-    // Placeholder: logic for future AI task (e.g., chatbot, summarization, etc.)
-    const result = {
-      message: 'AI processing will be implemented here.',
-      input: body,
-    }
+  const stream = await client.chat.completions.create({
+    model: HF_MODEL, // ✅ You can change to another HF-compatible model
+    messages: [
+      {
+        role: "user",
+        content: prompt,
+      },
+    ],
+    stream: true,
+  });
 
-    return NextResponse.json(result)
-  } catch (error) {
-    console.error('AI API error:', error)
-    return new NextResponse('Internal Server Error', { status: 500 })
-  }
-}
+  // Convert Hugging Face stream to a ReadableStream for Next.js
+  const encoder = new TextEncoder();
+  const readable = new ReadableStream({
+    async start(controller) {
+      for await (const chunk of stream) {
+        const content = chunk.choices?.[0]?.delta?.content || "";
+        controller.enqueue(encoder.encode(content));
+      }
+      controller.close();
+    },
+  });
 
-export async function GET() {
-  return NextResponse.json({
-    message: 'This endpoint is reserved for AI-related features. Use POST to interact.',
-  })
+  return new Response(readable, {
+    headers: {
+      "Content-Type": "text/plain; charset=utf-8",
+    },
+  });
 }

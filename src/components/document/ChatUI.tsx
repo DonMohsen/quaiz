@@ -2,18 +2,25 @@
 import { useChatByUserAndDoc } from "@/hooks/useChatByUserAndDoc";
 import useMenuStore from "@/store/useMenuStore";
 import { DocumentWithRelations } from "@/types/document.types";
-import { User } from "@prisma/client";
+import { Message, User } from "@prisma/client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { SendHorizontal } from "lucide-react";
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
+import ReactMarkdown from "react-markdown";
+import rehypeHighlight from "rehype-highlight";
+import "highlight.js/styles/github.css";
 
 type Props = {
   document: DocumentWithRelations;
   user: User;
 };
-
+type OptimisticMasseges = {
+  id?: number;
+  content: string;
+  role: string;
+};
 const ChatUI = ({ document, user }: Props) => {
   const [message, setMessage] = useState("");
   const { data: chat, isLoading } = useChatByUserAndDoc(user.id, document.slug);
@@ -21,27 +28,108 @@ const ChatUI = ({ document, user }: Props) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { menuState } = useMenuStore();
+  const [optimisticMessages, setOptimisticMessages] = useState<
+    OptimisticMasseges[]
+  >([]);
+  const [aiMessage, setAiMessage] = useState("");
+  const [isAiResponding, setIsAiResponding] = useState(false);
 
   const sendMessageMutation = useMutation({
     mutationFn: async (payload: {
       content: string;
       documentSlug: string;
       userId: string;
+      role: string;
     }) => {
       const res = await axios.post("/api/chat/send", payload);
       return res.data;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["chat", user.id, document.slug],
-      });
-    },
+    }
+    // ,
+    // onSuccess: () => {
+    //   queryClient.invalidateQueries({
+    //     queryKey: ["chat", user.id, document.slug],
+    //   });
+    // },
   });
 
   // Auto-scroll to bottom when messages update
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [chat?.messages?.length]);
+
+  const handleSubmit = async () => {
+    if (!message.trim()) return;
+
+    const userMessage = {
+      content: message,
+      role: "user",
+    };
+
+    // Optimistically show user's message
+    setOptimisticMessages((prev) => [...prev, userMessage]);
+    setMessage("");
+
+    // Send to backend to persist
+    sendMessageMutation.mutate({
+      content: message,
+      documentSlug: document.slug,
+      userId: user.id,
+      role: "user",
+    });
+
+    // Begin AI response
+    setIsAiResponding(true);
+    setAiMessage(""); // reset
+
+    try {
+      const res = await fetch("/api/answering-ai", {
+        method: "POST",
+        body: JSON.stringify({ prompt: message }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!res.body) {
+        setIsAiResponding(false);
+        return;
+      }
+
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let fullAiMessage = "";
+
+      while (true) {
+        const { value, done } = await reader.read();
+        if (done) break;
+
+        const chunk = decoder.decode(value);
+        fullAiMessage += chunk;
+        setAiMessage((prev) => prev + chunk);
+      }
+      const aiMessage={
+        content:fullAiMessage,
+        role:'ai'
+      }
+    setOptimisticMessages((prev) => [...prev, aiMessage]);
+
+      setIsAiResponding(false);
+
+      sendMessageMutation.mutate({
+        content: fullAiMessage, // ✅ not from state
+        documentSlug: document.slug,
+        userId: user.id, // ✅ don't reuse user's ID
+        role: "AI",
+      });
+
+      // queryClient.invalidateQueries({
+      //   queryKey: ["chat", user.id, document.slug],
+      // });
+    } catch (error) {
+      console.error("AI stream error:", error);
+      setIsAiResponding(false);
+    }
+  };
 
   return (
     <div
@@ -93,25 +181,47 @@ const ChatUI = ({ document, user }: Props) => {
               ) : chat?.messages.length === 0 ? (
                 <p className="text-sm text-gray-500">No messages yet.</p>
               ) : (
-                 chat?.messages.map((msg) => (
-                  <div
-                    key={msg.id}
-                    className={`flex ${
-                      msg.role === 'user' ? "justify-end" : "justify-start"
-                    }`}
-                  >
+                [...(chat?.messages || []), ...optimisticMessages].map(
+                  (msg) => (
                     <div
-                      className={`rounded-lg px-4 py-2 max-w-[70%] text-sm ${
-                        msg.role === "user"
-                          ? "bg-blue-500 text-white"
-                          : "bg-gray-200 text-black"
+                      key={msg.id}
+                      className={`flex ${
+                        msg.role === "user" ? "justify-end" : "justify-start"
                       }`}
                     >
-                      {msg.content}
+                      {msg.role==='user'?
+                      <div
+                      className={`rounded-lg px-4 py-2 max-w-[70%] text-sm ${
+                        msg.role === "user"
+                        ? "bg-blue-500 text-white"
+                        : "bg-gray-200 text-black"
+                        }`}
+                        >
+                        {msg.content}
+                      </div>:
+                      <div className="rounded-lg px-4 py-2 max-w-[70%] text-sm bg-[#f9f9f9]">
+
+                      <ReactMarkdown rehypePlugins={[rehypeHighlight]}>
+                        {msg.content}
+                      </ReactMarkdown>
+                      </div>
+                      }
                     </div>
-                  </div>
-                ))
+                  )
+                )
               )}
+              {isAiResponding && (
+                <span className="italic text-gray-500">Thinking...</span>
+              )}
+{/*               
+              {aiMessage && (
+                <div className="flex justify-start">
+                  <div className="rounded-lg px-4 py-2 max-w-[70%] text-sm bg-gray-200 text-black">
+                    {aiMessage}
+                  </div>
+                </div>
+              )} */}
+
               <div ref={messagesEndRef} />
             </div>
 
@@ -119,15 +229,7 @@ const ChatUI = ({ document, user }: Props) => {
             <form
               onSubmit={(e) => {
                 e.preventDefault();
-                if (!message.trim()) return;
-
-                sendMessageMutation.mutate({
-                  content: message,
-                  documentSlug: document.slug,
-                  userId: user.id,
-                });
-
-                setMessage(""); // Clear input
+                handleSubmit();
               }}
               className="w-full p-3"
             >
