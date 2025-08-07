@@ -39,7 +39,9 @@ export default function RootLayout({
   return (
     <ClerkProvider>
 
-      <html lang="en">
+      <html
+      dir='ltr'
+      lang="en">
         <body className={inter.variable}>
       <ReactQueryProvider>
           {children}

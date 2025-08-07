@@ -215,7 +215,6 @@ const lastMessages = allMessages.slice(-5);
                       }`}
                     >
                       <div
-                        dir={isRTL(msg.content) ? "rtl" : "ltr"}
                         className={`chat-bubble break-words whitespace-pre-wrap   ${
                           msg.role === "user"
                             ? "bg-blue-500 text-white"
@@ -223,7 +222,10 @@ const lastMessages = allMessages.slice(-5);
                         }`}
                       >
                         {msg.role === "user" ? (
-                          <div className="overflow-x-hidden">{msg.content}</div>
+                          <div
+                                                      dir={isRTL(msg.content) ? "rtl" : "ltr"}
+
+                          className="overflow-x-hidden">{msg.content}</div>
                         ) : (
                           <div
                             id="chat-container"
