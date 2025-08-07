@@ -17,7 +17,7 @@ type Props = {
   user: User;
 };
 type OptimisticMasseges = {
-  id?: number;
+  id: string;
   content: string;
   role: string;
 };
@@ -58,6 +58,8 @@ const ChatUI = ({ document: doc, user }: Props) => {
     if (!message.trim()) return;
 
     const userMessage = {
+        id: crypto.randomUUID(), // ✅ Unique ID
+
       content: message,
       role: "user",
     };
@@ -77,14 +79,16 @@ const ChatUI = ({ document: doc, user }: Props) => {
     // Begin AI response
     setIsAiResponding(true);
     setAiMessage(""); // reset
-    const lastThreeMessages = chat?.messages.slice(-3);
+const allMessages = [...optimisticMessages, ...(chat?.messages || [])];
 
+// Get last 3 messages from the merged list
+const lastMessages = allMessages.slice(-5);
     try {
       const res = await fetch("/api/answering-ai", {
         method: "POST",
         body: JSON.stringify({
           prompt: message,
-          history: lastThreeMessages, // must be defined in your component
+          history: lastMessages, // must be defined in your component
           doc: doc.text, // must be defined in your component
         }),
         headers: {
@@ -109,8 +113,10 @@ const ChatUI = ({ document: doc, user }: Props) => {
         setAiMessage((prev) => prev + chunk);
       }
       const aiMessage = {
+          id: crypto.randomUUID(), // ✅ Unique ID
+
         content: fullAiMessage,
-        role: "ai",
+        role: "assistant",
       };
       setOptimisticMessages((prev) => [...prev, aiMessage]);
 
@@ -120,7 +126,7 @@ const ChatUI = ({ document: doc, user }: Props) => {
         content: fullAiMessage, // ✅ not from state
         documentSlug: doc.slug,
         userId: user.id, // ✅ don't reuse user's ID
-        role: "AI",
+        role: "assistant",
       });
 
       // queryClient.invalidateQueries({

@@ -1,5 +1,6 @@
 import { HF_MODEL } from "@/lib/consts/ai";
-import { NextRequest } from "next/server";
+import { AnsweringAIRequest, Role } from "@/types/ai.types";
+import { NextRequest, NextResponse } from "next/server";
 import { OpenAI } from "openai";
 
 // Create HF client
@@ -9,43 +10,46 @@ const client = new OpenAI({
 });
 
 export async function POST(req: NextRequest) {
-  const { prompt,history,doc } = await req.json();
-if (!prompt||!doc) {
-  return "No prompt or doc!"
+
+      const body = (await req.json()) as AnsweringAIRequest;
+
+  const { prompt,history,doc } = body
+if (!prompt || !doc) {
+  return NextResponse.json({ error: "No prompt or doc!" }, { status: 400 });
 }
 const safeHistory = (history || [])
   .filter(
-    (msg: any) =>
+    (msg) =>
       typeof msg?.role === "string" &&
       typeof msg?.content === "string" &&
       ["user", "assistant"].includes(msg.role.toLowerCase()) // normalize roles
   )
-  .slice(-3) // only last 3 messages
-  .map((msg: any) => ({
+  .slice(-5) // only last 5 messages
+  .map((msg) => ({
     role: msg.role.toLowerCase() === "ai" ? "assistant" : msg.role.toLowerCase(),
     content: msg.content,
   }));
 
-  const stream = await client.chat.completions.create({
-    model: HF_MODEL, // ✅ You can change to another HF-compatible model
-    messages: [
-     
-       {
-        role: "system",
-        content:`You are answering the user depending on the document and answer users as short as possible, users always refer to the doc and keep the chat relevant, the doc : ${doc} 
-        `,
-      },
-       {
-        role: "system",
-        content: `These are the last 3 messages between you and the user: ${safeHistory.map((message:any)=>message.content)}`,
-      },
-      {
-        role: "user",
-        content: prompt,
-      },
-    ],
-    stream: true,
-  });
+const stream = await client.chat.completions.create({
+  model: HF_MODEL,
+  messages: [
+    {
+      role: "system",
+      content: `You are answering the user depending on the document and should keep the answers short. Keep the conversation relevant to the document. If the user goes off-topic, gently remind them. The document: ${doc}`,
+    },
+    ...safeHistory.map((msg) => ({
+      role: msg.role as Role,
+      content: msg.content,
+    })),
+    {
+      role: "user",
+      content: prompt,
+    },
+  ],
+  stream: true,
+});
+
+console.log("stream===============>",stream);
 
   // Convert Hugging Face stream to a ReadableStream for Next.js
   const encoder = new TextEncoder();
