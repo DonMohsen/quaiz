@@ -2,7 +2,7 @@
 import { useChatByUserAndDoc } from "@/hooks/useChatByUserAndDoc";
 import useMenuStore from "@/store/useMenuStore";
 import { DocumentWithRelations } from "@/types/document.types";
-import { Message, User } from "@prisma/client";
+import { Message as MessageType, User } from "@prisma/client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { SendHorizontal } from "lucide-react";
@@ -43,7 +43,7 @@ const ChatUI = ({ document, user }: Props) => {
     }) => {
       const res = await axios.post("/api/chat/send", payload);
       return res.data;
-    }
+    },
     // ,
     // onSuccess: () => {
     //   queryClient.invalidateQueries({
@@ -107,11 +107,11 @@ const ChatUI = ({ document, user }: Props) => {
         fullAiMessage += chunk;
         setAiMessage((prev) => prev + chunk);
       }
-      const aiMessage={
-        content:fullAiMessage,
-        role:'ai'
-      }
-    setOptimisticMessages((prev) => [...prev, aiMessage]);
+      const aiMessage = {
+        content: fullAiMessage,
+        role: "ai",
+      };
+      setOptimisticMessages((prev) => [...prev, aiMessage]);
 
       setIsAiResponding(false);
 
@@ -138,11 +138,13 @@ const ChatUI = ({ document, user }: Props) => {
       }`}
     >
       {/* Left: Document preview */}
-      <div className="bg-[#fef3b5] w-[50%] h-fit rounded-[14px] max-h-screen max-md:hidden">
-        <p className="bg-[#fff7d0] w-full rounded-t-[14px] px-4 py-2 font-bold">
-          Document Content
-        </p>
-        <p className="p-4">{document.text}</p>
+      <div className="bg-transparent w-[50%] h-full overflow-hidden overflow-x-hidden min-h-full  max-h-screen max-md:hidden pb-[25px]">
+        <div className="bg-white h-full rounded-[14px] border border-black/[0.1]">
+          <p className="bg-white w-full rounded-t-[14px] px-4 py-2 font-bold">
+            Document Content
+          </p>
+          <p className="p-4 overflow-auto">{document.text}</p>
+        </div>
       </div>
 
       {/* Right: Chat panel */}
@@ -175,7 +177,7 @@ const ChatUI = ({ document, user }: Props) => {
             </div>
 
             {/* Chat messages */}
-            <div className="flex-1 w-full overflow-y-auto p-4 space-y-2">
+            <div className="flex-1 w-full overflow-y-auto p-4 space-y-2 break-words whitespace-pre-wrap">
               {isLoading ? (
                 <p className="text-sm text-gray-500">Loading messages...</p>
               ) : chat?.messages.length === 0 ? (
@@ -185,35 +187,40 @@ const ChatUI = ({ document, user }: Props) => {
                   (msg) => (
                     <div
                       key={msg.id}
-                      className={`flex ${
-                        msg.role === "user" ? "justify-end" : "justify-start"
+                      className={`chat break-words whitespace-pre-wrap ${
+                        msg.role === "user" ? "chat-end" : "chat-start"
                       }`}
                     >
-                      {msg.role==='user'?
                       <div
-                      className={`rounded-lg px-4 py-2 max-w-[70%] text-sm ${
-                        msg.role === "user"
-                        ? "bg-blue-500 text-white"
-                        : "bg-gray-200 text-black"
+                        className={`chat-bubble break-words whitespace-pre-wrap   ${
+                          msg.role === "user"
+                            ? "bg-blue-500 text-white"
+                            : "bg-gray-200 text-black"
                         }`}
-                        >
-                        {msg.content}
-                      </div>:
-                      <div className="rounded-lg px-4 py-2 max-w-[70%] text-sm bg-[#f9f9f9]">
+                      >
+                        {msg.role === "user" ? (
+                          <div className="overflow-x-hidden">
 
-                      <ReactMarkdown rehypePlugins={[rehypeHighlight]}>
-                        {msg.content}
-                      </ReactMarkdown>
+                          {msg.content}
+                          </div>
+                        ) : (
+                          <div className="overflow-x-hidden">
+
+                          <ReactMarkdown rehypePlugins={[rehypeHighlight]}>
+                            {msg.content}
+                          </ReactMarkdown>
+                          </div>
+                        )}
                       </div>
-                      }
                     </div>
                   )
                 )
               )}
+
               {isAiResponding && (
                 <span className="italic text-gray-500">Thinking...</span>
               )}
-{/*               
+              {/*               
               {aiMessage && (
                 <div className="flex justify-start">
                   <div className="rounded-lg px-4 py-2 max-w-[70%] text-sm bg-gray-200 text-black">
@@ -235,7 +242,7 @@ const ChatUI = ({ document, user }: Props) => {
             >
               <div
                 onClick={() => inputRef.current?.focus()}
-                className="flex items-center gap-2 rounded-[12px] border border-[#a8a7de] shadow-md px-4 py-2 w-full bg-white cursor-text"
+                className="flex items-center gap-2 rounded-[12px] border border-[#a8a7de] shadow-md px-4 py-1 w-full bg-white cursor-text"
               >
                 <input
                   value={message}
@@ -249,7 +256,7 @@ const ChatUI = ({ document, user }: Props) => {
                   type="submit"
                   className="text-white bg-[#4b6bfb] hover:bg-[#3b57e0] px-4 py-2 rounded-full transition"
                 >
-                  <SendHorizontal className="text-white fill-transparent w-6 h-6" />
+                  <SendHorizontal className="text-white fill-transparent w-4 h-4" />
                 </button>
               </div>
             </form>

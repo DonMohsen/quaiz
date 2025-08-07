@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@plugin "daisyui";
 
 :root {
   --background: #ffffff;
@@ -125,3 +126,4 @@ path:nth-child(6) {
 .active path:nth-child(6) {
   transform: translateX(9px) translateY(1px) rotate(45deg);
 }
+/*//! The chat bubble .................................................*/
