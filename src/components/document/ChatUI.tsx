@@ -26,7 +26,7 @@ const ChatUI = ({ document: doc, user }: Props) => {
   const { data: chat, isLoading } = useChatByUserAndDoc(user.id, doc.slug);
   const queryClient = useQueryClient();
   const inputRef = useRef<HTMLInputElement>(null);
-const bottomRef  = useRef<HTMLDivElement>(null);
+  const bottomRef = useRef<HTMLDivElement>(null);
   const { menuState } = useMenuStore();
   const [optimisticMessages, setOptimisticMessages] = useState<
     OptimisticMasseges[]
@@ -53,7 +53,7 @@ const bottomRef  = useRef<HTMLDivElement>(null);
   });
 
   // Auto-scroll to bottom when messages update
- 
+
   const handleSubmit = async () => {
     if (!message.trim()) return;
 
@@ -77,16 +77,20 @@ const bottomRef  = useRef<HTMLDivElement>(null);
     // Begin AI response
     setIsAiResponding(true);
     setAiMessage(""); // reset
+    const lastThreeMessages = chat?.messages.slice(-3);
 
     try {
       const res = await fetch("/api/answering-ai", {
         method: "POST",
-        body: JSON.stringify({ prompt: message }),
+        body: JSON.stringify({
+          prompt: message,
+          history: lastThreeMessages, // must be defined in your component
+          doc: doc.text, // must be defined in your component
+        }),
         headers: {
           "Content-Type": "application/json",
         },
       });
-
       if (!res.body) {
         setIsAiResponding(false);
         return;
@@ -127,10 +131,18 @@ const bottomRef  = useRef<HTMLDivElement>(null);
       setIsAiResponding(false);
     }
   };
-useEffect(() => {
-  bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-}, [ optimisticMessages.length]);
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, 100); // slight delay ensures the DOM is fully rendered
 
+    return () => clearTimeout(timeout);
+  }, [chat?.messages.length, optimisticMessages.length, aiMessage]);
+  function isRTL(text: string): boolean {
+    // Checks if the text contains mostly Persian/Arabic characters
+    const rtlCharPattern = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF]/;
+    return rtlCharPattern.test(text);
+  }
   return (
     <div
       className={`w-[85%] max-md:w-[95%] mx-auto h-[100vh] transition-all duration-300 pt-[80px] flex gap-2 ${
@@ -143,7 +155,12 @@ useEffect(() => {
           <p className="bg-white w-full rounded-t-[14px] px-4 py-2 font-bold">
             Document Content
           </p>
-          <p className="p-4 overflow-auto">{doc.text}</p>
+          <p
+            dir={isRTL(doc.text!) ? "rtl" : "ltr"}
+            className="p-4 overflow-auto"
+          >
+            {doc.text}
+          </p>
         </div>
       </div>
 
@@ -177,9 +194,7 @@ useEffect(() => {
             </div>
 
             {/* Chat messages */}
-            <div 
-
-            className="flex-1 w-full overflow-y-auto p-4 space-y-2 break-words whitespace-pre-wrap">
+            <div className="flex-1 w-full overflow-y-auto p-4 space-y-2 break-words whitespace-pre-wrap">
               {isLoading ? (
                 <p className="text-sm text-gray-500">Loading messages...</p>
               ) : chat?.messages.length === 0 ? (
@@ -194,6 +209,7 @@ useEffect(() => {
                       }`}
                     >
                       <div
+                        dir={isRTL(msg.content) ? "rtl" : "ltr"}
                         className={`chat-bubble break-words whitespace-pre-wrap   ${
                           msg.role === "user"
                             ? "bg-blue-500 text-white"
@@ -204,6 +220,8 @@ useEffect(() => {
                           <div className="overflow-x-hidden">{msg.content}</div>
                         ) : (
                           <div
+                            id="chat-container"
+                            dir={isRTL(msg.content) ? "rtl" : "ltr"}
                             className="overflow-x-hidden"
                           >
                             <ReactMarkdown rehypePlugins={[rehypeHighlight]}>
@@ -218,9 +236,7 @@ useEffect(() => {
               )}
               {isAiResponding && aiMessage && (
                 <div className="chat chat-start">
-                  <div
-                    className="chat-bubble max-w-[70%] break-words whitespace-pre-wrap bg-gray-200 text-black"
-                  >
+                  <div className="chat-bubble max-w-[70%] break-words whitespace-pre-wrap bg-gray-200 text-black">
                     <ReactMarkdown>{aiMessage}</ReactMarkdown>
                   </div>
                 </div>
@@ -230,8 +246,6 @@ useEffect(() => {
                 <span className="italic text-gray-500">Thinking...</span>
               )}
               <div ref={bottomRef} />
-
-              
             </div>
 
             {/* Chat input */}

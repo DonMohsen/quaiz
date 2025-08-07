@@ -9,11 +9,36 @@ const client = new OpenAI({
 });
 
 export async function POST(req: NextRequest) {
-  const { prompt } = await req.json();
+  const { prompt,history,doc } = await req.json();
+if (!prompt||!doc) {
+  return "No prompt or doc!"
+}
+const safeHistory = (history || [])
+  .filter(
+    (msg: any) =>
+      typeof msg?.role === "string" &&
+      typeof msg?.content === "string" &&
+      ["user", "assistant"].includes(msg.role.toLowerCase()) // normalize roles
+  )
+  .slice(-3) // only last 3 messages
+  .map((msg: any) => ({
+    role: msg.role.toLowerCase() === "ai" ? "assistant" : msg.role.toLowerCase(),
+    content: msg.content,
+  }));
 
   const stream = await client.chat.completions.create({
     model: HF_MODEL, // ✅ You can change to another HF-compatible model
     messages: [
+     
+       {
+        role: "system",
+        content:`You are answering the user depending on the document and answer users as short as possible, users always refer to the doc and keep the chat relevant, the doc : ${doc} 
+        `,
+      },
+       {
+        role: "system",
+        content: `These are the last 3 messages between you and the user: ${safeHistory.map((message:any)=>message.content)}`,
+      },
       {
         role: "user",
         content: prompt,
