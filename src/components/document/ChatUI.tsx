@@ -21,12 +21,12 @@ type OptimisticMasseges = {
   content: string;
   role: string;
 };
-const ChatUI = ({ document, user }: Props) => {
+const ChatUI = ({ document: doc, user }: Props) => {
   const [message, setMessage] = useState("");
-  const { data: chat, isLoading } = useChatByUserAndDoc(user.id, document.slug);
+  const { data: chat, isLoading } = useChatByUserAndDoc(user.id, doc.slug);
   const queryClient = useQueryClient();
   const inputRef = useRef<HTMLInputElement>(null);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+const bottomRef  = useRef<HTMLDivElement>(null);
   const { menuState } = useMenuStore();
   const [optimisticMessages, setOptimisticMessages] = useState<
     OptimisticMasseges[]
@@ -47,16 +47,13 @@ const ChatUI = ({ document, user }: Props) => {
     // ,
     // onSuccess: () => {
     //   queryClient.invalidateQueries({
-    //     queryKey: ["chat", user.id, document.slug],
+    //     queryKey: ["chat", user.id, doc.slug],
     //   });
     // },
   });
 
   // Auto-scroll to bottom when messages update
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [chat?.messages?.length]);
-
+ 
   const handleSubmit = async () => {
     if (!message.trim()) return;
 
@@ -72,7 +69,7 @@ const ChatUI = ({ document, user }: Props) => {
     // Send to backend to persist
     sendMessageMutation.mutate({
       content: message,
-      documentSlug: document.slug,
+      documentSlug: doc.slug,
       userId: user.id,
       role: "user",
     });
@@ -117,19 +114,22 @@ const ChatUI = ({ document, user }: Props) => {
 
       sendMessageMutation.mutate({
         content: fullAiMessage, // ✅ not from state
-        documentSlug: document.slug,
+        documentSlug: doc.slug,
         userId: user.id, // ✅ don't reuse user's ID
         role: "AI",
       });
 
       // queryClient.invalidateQueries({
-      //   queryKey: ["chat", user.id, document.slug],
+      //   queryKey: ["chat", user.id, doc.slug],
       // });
     } catch (error) {
       console.error("AI stream error:", error);
       setIsAiResponding(false);
     }
   };
+useEffect(() => {
+  bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+}, [ optimisticMessages.length]);
 
   return (
     <div
@@ -143,7 +143,7 @@ const ChatUI = ({ document, user }: Props) => {
           <p className="bg-white w-full rounded-t-[14px] px-4 py-2 font-bold">
             Document Content
           </p>
-          <p className="p-4 overflow-auto">{document.text}</p>
+          <p className="p-4 overflow-auto">{doc.text}</p>
         </div>
       </div>
 
@@ -159,25 +159,27 @@ const ChatUI = ({ document, user }: Props) => {
             <div className="w-full p-5 flex items-center justify-between max-md:p-1 bg-white border-b border-black/[0.1] rounded-t-[18px]">
               <div className="flex gap-5 items-center justify-center">
                 <Image
-                  alt={document.image || "doc"}
-                  src={document.image || "/placeholder.webp"}
+                  alt={doc.image || "doc"}
+                  src={doc.image || "/placeholder.webp"}
                   width={200}
                   height={200}
                   className="rounded-full w-10 h-10"
                 />
                 <div className="flex flex-col">
-                  <p className="font-bold">{document.title}</p>
+                  <p className="font-bold">{doc.title}</p>
                   <p className="font-light">{`Created by ${
-                    document.user.userName === user.userName
+                    doc.user.userName === user.userName
                       ? "You"
-                      : document.user.userName
+                      : doc.user.userName
                   }`}</p>
                 </div>
               </div>
             </div>
 
             {/* Chat messages */}
-            <div className="flex-1 w-full overflow-y-auto p-4 space-y-2 break-words whitespace-pre-wrap">
+            <div 
+
+            className="flex-1 w-full overflow-y-auto p-4 space-y-2 break-words whitespace-pre-wrap">
               {isLoading ? (
                 <p className="text-sm text-gray-500">Loading messages...</p>
               ) : chat?.messages.length === 0 ? (
@@ -199,16 +201,14 @@ const ChatUI = ({ document, user }: Props) => {
                         }`}
                       >
                         {msg.role === "user" ? (
-                          <div className="overflow-x-hidden">
-
-                          {msg.content}
-                          </div>
+                          <div className="overflow-x-hidden">{msg.content}</div>
                         ) : (
-                          <div className="overflow-x-hidden">
-
-                          <ReactMarkdown rehypePlugins={[rehypeHighlight]}>
-                            {msg.content}
-                          </ReactMarkdown>
+                          <div
+                            className="overflow-x-hidden"
+                          >
+                            <ReactMarkdown rehypePlugins={[rehypeHighlight]}>
+                              {msg.content}
+                            </ReactMarkdown>
                           </div>
                         )}
                       </div>
@@ -216,20 +216,22 @@ const ChatUI = ({ document, user }: Props) => {
                   )
                 )
               )}
+              {isAiResponding && aiMessage && (
+                <div className="chat chat-start">
+                  <div
+                    className="chat-bubble max-w-[70%] break-words whitespace-pre-wrap bg-gray-200 text-black"
+                  >
+                    <ReactMarkdown>{aiMessage}</ReactMarkdown>
+                  </div>
+                </div>
+              )}
 
               {isAiResponding && (
                 <span className="italic text-gray-500">Thinking...</span>
               )}
-              {/*               
-              {aiMessage && (
-                <div className="flex justify-start">
-                  <div className="rounded-lg px-4 py-2 max-w-[70%] text-sm bg-gray-200 text-black">
-                    {aiMessage}
-                  </div>
-                </div>
-              )} */}
+              <div ref={bottomRef} />
 
-              <div ref={messagesEndRef} />
+              
             </div>
 
             {/* Chat input */}
@@ -249,7 +251,7 @@ const ChatUI = ({ document, user }: Props) => {
                   onChange={(e) => setMessage(e.target.value)}
                   ref={inputRef}
                   type="text"
-                  placeholder="Chat to document..."
+                  placeholder="Chat to doc..."
                   className="flex-1 outline-none bg-transparent text-sm placeholder:text-gray-400"
                 />
                 <button
