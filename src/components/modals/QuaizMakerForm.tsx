@@ -2,10 +2,8 @@ import React from "react";
 import Modal from "../ui/Modal";
 
 const   QuaizMakerForm = ({
-  onConfirm,
   onClose,
 }: {
-  onConfirm: () => void;
   onClose: () => void;
 }) => {
   return (

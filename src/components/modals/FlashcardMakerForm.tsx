@@ -2,10 +2,8 @@ import React from "react";
 import Modal from "../ui/Modal";
 
 const   FlashcardMakerForm = ({
-  onConfirm,
   onClose,
 }: {
-  onConfirm: () => void;
   onClose: () => void;
 }) => {
   return (
