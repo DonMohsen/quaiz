@@ -150,15 +150,16 @@ const lastMessages = allMessages.slice(-5);
     return rtlCharPattern.test(text);
   }
   return (
+    <div className={`transition-all duration-300 max-lg:px-10 max-sm:px-2 ${menuState?'lg:pr-5 lg:pl-[260px] ':'lg:px-[50px] '}`}>
+
+    
     <div
-      className={`w-[85%] max-md:w-[95%] mx-auto h-[100vh] transition-all duration-300 pt-[80px] flex gap-2 ${
-        menuState && "lg:pl-[165px]"
-      }`}
+      className={`w-full  h-[100dvh]  pt-[80px] flex gap-2`}
     >
       {/* Left: Document preview */}
       <div className="bg-transparent w-[50%] h-full overflow-hidden overflow-x-hidden min-h-full  max-h-screen max-md:hidden pb-[25px]">
-        <div className="bg-white h-full rounded-[14px] border border-black/[0.1]">
-          <p className="bg-white w-full rounded-t-[14px] px-4 py-2 font-bold">
+        <div className="bg-white h-full rounded-[18px] border border-black/[0.1] ">
+          <p className="bg-slate-100 w-full rounded-t-[18px] px-4 py-2 font-bold">
             Document Content
           </p>
           <p
@@ -171,7 +172,7 @@ const lastMessages = allMessages.slice(-5);
       </div>
 
       {/* Right: Chat panel */}
-      <div className="w-[50%] max-md:w-full h-full relative flex flex-col">
+      <div className="lg:min-w-[500px] lg:w-[500px] lg:max-w-[500px] xl:min-w-[600px] xl:w-[600px] xl:max-w-[600px] max-lg:w-full h-full relative flex flex-col">
         <p className="absolute bottom-1 left-[50%] -translate-x-[50%] whitespace-nowrap text-[12px] text-black/[0.7]">
           AI can make mistakes. Check important info.
         </p>
@@ -287,6 +288,7 @@ const lastMessages = allMessages.slice(-5);
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 };

@@ -7,16 +7,37 @@ import { Button } from "../ui/Button";
 import { ChevronDown } from "lucide-react";
 import { quickStarts } from "@/lib/consts/quickStarts";
 import { useRouter } from "next/navigation";
+import { QuickStartKind } from "@/types/quaiz.types";
+import { useModalStore } from "@/store/ModalStore";
 type Props = {
   doc: DocumentWithRelations;
 };
 const DocumentDetails = ({ doc }: Props) => {
-  const router=useRouter()
-  const { menuState } = useMenuStore();
-  const handleActionClick=(href:string)=>{
-    router.push(`/documents/${doc.slug}/${href}`)
+  const openModal = useModalStore((s) => s.openModal);
 
+  const router = useRouter();
+
+  const { menuState } = useMenuStore();
+
+  const handleActionClick = (kind: QuickStartKind) => {
+  switch (kind) {
+    case QuickStartKind.CHAT:
+      router.push(`/documents/${doc.slug}/chat`);
+      break;
+
+    case QuickStartKind.QUAIZ:
+      openModal("CREATE_QUAIZ");
+      break;
+
+    case QuickStartKind.FLASHCARD:
+      openModal("CREATE_FLASHCARD");
+      break;
+
+    default:
+      break;
   }
+};
+
   return (
     <div
       className={`w-[85%] max-md:w-[95%] mx-auto min-h-[300vh] h-full transition-all duration-300 pt-[100px] ${
@@ -44,20 +65,28 @@ const DocumentDetails = ({ doc }: Props) => {
             </Button>
           </div>
         </div>
-          <p className="font-medium text-[20px] text-left w-full py-5">
-            Choose a study method
-          </p>
-      <div className="flex w-full items-center justify-center gap-6 max-md:flex-col ">
+        <p className="font-medium text-[20px] text-left w-full py-5">
+          Choose a study method
+        </p>
 
-        {quickStarts.map((q) => (
-          <div 
-          onClick={()=>handleActionClick(q.href)}
-          key={q.href} className={`p-4 rounded-[16px] flex gap-2 items-center justify-start
-           w-full   border border-black/[0.1] hover:shadow-lg cursor-pointer transition-all duration-300 hover:border-blue-600`}>
-            <Image alt={q.title} src={q.imageUrl} width={200} height={200} className="w-12 h-12 rounded-[10px] bg-[#c2c3ff] p-[2px]"/>
-            {q.title}
-          </div>
-        ))}
+        <div className="flex w-full items-center justify-center gap-6 max-md:flex-col ">
+          {quickStarts.map((q) => (
+            <div
+              onClick={() => handleActionClick(q.kind)}
+              key={q.kind}
+              className={`p-4 rounded-[16px] flex gap-2 items-center justify-start
+           w-full border border-black/[0.1] hover:shadow-lg cursor-pointer transition-all duration-300 hover:border-blue-600`}
+            >
+              <Image
+                alt={q.title}
+                src={q.imageUrl}
+                width={200}
+                height={200}
+                className="w-12 h-12 rounded-[10px] bg-[#c2c3ff] p-[2px]"
+              />
+              {q.title}
+            </div>
+          ))}
         </div>
       </div>
     </div>

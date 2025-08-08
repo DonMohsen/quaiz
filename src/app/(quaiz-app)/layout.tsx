@@ -1,5 +1,6 @@
 import Header from '@/components/global/Header'
 import LeftNavbar from '@/components/global/LeftNavbar'
+import { ModalRenderer } from '@/components/modals/ModalRenderer'
 import { Inter } from 'next/font/google'
 
 const inter = Inter({
