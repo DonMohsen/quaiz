@@ -20,7 +20,9 @@ const DocumentsPage = async({params}:Props) => {
     )
     
   return (
-         <DocumentDetails doc={doc}/>
+         <DocumentDetails currentUser={{email:user?.emailAddresses[0]?.emailAddress,firstName:user.firstName,id:user.id,image:user.imageUrl
+          ,lastName:user.lastName,userName:user.username
+         }} doc={doc}/>
 
 
   )

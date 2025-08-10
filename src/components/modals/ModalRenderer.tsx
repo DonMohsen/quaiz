@@ -6,13 +6,13 @@ import QuaizMakerForm from "./QuaizMakerForm";
 import FlashcardMakerForm from "./FlashcardMakerForm";
 
 export function ModalRenderer() {
-  const { type, closeModal } = useModalStore();
+  const { type, closeModal,document,user } = useModalStore();
 
   if (!type) return null;
 
   switch (type) {
     case "CREATE_QUAIZ":
-      return <QuaizMakerForm onClose={closeModal} />;
+      return <QuaizMakerForm onClose={closeModal} document={document} user={user}/>;
 
     case "CREATE_FLASHCARD":
       return <FlashcardMakerForm onClose={closeModal} />;

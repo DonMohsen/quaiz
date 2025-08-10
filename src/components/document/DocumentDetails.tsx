@@ -9,10 +9,12 @@ import { quickStarts } from "@/lib/consts/quickStarts";
 import { useRouter } from "next/navigation";
 import { QuickStartKind } from "@/types/quaiz.types";
 import { useModalStore } from "@/store/ModalStore";
+import { User } from "@prisma/client";
 type Props = {
-  doc: DocumentWithRelations;
+  doc: DocumentWithRelations
+  currentUser:User
 };
-const DocumentDetails = ({ doc }: Props) => {
+const DocumentDetails = ({ doc,currentUser }: Props) => {
   const openModal = useModalStore((s) => s.openModal);
 
   const router = useRouter();
@@ -26,11 +28,11 @@ const DocumentDetails = ({ doc }: Props) => {
       break;
 
     case QuickStartKind.QUAIZ:
-      openModal("CREATE_QUAIZ");
+      openModal("CREATE_QUAIZ",doc,currentUser);
       break;
 
     case QuickStartKind.FLASHCARD:
-      openModal("CREATE_FLASHCARD");
+      openModal("CREATE_FLASHCARD",doc,currentUser);
       break;
 
     default:

@@ -4,6 +4,7 @@ export interface ChatMessage {
 }
 
 export interface AnsweringAIRequest {
+  stream:boolean
   prompt: string;
   doc: string;
   history: ChatMessage[];

@@ -88,6 +88,7 @@ const lastMessages = allMessages.slice(-5);
         method: "POST",
         body: JSON.stringify({
           prompt: message,
+          stream:true,
           history: lastMessages, // must be defined in your component
           doc: doc.text, // must be defined in your component
         }),
