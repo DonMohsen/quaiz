@@ -1,3 +1,5 @@
+import { Prisma } from "@prisma/client";
+
 export enum QuickStartKind {
     CHAT,
     QUAIZ,
@@ -10,3 +12,4 @@ export type QuickStartType={
     imageUrl:string;
     href:string
 }
+export type QuaizCreatePayload = Prisma.QuaizCreateInput;

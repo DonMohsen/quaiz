@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Modal from "../ui/Modal";
 import { DocumentWithRelations } from "@/types/document.types";
 import { Button } from "../ui/Button";
@@ -23,93 +23,104 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { User } from "@prisma/client";
+import { Difficulty, Prisma, User } from "@prisma/client";
+import useQuaizStore from "@/store/quaizStore";
+import { QuaizWithRelations } from "@/types/ai.types";
+import { QuaizCreatePayload } from "@/types/quaiz.types";
 const QuaizMakerForm = ({
   onClose,
   document,
-  user
+  user,
 }: {
   onClose: () => void;
   document: DocumentWithRelations | null;
-  user:User|null
+  user: User | null;
 }) => {
   const form = useForm<z.infer<typeof quaizSchema>>({
     resolver: zodResolver(quaizSchema),
     defaultValues: {
       questionCount: "auto",
-      difficulty: "medium",
+      difficulty: "MEDIUM",
     },
   });
-  type AiQuizResponse = Array<{
-  title: string;
-  question: string;
-  options: Record<string, string>; // keys like "1", "2" with string values
-  correctAnswerIndex: string;      // numeric string index ("0", "1", etc.)
-}>;
 
- async function onSubmit(values: z.output<typeof quaizSchema>) {
-  try {
-  // 1. Fetch AI-generated quiz data
-  const aiRes = await fetch("/api/answering-ai", {
-    method: "POST",
-    body: JSON.stringify({
-      stream: false,
-      prompt: `Depending on the document, create a quiz with difficulty ${values.difficulty} 
+  type AiQuizResponse = Array<{
+    title: string;
+    question: string;
+    options: Record<string, string>; // keys like "1", "2" with string values
+    correctAnswerIndex: string; // numeric string index ("0", "1", etc.)
+  }>;
+  const { quaiz, setQuaiz } = useQuaizStore();
+  async function onSubmit(values: z.output<typeof quaizSchema>) {
+    try {
+      // 1. Fetch AI-generated quiz data
+      const aiRes = await fetch("/api/answering-ai", {
+        method: "POST",
+        body: JSON.stringify({
+          stream: false,
+          prompt: `Depending on the document, create a quiz with difficulty ${values.difficulty} 
 and the number of questions ${values.questionCount}. 
 Answer only with one array of objects exactly like this:
 [{"title":"Math hard","question":"what is 2*2?","options":{"1":"2","2":"4"},"correctAnswerIndex":"1"}]`,
-      doc: document?.text ?? "", // Ensure document is defined
-    }),
-    headers: { "Content-Type": "application/json" },
-  });
+          doc: document?.text ?? "", // Ensure document is defined
+        }),
+        headers: { "Content-Type": "application/json" },
+      });
 
-  if (!aiRes.ok) {
-    console.error("AI response error:", aiRes.statusText);
-    return;
+      if (!aiRes.ok) {
+        console.error("AI response error:", aiRes.statusText);
+        return;
+      }
+
+      const aiData: AiQuizResponse = await aiRes.json();
+
+      const quizData: Prisma.QuestionCreateWithoutQuaizInput[] = aiData.map(
+        (item) => ({
+          text: item.question,
+          options: {
+            create: Object.values(item.options).map((optText, idx) => ({
+              text: optText,
+              isCorrect: idx === Number(item.correctAnswerIndex) - 1,
+            })),
+          },
+        })
+      );
+
+      // 3. Prepare payload for your /api/quaiz route
+      const payload: QuaizCreatePayload = {
+        user: { connect: { id: user?.id ?? "" } },
+        document: { connect: { slug: document?.slug ?? "" } },
+        difficulty: values.difficulty,
+        questionCount:
+          values.questionCount === "auto" ? 5 : Number(values.questionCount),
+        questions: {
+          create: quizData,
+        },
+      };
+      setQuaiz(payload);
+      // 4. Call your API route to save quiz in DB
+      const saveRes = await fetch("/api/quaiz", {
+        method: "POST",
+        body: JSON.stringify(payload),
+        headers: { "Content-Type": "application/json" },
+      });
+
+      if (!saveRes.ok) {
+        console.error("Failed to save quiz:", saveRes.statusText);
+        return;
+      }
+
+      const savedQuiz = await saveRes.json();
+      console.log("Quiz saved successfully:", savedQuiz);
+
+      // Optional: show success UI, reset form, navigate, etc.
+    } catch (error) {
+      console.error("Error in onSubmit:", error);
+    }
   }
-
-  const aiData: AiQuizResponse = await aiRes.json();
-
-  // 2. Transform AI data to match your schema
-  const quizData = aiData.map(item => ({
-    text: item.question, // expected by your schema
-    options: Object.values(item.options).map((optText, idx) => ({
-      text: optText,
-      isCorrect: idx === Number(item.correctAnswerIndex),
-    })),
-  }));
-
-  // 3. Prepare payload for your /api/quaiz route
-  const payload = {
-    userId: user?.id ?? "",
-    documentSlug: document?.slug ?? "",
-    difficulty: values.difficulty.toUpperCase(),
-    questionCount: Number(values.questionCount === "auto" ? 5 : values.questionCount),
-    questions: quizData,
-  };
-
-  // 4. Call your API route to save quiz in DB
-  const saveRes = await fetch("/api/quaiz", {
-    method: "POST",
-    body: JSON.stringify(payload),
-    headers: { "Content-Type": "application/json" },
-  });
-
-  if (!saveRes.ok) {
-    console.error("Failed to save quiz:", saveRes.statusText);
-    return;
-  }
-
-
-    const savedQuiz = await saveRes.json();
-    console.log("Quiz saved successfully:", savedQuiz);
-
-    // Optional: show success UI, reset form, navigate, etc.
-
-  } catch (error) {
-    console.error("Error in onSubmit:", error);
-  }
-}
+  useEffect(() => {
+    console.log("The full quaiz=====>", quaiz);
+  }, [quaiz]);
 
   return (
     <Modal onClose={onClose}>
@@ -182,7 +193,7 @@ Answer only with one array of objects exactly like this:
                     <FormLabel>Difficulty</FormLabel>
                     <FormControl>
                       <div className="flex gap-3">
-                        {["easy", "medium", "hard"].map((level) => (
+                        {["EASY", "MEDIUM", "HARD"].map((level) => (
                           <button
                             key={level}
                             type="button"
@@ -195,7 +206,7 @@ Answer only with one array of objects exactly like this:
                 }
               `}
                           >
-                            {level}
+                            {level.toLocaleLowerCase()}
                           </button>
                         ))}
                       </div>
