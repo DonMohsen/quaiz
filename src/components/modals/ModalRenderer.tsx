@@ -12,7 +12,10 @@ export function ModalRenderer() {
 
   switch (type) {
     case "CREATE_QUAIZ":
-      return <QuaizMakerForm onClose={closeModal} document={document} user={user}/>;
+      if (user&&document) {
+        
+        return <QuaizMakerForm onClose={closeModal} document={document} user={user}/>;
+      }
 
     case "CREATE_FLASHCARD":
       return <FlashcardMakerForm onClose={closeModal} />;

@@ -13,15 +13,3 @@ export interface AnsweringAIRequest {
 }
 export type Role = "user" | "system" | "assistant";
 
-
-export type QuaizWithRelations = Prisma.QuaizGetPayload<{
-  include: {
-    user: true;            // include the user relation
-    document: true;        // include the document relation
-    questions: {
-      include: {
-        options: true;     // include options for each question
-      };
-    };
-  };
-}>;
