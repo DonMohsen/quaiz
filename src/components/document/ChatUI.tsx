@@ -11,7 +11,32 @@ import React, { useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import rehypeHighlight from "rehype-highlight";
 import "highlight.js/styles/github.css";
-
+// !bubbling external component
+export const MessageBubble = React.memo(({ msg }: { msg: OptimisticMasseges | {
+    id: number;
+    chatId: number;
+    role: string;
+    content: string;
+    createdAt: Date;
+} }) => {
+  return (
+    <div className={`chat ${msg.role === "user" ? "chat-end" : "chat-start"}`}>
+      <div
+        className={`chat-bubble ${
+          msg.role === "user" ? "bg-blue-500 text-white" : "bg-gray-200 text-black"
+        }`}
+      >
+        {msg.role === "assistant" ? (
+          <ReactMarkdown rehypePlugins={[rehypeHighlight]}>
+            {msg.content}
+          </ReactMarkdown>
+        ) : (
+          msg.content
+        )}
+      </div>
+    </div>
+  );
+});
 type Props = {
   document: DocumentWithRelations;
   user: User;
@@ -139,17 +164,17 @@ const lastMessages = allMessages.slice(-5);
     }
   };
   useEffect(() => {
-    const timeout = setTimeout(() => {
       bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-    }, 100); // slight delay ensures the DOM is fully rendered
 
-    return () => clearTimeout(timeout);
-  }, [chat?.messages.length, optimisticMessages.length, aiMessage]);
+  }, [chat?.messages]);
   function isRTL(text: string): boolean {
     // Checks if the text contains mostly Persian/Arabic characters
     const rtlCharPattern = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF]/;
     return rtlCharPattern.test(text);
   }
+  //!memoise the bubble...........
+  
+
   return (
     <div className={`transition-all duration-300 max-lg:px-10 max-sm:px-2 ${menuState?'lg:pr-5 lg:pl-[260px] ':'lg:px-[50px] '}`}>
 
@@ -208,40 +233,9 @@ const lastMessages = allMessages.slice(-5);
               ) : chat?.messages.length === 0 ? (
                 <p className="text-sm text-gray-500">No messages yet.</p>
               ) : (
-                [...(chat?.messages || []), ...optimisticMessages].map(
-                  (msg) => (
-                    <div
-                      key={msg.id}
-                      className={`chat break-words whitespace-pre-wrap ${
-                        msg.role === "user" ? "chat-end" : "chat-start"
-                      }`}
-                    >
-                      <div
-                        className={`chat-bubble break-words whitespace-pre-wrap   ${
-                          msg.role === "user"
-                            ? "bg-blue-500 text-white"
-                            : "bg-gray-200 text-black"
-                        }`}
-                      >
-                        {msg.role === "user" ? (
-                          <div
-                                                      dir={isRTL(msg.content) ? "rtl" : "ltr"}
+                [...(chat?.messages || []), ...optimisticMessages].map((msg)=>
+                   <MessageBubble key={msg.id} msg={msg} />
 
-                          className="overflow-x-hidden">{msg.content}</div>
-                        ) : (
-                          <div
-                            id="chat-container"
-                            dir={isRTL(msg.content) ? "rtl" : "ltr"}
-                            className="overflow-x-hidden"
-                          >
-                            <ReactMarkdown rehypePlugins={[rehypeHighlight]}>
-                              {msg.content}
-                            </ReactMarkdown>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  )
                 )
               )}
               {isAiResponding && aiMessage && (
