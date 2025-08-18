@@ -11,41 +11,15 @@ import React, { useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import rehypeHighlight from "rehype-highlight";
 import "highlight.js/styles/github.css";
+import { OptimisticMasseges } from "@/types/chat.types";
+import MessageBubble from "./MessageBubble";
 // !bubbling external component
-export const MessageBubble = React.memo(({ msg }: { msg: OptimisticMasseges | {
-    id: number;
-    chatId: number;
-    role: string;
-    content: string;
-    createdAt: Date;
-} }) => {
-  return (
-    <div className={`chat ${msg.role === "user" ? "chat-end" : "chat-start"}`}>
-      <div
-        className={`chat-bubble ${
-          msg.role === "user" ? "bg-blue-500 text-white" : "bg-gray-200 text-black"
-        }`}
-      >
-        {msg.role === "assistant" ? (
-          <ReactMarkdown rehypePlugins={[rehypeHighlight]}>
-            {msg.content}
-          </ReactMarkdown>
-        ) : (
-          msg.content
-        )}
-      </div>
-    </div>
-  );
-});
+
 type Props = {
   document: DocumentWithRelations;
   user: User;
 };
-type OptimisticMasseges = {
-  id: string;
-  content: string;
-  role: string;
-};
+
 const ChatUI = ({ document: doc, user }: Props) => {
   const [message, setMessage] = useState("");
   const { data: chat, isLoading } = useChatByUserAndDoc(user.id, doc.slug);

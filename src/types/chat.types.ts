@@ -7,3 +7,8 @@ export type ChatWithMessages = Prisma.ChatGetPayload<{
     messages: true;
   };
 }>;
+export type OptimisticMasseges = {
+  id: string;
+  content: string;
+  role: string;
+};
