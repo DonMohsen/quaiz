@@ -13,17 +13,17 @@ export type QuickStartType={
     href:string
 }
 export type QuaizCreatePayload = Prisma.QuaizCreateInput;
-export type QuaizWithRelations = Prisma.QuaizGetPayload<{
-  include: {
-    user: true;            // include the user relation
-    document: true;        // include the document relation
-    questions: {
-      include: {
-        options: true;     // include options for each question
-      };
-    };
-  };
-}>;
+// export type QuaizWithRelations = Prisma.QuaizGetPayload<{
+//   include: {
+//     user: true;            // include the user relation
+//     document: true;        // include the document relation
+//     questions: {
+//       include: {
+//         options: true;     // include options for each question
+//       };
+//     };
+//   };
+// }>;
 
 // export type Option={
 // text:string
@@ -58,6 +58,7 @@ export type QuaizPayload = {
   difficulty: Difficulty; // or enum type if you have one for difficulty
   questionCount: number;
   questions: QuaizQuestionInput[];
+  userAnswers?:UserAnswer
 };
 export type UserAnswer={
     selectedOptionIndex: number | null;
@@ -65,3 +66,12 @@ export type UserAnswer={
     answeredAt?: Date;
 
 }
+export type QuaizWithRelations = Prisma.QuaizGetPayload<{
+  include: {
+    questions: {
+      include: {
+        options: true;
+      };
+    };
+  };
+}>;

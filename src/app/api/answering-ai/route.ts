@@ -49,7 +49,7 @@ export async function POST(req: NextRequest) {
     stream: isStream||true,
   });
 
-  console.log("stream===============>", stream);
+  // console.log("stream===============>", stream);
 
   // Convert Hugging Face stream to a ReadableStream for Next.js
   const encoder = new TextEncoder();

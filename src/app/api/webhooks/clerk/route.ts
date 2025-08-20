@@ -5,7 +5,7 @@ export async function POST(request: Request) {
   const body = await request.json();
 
   // handle the webhook event
-  console.log('Received Clerk webhook:', body);
+  // console.log('Received Clerk webhook:', body);
 
   return NextResponse.json({ received: true });
 }

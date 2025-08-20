@@ -24,7 +24,7 @@ export async function GET(req: Request) {
       },
     },
   });
-  console.log("id of chat------------", chat);
+  // console.log("id of chat------------", chat);
 
   return NextResponse.json(chat);
 }

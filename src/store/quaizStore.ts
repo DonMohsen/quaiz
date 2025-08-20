@@ -4,8 +4,8 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 interface QuaizStoreType {
-  quaiz: QuaizPayload|null;
-  setQuaiz: (quaiz: QuaizPayload|null) => void;
+  quaiz: QuaizWithRelations|null;
+  setQuaiz: (quaiz: QuaizWithRelations|null) => void;
   currentQuestion:number|null
   setCurrentQuestion:(index:number|null)=>void
   userAnswer:UserAnswer[],

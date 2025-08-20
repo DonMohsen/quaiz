@@ -23,7 +23,7 @@ const Header = ({ varient }: HeaderProps) => {
   //? The scroll should trigger the bg glass effect!
   //? Annnd I don't want the menu to be open when navigating back and fore, so close it on mount...
   useEffect(() => {
-    console.log("I got triggred!!");
+    // console.log("I got triggred!!");
     
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);

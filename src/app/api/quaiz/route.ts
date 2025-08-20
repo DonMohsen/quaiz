@@ -62,7 +62,7 @@ export async function POST(request: Request) {
       },
     });
 
-    return NextResponse.json({ quaiz: createdQuaiz }, { status: 201 });
+return NextResponse.json(createdQuaiz);
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json({ errors: error.errors }, { status: 400 });
