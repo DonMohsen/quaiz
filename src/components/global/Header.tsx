@@ -4,7 +4,7 @@ import clsx from "clsx";
 import React, { useEffect, useState } from "react";
 import { Button } from "../ui/Button";
 import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { HamMenu } from "./HamMenu";
 import useMenuStore from "@/store/useMenuStore";
 import { PanelTopOpen } from "lucide-react";
@@ -17,8 +17,12 @@ type HeaderProps = {
 const Header = ({ varient }: HeaderProps) => {
   const router = useRouter();
   const routes = useRoutes();
+  const pathname=usePathname();
   const { menuState, toggleMenuState, setMenuState } = useMenuStore();
   const [scrolled, setScrolled] = useState(false);
+useEffect(() => {
+  setMenuState(false)
+}, [pathname])
 
   //? The scroll should trigger the bg glass effect!
   //? Annnd I don't want the menu to be open when navigating back and fore, so close it on mount...

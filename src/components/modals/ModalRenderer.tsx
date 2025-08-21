@@ -18,8 +18,9 @@ export function ModalRenderer() {
       }
 
     case "CREATE_FLASHCARD":
-      return <FlashcardMakerForm onClose={closeModal} />;
-
+      if (user&&document) {
+      return <FlashcardMakerForm document={document} user={user} onClose={closeModal} />;
+      }
     default:
       return null;
   }

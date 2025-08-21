@@ -47,13 +47,13 @@ const DocumentDetails = ({ doc,currentUser }: Props) => {
       }`}
     >
       <div className="w-full h-full flex items-center justify-center flex-col ">
-        <Image
+        {/* <Image
           alt={doc.slug}
           src={doc.image || "/placeholder.webp"}
           width={1000}
           height={300}
           className="w-full max-h-[200px] rounded-[8px] object-cover"
-        />
+        /> */}
         <div className="w-full py-5 border-b border-black/[0.1] flex items-center justify-between">
           <p className="text-[36px] max-md:text-[26px] text-left">
             {doc.title}

@@ -52,7 +52,7 @@ model FlashCard {
   title String?
   text  String?
   image String?
-
+  tip String?
   documentId Int
   document   Document @relation(fields: [documentId], references: [id])
 
