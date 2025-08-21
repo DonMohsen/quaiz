@@ -30,7 +30,7 @@ const Modal = ({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}
-          className="w-screen h-[100vwh] fixed z-[99990] flex items-center justify-center bg-black/40 backdrop-blur-sm"
+          className="w-screen h-[100dvh] fixed z-[99990] flex items-center justify-center bg-black/40 backdrop-blur-sm"
           onClick={handleClose}
         >
           <motion.div
