@@ -3,14 +3,17 @@ import React, { useState } from "react";
 import { Button } from "../ui/Button";
 import useAnswersStore from "@/store/answersStore";
 import { useQuaizAnswers } from "@/hooks/useQuaizAnswers";
+import { useQuaizzes } from "@/hooks/useQuaizzes";
+import { useModalStore } from "@/store/ModalStore";
 
-const Quaiz = () => {
+const Quaiz = ({userId}:{userId:string}) => {
     const { saveAnswers, loading, error } = useQuaizAnswers();
-
+  const {closeModal}=useModalStore()
   const [userAnswerState, setUserAnswerState] = useState<number | null>(null);
   const { currentQuestion, setCurrentQuestion, quaiz, setQuaiz } =
     useQuaizStore();
   const { addAnswer, answers, resetAnswers } = useAnswersStore();
+  const { data: quaizzes, isLoading:quaizzesLoading, error:quaizzesError,refetch ,} = useQuaizzes({userId});
 
   if (!quaiz || currentQuestion === null) {
     return null;
@@ -61,6 +64,9 @@ const Quaiz = () => {
       setQuaiz(null);
       setCurrentQuestion(null);
       resetAnswers();
+      closeModal()
+      refetch()
+
     } catch (err) {
       console.error("Failed to save quiz:", err);
     }

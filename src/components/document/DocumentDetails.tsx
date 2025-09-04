@@ -46,6 +46,7 @@ const { data: quaizzes, isLoading:quaizzesLoading, error:quaizzesError, } = useQ
       break;
   }
 };
+console.log(quaizzes);
 
   return (
     <div
@@ -113,34 +114,45 @@ const { data: quaizzes, isLoading:quaizzesLoading, error:quaizzesError, } = useQ
         :quaizzesError?
         <div>Error</div>
         :
-        quaizzes?.length===0?<div>No quaizzes yet!</div>:quaizzes&&
-        <div className=" w-full grid grid-cols-3 gap-6 max-md:grid-cols-1 max-lg:grid-cols-3 max-xl:grid-cols-3 ">
-          {quaizzes.map((q) => { 
-            const percentage = Math.round((q?.results[0]?.score / q.results[0].total) * 100);
-              console.log(percentage);
-              const titleDirection=getTextDirection(q.questions[0].text||'rtl')
-            return(
-            <div
-              key={q.id}
-              className={`p-4 relative rounded-[12px] flex gap-2 items-center justify-start
-           w-full border border-black/[0.1] hover:shadow-lg cursor-pointer transition-all duration-300 hover:border-blue-600`}
-            >
-             
-            <CircularProgressBar color={getColorByValue(percentage)} max={q.results[0].total} value={q.results[0].score} size={50} strokeWidth={5}  />
-          <p dir={titleDirection} className="text-[14px] font-medium">
+        quaizzes?.length===0?<div>No quaizzes yet!</div>:quaizzes &&
+  quaizzes.length > 0 &&
+  <div className="w-full grid grid-cols-3 gap-6 max-md:grid-cols-1 max-lg:grid-cols-3 max-xl:grid-cols-3">
+    {quaizzes
+      .filter(q => q.results && q.results.length > 0) // only quizzes with results
+      .map(q => {
+        const percentage = Math.round(
+          (q.results[0].score / q.results[0].total) * 100
+        );
 
+        const titleDirection = getTextDirection(q.questions?.[0]?.text || 'rtl');
+
+        return (
+          <div
+            key={q.id}
+            className="p-4 relative rounded-[12px] flex gap-2 items-center justify-start
+                       w-full border border-black/[0.1] hover:shadow-lg cursor-pointer transition-all duration-300 hover:border-blue-600"
+          >
+            <CircularProgressBar
+              color={getColorByValue(percentage)}
+              max={q.results[0].total || 5}
+              value={q.results[0].score}
+              size={50}
+              strokeWidth={5}
+            />
+            <p dir={titleDirection} className="text-[14px] font-medium">
               {q.title}
             </p>
-              <p className="absolute bottom-1 right-3 text-black/[0.5] text-[12px] ">
-
+            <p className="absolute bottom-1 right-3 text-black/[0.5] text-[12px]">
               {timeAgo(q.createdAt.toString())}
-              </p>
-            </div>
-            
-          )})}
-        </div>
+            </p>
+          </div>
+        );
+      })}
+  </div>
+}
 
-        }
+
+        
       </div>
     </div>
   );
