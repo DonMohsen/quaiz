@@ -6,24 +6,31 @@ import { QuaizWithResults } from "@/types/quaiz.types";
 
 async function fetchJSON<T>(input: string): Promise<T> {
   const res = await fetch(input, { credentials: "same-origin" });
-  let payload: any = null;
+
+  let payload: unknown = null;
 
   try {
     payload = await res.json();
   } catch {
-    // ignore JSON parse errors (e.g., empty body)
+    // ignore JSON parse errors
   }
 
   if (!res.ok) {
-    const message =
-      (payload && (payload.error || payload.message)) ||
-      `Request failed (${res.status} ${res.statusText})`;
-    throw new Error(message);
+    let message = `Request failed (${res.status} ${res.statusText})`;
+
+    if (payload && typeof payload === "object" && payload !== null) {
+      // Try to read error or message from payload
+      const obj = payload as Record<string, unknown>;
+      if (typeof obj.error === "string") message = obj.error;
+      else if (typeof obj.message === "string") message = obj.message;
+    }
+
+    throw new Error(message); // always a string now
   }
-  console.log("This is payload===>",payload);
-  
+
   return payload as T;
 }
+
 
 function buildQS(params?: Record<string, string | undefined>) {
   const sp = new URLSearchParams();

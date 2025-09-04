@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
+import { Prisma } from "@prisma/client";
 
 const quizResultSchema = z.object({
   userId: z.string(),
@@ -83,8 +84,9 @@ export async function GET(req: Request) {
     }
 
     // Build dynamic filter
-    const where: any = {};
-    if (userId) where.userId = userId;
+const where: Prisma.QuizResultWhereInput = {};
+if (userId) where.userId = userId;
+if (quaizId) where.quaizId = Number(quaizId);    if (userId) where.userId = userId;
     if (quaizId) where.quaizId = Number(quaizId);
 
     // Fetch multiple results
