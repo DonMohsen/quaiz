@@ -70,6 +70,7 @@ model Quaiz {
   id    Int     @id @default(autoincrement())
   title String?
   image String?
+  createdAt DateTime @default(now())
 
   difficulty    Difficulty @default(MEDIUM)
   questionCount Int // Number of questions in this quiz
@@ -87,6 +88,7 @@ model Quaiz {
 model Question {
   id   Int    @id @default(autoincrement())
   text String
+  title String?
 
   quaizId Int
   quaiz   Quaiz @relation(fields: [quaizId], references: [id])

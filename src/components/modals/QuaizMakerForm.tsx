@@ -34,6 +34,7 @@ import {
 } from "@/types/quaiz.types";
 import Quaiz from "../quaiz/Quaiz";
 import { usePathname, useRouter } from "next/navigation";
+import { useCreateQuaiz } from "@/hooks/useCreateQuaiz";
 export type GetPayloadQuaizType={
 quaiz:{
   quaiz:QuaizWithRelations
@@ -59,77 +60,74 @@ const QuaizMakerForm = ({
   const { quaiz, setQuaiz, currentQuestion, setCurrentQuestion } =useQuaizStore();
       const pathName=usePathname();
 
-    async function onSubmit(values: z.output<typeof quaizSchema>) {
-    try {
-      
-      // 1. Fetch AI-generated quiz data
-      const aiRes = await fetch("/api/answering-ai", {
-        method: "POST",
-        body: JSON.stringify({
-          stream: false,
-          prompt: `Depending on the document, create a quiz with difficulty ${values.difficulty} 
+
+// inside your component
+const { mutateAsync: createQuaiz, isPending, isError, error } = useCreateQuaiz();
+
+async function onSubmit(values: z.output<typeof quaizSchema>) {
+  try {
+    // 1. Fetch AI-generated quiz data
+    const aiRes = await fetch("/api/answering-ai", {
+      method: "POST",
+      body: JSON.stringify({
+        stream: false,
+        prompt: `Depending on the document, create a quiz with difficulty ${values.difficulty} 
 and the number of questions ${values.questionCount}. 
 Answer only with one array of objects and the questions and options in the same language as the document exactly like this:
 [{"title":"Math hard","question":"what is 2*2?","options":{"1":"2","2":"4"},"correctAnswerIndex":"4(start from 1 not 0)"}]`,
-          doc: document?.text ?? "", // Ensure document is defined
-        }),
-        headers: { "Content-Type": "application/json" },
-      });
+        doc: document?.text ?? "",
+      }),
+      headers: { "Content-Type": "application/json" },
+    });
 
-      if (!aiRes.ok) {
-        console.error("AI response error:", aiRes.statusText);
-        return;
-      }
-      type AiQuizResponse = Array<{
-        title: string;
-        question: string;
-        options: Record<string, string>; // keys like "1", "2" with string values
-        correctAnswerIndex: string; // numeric string index ("0", "1", etc.)
-      }>;
-      const aiData: AiQuizResponse = await aiRes.json();
-
-      // 2. Transform AI data to match your schema
-      const quizData: QuaizQuestionInput[] = aiData.map((item) => ({
-        text: item.question,
-        options: Object.values(item.options).map((optText, idx) => ({
-          text: optText,
-          isCorrect: idx === Number(item.correctAnswerIndex) - 1,
-        })),
-      }));
-
-      // 3. Prepare payload for your /api/quaiz route
-      const payload: QuaizPayload = {
-        userId: user?.id ?? "",
-        documentSlug: document?.slug ?? "",
-        difficulty: values.difficulty,
-        questionCount:
-          values.questionCount === "auto" ? 5 : Number(values.questionCount),
-        questions: quizData,
-      };
-
-      // setQuaiz(payload);
-      
-      setCurrentQuestion(0);
-      // 4. Call your API route to save quiz in DB
-      const saveRes = await fetch("/api/quaiz", {
-        method: "POST",
-        body: JSON.stringify(payload),
-        headers: { "Content-Type": "application/json" },
-      });
-      if (!saveRes.ok) {
-        console.error("Failed to save quiz:", saveRes.statusText);
-        return;
-      }
-
-      const savedQuiz:QuaizWithRelations  = await saveRes.json();
-      console.log("Quiz saved successfully:", savedQuiz);
-      setQuaiz(savedQuiz)
-
-      // Optional: show success UI, reset form, navigate, etc.
-    } catch (error) {
-      console.error("Error in onSubmit:", error);
+    if (!aiRes.ok) {
+      console.error("AI response error:", aiRes.statusText);
+      return;
     }
+
+    type AiQuizResponse = Array<{
+      title: string;
+      question: string;
+      options: Record<string, string>;
+      correctAnswerIndex: string;
+    }>;
+
+    const aiData: AiQuizResponse = await aiRes.json();
+
+    // 2. Transform AI data
+    const quizData: QuaizQuestionInput[] = aiData.map((item) => ({
+      text: item.question,
+      options: Object.values(item.options).map((optText, idx) => ({
+        text: optText,
+        isCorrect: idx === Number(item.correctAnswerIndex) - 1,
+        
+      })),
+      title:item.title,
+    }));
+
+    // 3. Prepare payload
+    const payload: QuaizPayload = {
+      userId: user?.id ?? "",
+      documentSlug: document?.slug ?? "",
+      difficulty: values.difficulty,
+      questionCount:
+        values.questionCount === "auto" ? 5 : Number(values.questionCount),
+      questions: quizData,
+    };
+
+    // 4. Save quiz with mutation
+    const savedQuiz = await createQuaiz(payload);
+
+    // 5. Update local store if you still need it
+    setQuaiz(savedQuiz);
+    setCurrentQuestion(0);
+
+    console.log("Quiz saved successfully:", savedQuiz);
+  } catch (error) {
+    console.error("Error in onSubmit:", error);
   }
+}
+
   useEffect(() => {
     console.log("The full quaiz=====>", quaiz);
   }, [quaiz,currentQuestion]);
@@ -142,7 +140,7 @@ Answer only with one array of objects and the questions and options in the same 
       {quaiz&&currentQuestion!==null ? (
         <Quaiz/>
       ) : (
-        <div className="w-full h-full bg-white relative">
+        <div className="w-full h-full  relative">
           {/* Create Quiz Button */}
           <div className="absolute bottom-0 w-full flex items-center justify-end">
             <Button

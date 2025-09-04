@@ -157,7 +157,7 @@ const lastMessages = allMessages.slice(-5);
       className={`w-full  h-[100dvh]  pt-[80px] flex gap-2`}
     >
       {/* Left: Document preview */}
-      <div className="bg-transparent w-[50%] h-full overflow-hidden overflow-x-hidden min-h-full  max-h-screen max-md:hidden pb-[25px]">
+      <div className="bg-transparent w-[50%] h-full overflow-hidden overflow-x-hidden min-h-full  max-h-[100dvh] max-md:hidden pb-[25px]">
         <div className="bg-white h-full rounded-[18px] border border-black/[0.1] ">
           <p className="bg-slate-100 w-full rounded-t-[18px] px-4 py-2 font-bold">
             Document Content

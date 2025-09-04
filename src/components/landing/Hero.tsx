@@ -5,7 +5,7 @@ import Demo from "./Demo";
 
 const Hero = () => {
   return (
-    <div className="w-full min-h-screen  flex flex-col items-center justify-start relative overflow-hidden">
+    <div className="w-full min-h-[100dvh]  flex flex-col items-center justify-start relative overflow-hidden">
       <div className="bg-[#1c3ca9] clipped absolute flex items-center justify-center">
         {/* //!The 3 gradients.....  */}
         <div
@@ -53,7 +53,9 @@ const Hero = () => {
         </p>
 
         <div className="w-full flex items-center justify-center max-md:flex-col gap-4 mt-7">
-          <Button className="max-md:w-full py-5 bg-gradient-to-br from-[#7939fc] to-[#a35be5] font-semibold md:px-[40px]">
+          <Button
+          redirect="/dashboard"
+           className="max-md:w-full py-5 bg-gradient-to-br from-[#7939fc] to-[#a35be5] font-semibold md:px-[40px]">
             Start Now
           </Button>
           <Button

@@ -26,7 +26,7 @@ const LeftNavbar = () => {
               duration: 0.15, // faster on open
               ease: "easeInOut",
             }}
-            className="fixed top-0 md:left-0 h-screen bg-[#314eaf] z-30 max-md:right-0"
+            className="fixed top-0 md:left-0 h-[100dvh] bg-[#314eaf] z-30 max-md:right-0"
           />
         )}
       </AnimatePresence>
@@ -44,7 +44,7 @@ const LeftNavbar = () => {
           duration: 0.3,
           ease: "easeInOut",
         }}
-        className="fixed top-0 md:left-0 h-screen bg-[#1c3ca9] text-white overflow-hidden z-40 max-md:right-0 select-none"
+        className="fixed top-0 md:left-0 h-[100dvh] bg-[#1c3ca9] text-white overflow-hidden z-40 max-md:right-0 select-none"
       >
         <div className="flex flex-col items-start justify-between w-full h-full pt-[75px]">
           <div className="px-4 w-full">

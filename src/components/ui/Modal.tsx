@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { RxCross1 } from "react-icons/rx";
 
 const Modal = ({
   onClose,
@@ -45,8 +46,15 @@ const Modal = ({
               mass: 1,
             }}
             onClick={(e) => e.stopPropagation()}
-            className="w-[80%] max-md:w-[100%] h-[80%] max-md:h-[100%] bg-white rounded-[16px] max-md:rounded-none border-white/[0.1] border p-5"
+            className="w-[80%] max-md:w-[100%] h-[80%] max-md:h-[100dvh] relative bg-white rounded-[16px] max-md:rounded-none border-white/[0.1] border p-5"
           >
+          <div 
+  onClick={handleClose}
+  className="absolute top-5 right-5 p-2 max-md:top-2 max-md:right-2  cursor-pointer hover:scale-125 rounded transition-all duration-300 z-[100000]"
+>
+  <RxCross1 className="w-5 h-5"/> 
+</div>
+
             {children}
           </motion.div>
         </motion.div>

@@ -3,12 +3,14 @@ import React, { useCallback, useMemo, useState } from "react";
 import { motion, AnimatePresence, useAnimation } from "framer-motion";
 import { Button } from "../ui/Button";
 import { getTextDirection } from "@/lib/utils/getTextDirection";
+import MarkerBar from "../modals/MarkerBar";
+import { useModalStore } from "@/store/ModalStore";
 
 const Flashcard = () => {
   const [isFlipped, setIsFlipped] = useState<boolean>(false);
   const [direction, setDirection] = useState<1 | -1>(); // 1 = next, -1 = prev
-  const { currentFlashcard, flashcards, setCurrentFlashcard } =useFlashcardsStore();
-
+  const { currentFlashcard, flashcards, setCurrentFlashcard,setFlashcards } =useFlashcardsStore();
+  const {closeModal}=useModalStore()
  const currentF = currentFlashcard !== null && flashcards ? flashcards[currentFlashcard] : null;
 
   const controls = useAnimation();
@@ -45,6 +47,10 @@ const dir = useMemo(() => getTextDirection(currentF?.text ?? ""), [currentF]);
       setDirection(1);
       setCurrentFlashcard(currentFlashcard + 1);
       setIsFlipped(false);
+    }else if (currentFlashcard >= flashcards.length - 1) {
+      setFlashcards(null)
+      setCurrentFlashcard(null)
+      closeModal()
     }
   };
 
@@ -73,7 +79,7 @@ const dir = useMemo(() => getTextDirection(currentF?.text ?? ""), [currentF]);
           transition={{ type: "spring", stiffness: 400, damping: 30 }}
           whileTap={{ scale: 0.95 }}
           onClick={handleClick}
-          className="absolute w-[70%] h-[70%] max-md:h-[40%] cursor-pointer perspective-1000"
+          className="absolute w-[70%] h-[70%] max-md:h-[40%] max-md:w-[95%] cursor-pointer perspective-1000"
           // style={{ top: "50%", left: "50%", transform: "translate(-50%, -50%)" }}
         >
           <motion.div
@@ -125,17 +131,17 @@ const dir = useMemo(() => getTextDirection(currentF?.text ?? ""), [currentF]);
 
       <div className="absolute bottom-4 right-4">
         <Button
-          disabled={currentFlashcard >= flashcards.length - 1}
+          // disabled={currentFlashcard >= flashcards.length - 1}
           className={`font-medium text-white transition-all duration-300
-      ${
-        currentFlashcard >= flashcards.length - 1
-          ? "bg-red-300 cursor-not-allowed"
-          : "bg-red-500 hover:bg-red-400"
-      }`}
+      bg-red-500 hover:bg-red-400`}
           onClick={handleNext}
         >
-          Next
+          {currentFlashcard >= flashcards.length - 1?'Finish':'Next'}
         </Button>
+      </div>
+      <div className="absolute top-0 w-[50%] max-md:w-[80%] ">
+      <MarkerBar current={currentFlashcard} max={flashcards.length-1} />
+
       </div>
     </div>
   );

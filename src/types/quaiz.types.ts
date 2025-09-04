@@ -50,6 +50,7 @@ type QuaizOptionInput = {
 export type QuaizQuestionInput = {
   text: string;
   options: QuaizOptionInput[];
+  title?:string
 };
 
 export type QuaizPayload = {
@@ -71,7 +72,22 @@ export type QuaizWithRelations = Prisma.QuaizGetPayload<{
     questions: {
       include: {
         options: true;
+        
       };
     };
+  };
+}>;
+export type QuaizWithResults=Prisma.QuaizGetPayload<{
+  include: {
+    document:true;
+    results:true;
+    questions: {
+      include: {
+        options: true;
+        
+      };
+
+    };
+
   };
 }>;

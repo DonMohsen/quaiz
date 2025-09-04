@@ -12,11 +12,11 @@ const quaizCreateSchema = z.object({
   documentSlug: z.string(),
   difficulty: difficultyEnum,
   questionCount: z.number().int().positive(),
-  title: z.string().optional(),
   image: z.string().optional(),
   questions: z.array(
     z.object({
       text: z.string(),
+  title: z.string().optional(),
       options: z.array(
         z.object({
           text: z.string(),
@@ -35,7 +35,7 @@ export async function POST(request: Request) {
     // Create quiz with nested questions and options
     const createdQuaiz = await prisma.quaiz.create({
       data: {
-        title: data.title,
+        title: data.questions[0].title,
         image: data.image||null,
         difficulty: data.difficulty,
         questionCount: data.questionCount,
@@ -69,5 +69,66 @@ return NextResponse.json(createdQuaiz);
     }
     console.error("Error creating quiz:", error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+  }
+}
+export async function GET(request: Request) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const quaizId = Number(searchParams.get("id"));
+    const userId = searchParams.get("userId");
+    const documentSlug = searchParams.get("documentSlug");
+
+    let where = {};
+
+    if (quaizId) {
+      where = { quaizId };
+    } else if (userId) {
+      where = { userId };
+    } else if (documentSlug) {
+      where = { documentSlug };
+    }
+
+    // If `id` is passed → return one quiz
+    if (quaizId) {
+      const quiz = await prisma.quaiz.findUnique({
+        where: { id:quaizId },
+        include: {
+                  document:true,
+
+          results:true,
+          questions: {
+            include: {
+              options: true,
+            },
+          },
+        },
+      });
+
+      if (!quiz) {
+        return NextResponse.json({ error: "Quiz not found" }, { status: 404 });
+      }
+      
+      return NextResponse.json(quiz);
+    }
+
+    // Otherwise return multiple quizzes
+    const quizzes = await prisma.quaiz.findMany({
+      where,
+      include: {
+        document:true,
+        results:true,
+        questions: {
+          include: {
+            options: true,
+          },
+        },
+      },
+    });
+      console.log("this is payload in server===>",quizzes);
+
+    return NextResponse.json(quizzes);
+  } catch (error) {
+    console.error("Error fetching quizzes:", error);
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }

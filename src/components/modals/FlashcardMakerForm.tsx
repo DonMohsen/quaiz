@@ -56,7 +56,8 @@ const FlashcardMakerForm = ({
         method: "POST",
         body: JSON.stringify({
           stream: false,
-          prompt: `Depending on the document, create a list of ${values.numberOfFlashcards} number of flashcards, you must answer
+          prompt: `Depending on the document, create a list of ${values.numberOfFlashcards} number of flashcards
+           in the same language as the document, you must answer
             in this exact json only to automatically use it in my frontend, No markdown, no explanation, no backticks. Only raw JSON:[{title:"api","tip":"api is interface","text":"API is..."}] 
             the title is the thing user see first, then after the flip of flash card, they gonna see the tip as the remembering 
             of the flashcard, and the text is the short explanation of the title`,
@@ -131,7 +132,7 @@ const form = useForm<z.infer<typeof flashcardsPreferencesSchema>>({
               form="quizForm"
               className="bg-[#4f36f4] text-white font-semibold text-[18px] shadow-[#382b96] shadow-md md:hover:brightness-150"
             >
-              Create Quiz
+              Generate Flash cards
             </Button>
           </div>
 

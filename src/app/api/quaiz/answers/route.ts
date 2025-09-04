@@ -50,3 +50,54 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
+export async function GET(req: Request) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get("id");
+    const userId = searchParams.get("userId");
+    const quaizId = searchParams.get("quaizId");
+
+    // Fetch single result by id
+    if (id) {
+      const quizResult = await prisma.quizResult.findUnique({
+        where: { id: Number(id) },
+        include: {
+          userAnswers: true,
+          quaiz: {
+            include: {
+              questions: {
+                include: {
+                  options: true,
+                },
+              },
+            },
+          },
+        },
+      });
+
+      if (!quizResult) {
+        return NextResponse.json({ error: "QuizResult not found" }, { status: 404 });
+      }
+
+      return NextResponse.json(quizResult, { status: 200 });
+    }
+
+    // Build dynamic filter
+    const where: any = {};
+    if (userId) where.userId = userId;
+    if (quaizId) where.quaizId = Number(quaizId);
+
+    // Fetch multiple results
+    const results = await prisma.quizResult.findMany({
+      where,
+      include: {
+        userAnswers: true,
+        quaiz: true,
+      }    });
+
+    return NextResponse.json(results, { status: 200 });
+  } catch (err) {
+    console.error("Error fetching QuizResult(s):", err);
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+  }
+}
