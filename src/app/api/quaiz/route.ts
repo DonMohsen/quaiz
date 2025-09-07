@@ -99,6 +99,8 @@ export async function GET(request: Request) {
           results:true,
           questions: {
             include: {
+                          userAnswers:true,
+
               options: true,
             },
           },
@@ -121,6 +123,7 @@ export async function GET(request: Request) {
         results:true,
         questions: {
           include: {
+            userAnswers:true,
             options: true,
           },
         },

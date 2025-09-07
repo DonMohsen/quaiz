@@ -80,10 +80,12 @@ export type QuaizWithRelations = Prisma.QuaizGetPayload<{
 export type QuaizWithResults=Prisma.QuaizGetPayload<{
   include: {
     document:true;
+
     user:true;
     results:true;
     questions: {
       include: {
+        userAnswers:true;
         options: true;
         
       };

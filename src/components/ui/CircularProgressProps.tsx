@@ -7,12 +7,14 @@ interface CircularProgressBarProps {
   color: string;
   size?: number; // default 120px
   strokeWidth?: number; // default 12px
+  textColor?:string
 }
 
 const CircularProgressBar: React.FC<CircularProgressBarProps> = ({
   value,
   max,
   color,
+  textColor,
   size = 120,
   strokeWidth = 12,
 }) => {
@@ -75,7 +77,7 @@ const lighterColor = lightenColor(color, 40);
         textAnchor="middle"
         fontSize={size * 0.2}
         fontWeight="bold"
-        fill="black"
+        fill={textColor||'black'}
         className="translate-y-[1px]"
       >
         {Math.round(percentage * 100)}%
