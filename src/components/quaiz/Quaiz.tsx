@@ -10,10 +10,9 @@ const Quaiz = ({userId}:{userId:string}) => {
     const { saveAnswers, loading, error } = useQuaizAnswers();
   const {closeModal}=useModalStore()
   const [userAnswerState, setUserAnswerState] = useState<number | null>(null);
-  const { currentQuestion, setCurrentQuestion, quaiz, setQuaiz } =
-    useQuaizStore();
+  const { currentQuestion, setCurrentQuestion, quaiz, setQuaiz } =useQuaizStore();
   const { addAnswer, answers, resetAnswers } = useAnswersStore();
-  const { data: quaizzes, isLoading:quaizzesLoading, error:quaizzesError,refetch ,} = useQuaizzes({userId});
+  const {refetch} = useQuaizzes({userId});
 
   if (!quaiz || currentQuestion === null) {
     return null;

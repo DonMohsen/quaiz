@@ -57,16 +57,17 @@ export async function POST(req: Request) {
 
   if (eventType === "user.created") {
     try {
+      const parsed = JSON.parse(body);
+
       await prisma.user.create({
         data: {
-          id: evt.data.id,
-          userName: JSON.parse(body)?.data?.username||null,
-          email: JSON.parse(body)?.data?.email_addresses[0]?.email_address||null,
-          image: JSON.parse(body)?.image_url || null,
-                    firstName: JSON.parse(body)?.first_name || null,
-                    lastName: JSON.parse(body)?.last_name || null
-
-        },
+    id: parsed.data.id,
+    userName: parsed.data.username || null,
+    email: parsed.data.email_addresses?.[0]?.email_address || null,
+    image: parsed.data.image_url || null,
+    firstName: parsed.data.first_name || null,
+    lastName: parsed.data.last_name || null,
+  },
       });
       return new Response("User created", { status: 200 });
     } catch (err) {

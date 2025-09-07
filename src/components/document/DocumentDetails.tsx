@@ -35,11 +35,11 @@ const { data: quaizzes, isLoading:quaizzesLoading, error:quaizzesError, } = useQ
       break;
 
     case QuickStartKind.QUAIZ:
-      openModal("CREATE_QUAIZ",doc,currentUser);
+      openModal("CREATE_QUAIZ",{document:doc,user:currentUser});
       break;
 
     case QuickStartKind.FLASHCARD:
-      openModal("CREATE_FLASHCARD",doc,currentUser);
+      openModal("CREATE_FLASHCARD",{document:doc,user:currentUser});
       break;
 
     default:
@@ -129,6 +129,7 @@ console.log(quaizzes);
         return (
           <div
             key={q.id}
+            onClick={()=>openModal("QUAIZ_RESULTS",{quaiz:q})}
             className="p-4 relative rounded-[12px] flex gap-2 items-center justify-start
                        w-full border border-black/[0.1] hover:shadow-lg cursor-pointer transition-all duration-300 hover:border-blue-600"
           >

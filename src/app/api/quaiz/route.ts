@@ -94,6 +94,7 @@ export async function GET(request: Request) {
         where: { id:quaizId },
         include: {
                   document:true,
+                  user:true,
 
           results:true,
           questions: {
@@ -116,6 +117,7 @@ export async function GET(request: Request) {
       where,
       include: {
         document:true,
+        user:true,
         results:true,
         questions: {
           include: {
@@ -124,7 +126,7 @@ export async function GET(request: Request) {
         },
       },
     });
-      console.log("this is payload in server===>",quizzes);
+      console.log("this is payload in server============>",quizzes);
 
     return NextResponse.json(quizzes);
   } catch (error) {
