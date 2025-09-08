@@ -40,7 +40,7 @@ useEffect(() => {
   return (
     <header
       className={clsx(
-        "fixed z-[50] top-0 w-full h-[70px] flex  items-center justify-between px-[100px] font-inter text-white transition-all duration-300 max-md:px-[10px]",
+        "fixed z-[50] top-0 w-full h-[64px] max-sm:h-[56px] flex  items-center justify-between px-[100px] font-inter text-white transition-all duration-300 max-md:px-[10px]",
         varient === "app"
           ? scrolled
             ? "bg-[#1f3dab]/90 backdrop-blur-md shadow-md"

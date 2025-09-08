@@ -6,7 +6,7 @@ import useMenuStore from '@/store/useMenuStore'
 
 export const HamMenu = () => {
   const [active, setActive] = useState(false)
-  const{menuState,toggleMenuState,setMenuState}=useMenuStore();
+  const{menuState,toggleMenuState}=useMenuStore();
   return (
   <div className={clsx(`translate-x-[50px] scale-40 overflow-hidden cursor-pointer`,menuState?'active':'hamContainer')}
   onClick={toggleMenuState}

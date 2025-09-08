@@ -5,13 +5,23 @@ import Logo from "./Logo";
 import Image from "next/image";
 import { appRoutes } from "@/lib/consts/appRoutes";
 import Link from "next/link";
-import { useAllDocuments } from "@/hooks/useAllDocuments";
+import { useAllDocuments, useUserDocuments } from "@/hooks/useDocument";
+import { usePathname } from "next/navigation";
+import { User } from "@prisma/client";
+import { Button } from "../ui/Button";
+import { useModalStore } from "@/store/ModalStore";
 
 const SIDEBAR_WIDTH = 240;
-
-const LeftNavbar = () => {
+type Props={
+  user:User
+}
+const LeftNavbar = ({user}:Props) => {
   const { menuState, setMenuState } = useMenuStore();
-  const{data:allDocs,error:allDocsError,loading:allDocsLoading}=useAllDocuments()
+  const{data:allDocs,error:allDocsError,isLoading:allDocsLoading}=useAllDocuments()
+  const { data:userDocs, isLoading:userDocsLoading, error:userDocsError } = useUserDocuments(user.id)
+
+  const pathname=usePathname();
+  const{openModal}=useModalStore()
   return (
     <>
       {/* fake early and late navbar for visual */}
@@ -69,11 +79,14 @@ const LeftNavbar = () => {
             </div>
               {/* //? The Documents section */}
           <div className="w-full  h-full whitespace-nowrap">
-            <p className=" font-extralight text-[14px] text-white/[0.7] mt-5 mb-2">Documents</p>
-            {allDocs?
-            <div className="flex items-start justify-center flex-col gap-3">
-              {allDocs.map((doc)=>(
-                <Link href={`/documents/${doc.slug}`} key={doc.id} className="flex items-center justify-start gap-1 hover:bg-[#2047c5] w-full p-2 rounded-md ">
+            <p className=" font-extralight text-[14px] text-white/[0.7] mt-5 mb-2">My documents</p>
+            {userDocs&&userDocs.length>0?
+            <div className="flex items-start justify-center flex-col gap-3 border-b border-white/[0.2] pb-4 ">
+              {userDocs.map((doc)=>(
+                <Link href={`/documents/${doc.slug}`} key={doc.id}
+                 className={` flex items-center justify-start gap-1 hover:bg-[#2047c5] w-full p-2 rounded-md
+                  ${pathname.endsWith(doc.slug)&&'bg-[#001c77]'}`}>
+
                   <Image alt={doc.slug} src={doc.image||'/placeholder.webp'} height={200} width={200} className="rounded-md w-6 h-6"/>
                   <p className="text-[14px] font-bold">
                     
@@ -83,7 +96,69 @@ const LeftNavbar = () => {
                   </Link>
               ))}
             </div>
-            :
+            :userDocsLoading?
+              <div className="flex flex-col gap-3 border-b border-white/[0.2] pb-4 w-full">
+    {Array.from({ length: 1 }).map((_, i) => (
+      <div
+        key={i}
+        className="flex items-center justify-start gap-2 w-full p-2 rounded-md"
+      >
+        {/* Avatar/Image Skeleton */}
+        <div className="w-6 h-6 rounded-md bg-white/20 animate-pulse" />
+
+        {/* Title Skeleton */}
+        <div className="h-4 w-32 rounded bg-white/20 animate-pulse" />
+      </div>
+    ))}
+  </div>
+            :userDocsError?
+            <div className="border-b border-white/[0.2]">
+              Something went wrong!
+            </div>:
+             <div className=" w-full border-b border-white/[0.2]">
+              <p className="w-full pb-5 text-[14px] text-white/[0.8] text-center">
+
+              No Documents yet!
+              </p>
+              <Button
+              onClick={()=>openModal("CREATE_EDIT_DOCUMENT",{user:user})}
+              className=" w-full bg-[#7497ff] hover:bg-[#beceff] mb-5">
+                Create Document
+              </Button>
+            </div>
+            }
+            <p className=" font-extralight text-[14px] text-white/[0.7] mt-5 mb-2">Recent</p>
+            {allDocs?
+            <div className="flex items-start justify-center flex-col gap-3">
+              {allDocs.map((doc)=>(
+                <Link href={`/documents/${doc.slug}`} key={doc.id} 
+                  className={` flex items-center justify-start gap-1 hover:bg-[#2047c5] w-full p-2 rounded-md
+                  ${pathname.endsWith(doc.slug)&&'bg-[#001c77]'}`}>
+
+                  <Image alt={doc.slug} src={doc.image||'/placeholder.webp'} height={200} width={200} className="rounded-md w-6 h-6"/>
+                  <p className="text-[14px] font-bold">
+                    
+                  {doc.title}
+                  </p>
+                  
+                  </Link>
+              ))}
+            </div>
+            :allDocsLoading?
+              <div className="flex flex-col gap-3 border-b border-white/[0.2] pb-4 w-full">
+    {Array.from({ length: 1 }).map((_, i) => (
+      <div
+        key={i}
+        className="flex items-center justify-start gap-2 w-full p-2 rounded-md"
+      >
+        {/* Avatar/Image Skeleton */}
+        <div className="w-6 h-6 rounded-md bg-white/20 animate-pulse" />
+
+        {/* Title Skeleton */}
+        <div className="h-4 w-32 rounded bg-white/20 animate-pulse" />
+      </div>
+    ))}
+  </div>:
             <div>
               No documents yet!
             </div>
@@ -91,6 +166,7 @@ const LeftNavbar = () => {
 
 
           </div>
+          
           </div>
           <div className="border-t border-white/[0.2] p-4 w-full flex gap-2 items-center justify-start cursor-pointer hover:bg-[#3450b3]">
             <Image

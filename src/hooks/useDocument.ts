@@ -1,0 +1,59 @@
+"use client"
+
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
+import { Document, Prisma } from "@prisma/client"
+import axios from "axios"
+
+// ✅ Fetch documents
+async function fetchDocuments(userId?: string): Promise<Document[]> {
+  const url = userId 
+    ? `/api/document?userId=${encodeURIComponent(userId)}`
+    : "/api/document"
+  const response = await axios.get<Document[]>(url)
+  return response.data
+}
+
+// ✅ Create document
+async function createDocument(data: Prisma.DocumentCreateInput): Promise<Document> {
+  const response = await axios.post<Document>("/api/document", data)
+  return response.data
+}
+
+// ✅ All documents
+export function useAllDocuments() {
+  return useQuery<Document[], Error>({
+    queryKey: ["documents"],
+    queryFn: () => fetchDocuments(),
+    staleTime: Infinity,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    refetchOnMount: false,
+  })
+}
+
+// ✅ Documents filtered by userId
+export function useUserDocuments(userId: string) {
+  return useQuery<Document[], Error>({
+    queryKey: ["documents", userId],
+    queryFn: () => fetchDocuments(userId),
+    enabled: !!userId,
+    staleTime: Infinity,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    refetchOnMount: false,
+  })
+}
+
+// ✅ Create document hook
+export function useCreateDocument() {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: (data: Prisma.DocumentCreateInput) => createDocument(data),
+    onSuccess: (newDocument) => {
+      // ✅ v5 syntax: pass { queryKey } object
+      queryClient.invalidateQueries({ queryKey: ["documents"] })
+      queryClient.invalidateQueries({ queryKey: ["documents", newDocument.userId] })
+    },
+  })
+}

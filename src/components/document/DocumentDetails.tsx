@@ -67,7 +67,7 @@ console.log(quaizzes);
 
         <Button className="bg-[#1c3ca9] h-full hover:brightness-125">
           <ChevronLeft
-          onClick={router.back}
+          onClick={()=>router.push('/dashboard')}
           className="text-white"/>
         </Button>
           <p className="text-[36px] max-md:text-[26px] text-left font-sans">
@@ -78,6 +78,7 @@ console.log(quaizzes);
             <Button className="bg-[#1c3ca9] p-10 text-white max-md:hidden">
               Edit Document
             </Button>
+            
             <Button className="bg-white border border-[#1c3ca9] p-10 text-[#1c3ca9]">
               <ChevronDown />
             </Button>

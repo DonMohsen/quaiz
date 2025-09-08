@@ -15,12 +15,11 @@ const Modal = ({
   // When onClose is called, trigger exit animation first
   const handleClose = () => {
     setIsVisible(false);
-    
   };
 
   return (
     <AnimatePresence
-    onExitComplete={() => {
+      onExitComplete={() => {
         onClose(); // finally update your store after exit animation
       }}
     >
@@ -48,12 +47,12 @@ const Modal = ({
             onClick={(e) => e.stopPropagation()}
             className="w-[80%] max-md:w-[100%] h-[80%] max-md:h-[100dvh] relative bg-white rounded-[16px] max-md:rounded-none border-white/[0.1] border p-5"
           >
-          <div 
-  onClick={handleClose}
-  className="absolute top-5 right-5 p-2 max-md:top-2 max-md:right-2  cursor-pointer hover:scale-125 rounded transition-all duration-300 z-[100000]"
->
-  <RxCross1 className="w-5 h-5"/> 
-</div>
+            <div
+              onClick={handleClose}
+              className="sm:hover:bg-red-200 rounded-full bg-slate-300 absolute top-5 right-5 p-2 max-md:top-2 max-md:right-2  cursor-pointer hover:scale-125  transition-all duration-300 z-[100000]"
+            >
+              <RxCross1 className="w-4 h-4" />
+            </div>
 
             {children}
           </motion.div>
