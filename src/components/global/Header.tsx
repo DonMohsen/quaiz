@@ -96,7 +96,9 @@ useEffect(() => {
       </div>
       <div className="max-md:hidden flex items-center justify-end w-[30%] text-[12px] font-light gap-2">
         <SignedIn>
+          
           <UserButton />
+          
         </SignedIn>
         <SignedOut>
           <Button
