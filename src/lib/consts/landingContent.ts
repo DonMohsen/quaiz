@@ -38,7 +38,7 @@ export const whoCanBenefit=[
     },
     {
         title:"Business",
-        description:"Create assessments in no time to boost knowledge and evaluate skills. Whether it's for delivering trainings, developing courses, or certification - we've got you covered.",
+        description:"Create assessments in no time to boost knowledge and evaluate skills. Whether it&apos;s for delivering trainings, developing courses, or certification - we&apos;ve got you covered.",
         imageUrl:"/business.png"
     },
 ]

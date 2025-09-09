@@ -59,7 +59,7 @@ const LandingContent = () => {
               Step 3-Prove Yourself With Quaiz
             </p>
             <p className="text-[18px] font-light">
-              Now that you're ready, joining the proving grounds of Quaizzes is
+              Now that you&apos;re ready, joining the proving grounds of Quaizzes is
               the way to go
             </p>
             <Button>Get Started Now</Button>
@@ -108,7 +108,7 @@ const LandingContent = () => {
       </p>
       <div className="flex max-lg:flex-col gap-7 w-full my-[80px]">
         {whoCanBenefit.map((h)=>(
-            <div className="flex flex-col gap-3 w-full ">
+            <div key={h.title} className="flex flex-col gap-3 w-full ">
                 <div className="flex items-center justify-start gap-4">
                     <Image alt={h.title} src={h.imageUrl} width={50} height={50} className="w-12 h-12 p-3 bg-[#c2c4fe] rounded-full "/>
                     <p className="font-bold">{h.title}</p>
