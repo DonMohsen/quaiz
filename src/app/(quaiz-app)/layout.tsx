@@ -19,7 +19,7 @@ export default async function RootLayout({
               return
             }
   return (
-     <div className={`${inter.variable} bg-white`}>
+     <div className={`${inter.variable} bg-white font-main`}>
       <Header varient="app" />
       
       <LeftNavbar user={{email:user?.emailAddresses[0]?.emailAddress,firstName:user?.firstName,id:user?.id,image:user?.imageUrl,lastName:user?.lastName

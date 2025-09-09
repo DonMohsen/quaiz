@@ -2,6 +2,7 @@
 import React from "react";
 import { Button } from "../ui/Button";
 import Demo from "./Demo";
+import LandingContent from "./LandingContent";
 
 const Hero = () => {
   return (
@@ -69,6 +70,7 @@ const Hero = () => {
 
       {/* Demo Scrollable Section */}
       <Demo />
+      
     </div>
   );
 };

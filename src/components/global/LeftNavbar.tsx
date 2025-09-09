@@ -56,9 +56,9 @@ const LeftNavbar = ({user}:Props) => {
         }}
         className="fixed top-0 md:left-0 h-[100dvh] bg-[#1c3ca9] text-white overflow-hidden z-40 max-md:right-0 select-none"
       >
-        <div className="flex flex-col items-start justify-between w-full h-full pt-[75px]">
+        <div className="flex flex-col items-start justify-between w-full h-full pt-[50px]">
           <div className="px-4 w-full">
-            <Logo />
+            {/* <Logo /> */}
             <div className=" mt-5 flex flex-col border-b border-white/[0.2] w-full pb-2">
               {appRoutes.map((appRoute) => (
                 <Link

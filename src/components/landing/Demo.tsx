@@ -3,9 +3,9 @@ import React from "react";
 
 const Demo = () => {
   return (
-    <div className="w-full overflow-x-auto  z-0 px-[180px] max-md:px-5 pb-10 max-lg:px-[80px] ">
+<div className="w-full overflow-x-auto z-0 px-[180px] max-md:px-5 pb-20 max-lg:px-[80px]">
       
-   <div className="shadow-md drop-shadow-md w-full h-[500px] max-md:h-[300px] mt-5 p-4 backdrop-blur-md bg-white/30 rounded-[12px] border border-white/20 ">
+   <div className="shadow-2xl  shadow-[#1c3ca9] w-full h-[500px] max-md:h-[300px] mt-5 p-4 backdrop-blur-md bg-white/30 rounded-[12px] border border-white/20 ">
   <div className=" w-full h-full bg-transparent rounded-[12px] flex flex-col gap-4">
     <div className="flex items-center justify-center gap-4 max-h-[50px] max-md:max-h-[30px]">
         <div><Ellipsis className="w-20 h-20 text-[#f8fcf2] max-md:w-10 max-md:h-10"/></div>
