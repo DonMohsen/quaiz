@@ -172,7 +172,7 @@ const lastMessages = allMessages.slice(-5);
       </div>
 
       {/* Right: Chat panel */}
-      <div className="lg:min-w-[500px] lg:w-[500px] lg:max-w-[500px] xl:min-w-[600px] xl:w-[600px] xl:max-w-[600px] max-lg:w-full h-full relative flex flex-col">
+<div className="lg:w-[500px] xl:w-[600px] max-lg:w-full h-full relative flex flex-col">
         <p className="absolute bottom-1 left-[50%] -translate-x-[50%] whitespace-nowrap text-[12px] text-black/[0.7]">
           AI can make mistakes. Check important info.
         </p>

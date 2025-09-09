@@ -1,8 +1,9 @@
 "use server"
 
-import getAllDocuments from "@/actions/getAllDocuments";
+import ExploreDocuments from "@/components/dashboard/ExploreDocuments";
 import { currentUser } from "@clerk/nextjs/server";
 import { Metadata } from "next";
+import { unauthorized } from "next/navigation";
 
 export async function generateMetadata(): Promise<Metadata> {
 
@@ -16,10 +17,13 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 const DocumentsPage = async() => {
  
-  const docs=await getAllDocuments();
+  const user=await currentUser()
+  if (!user?.id) {
+    return unauthorized()
+  }
   return (
     <div>
-    
+      <ExploreDocuments userId={user.id}/>
     </div>
 
   )

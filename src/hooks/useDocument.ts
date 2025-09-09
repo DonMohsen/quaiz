@@ -3,13 +3,14 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
 import { Document, Prisma } from "@prisma/client"
 import axios from "axios"
+import { DocumentWithRelations } from "@/types/document.types"
 
 // ✅ Fetch documents
-async function fetchDocuments(userId?: string): Promise<Document[]> {
+async function fetchDocuments(userId?: string): Promise<DocumentWithRelations[]> {
   const url = userId 
     ? `/api/document?userId=${encodeURIComponent(userId)}`
     : "/api/document"
-  const response = await axios.get<Document[]>(url)
+  const response = await axios.get<DocumentWithRelations[]>(url)
   return response.data
 }
 
@@ -21,7 +22,7 @@ async function createDocument(data: Prisma.DocumentCreateInput): Promise<Documen
 
 // ✅ All documents
 export function useAllDocuments() {
-  return useQuery<Document[], Error>({
+  return useQuery<DocumentWithRelations[], Error>({
     queryKey: ["documents"],
     queryFn: () => fetchDocuments(),
     staleTime: Infinity,

@@ -64,7 +64,9 @@ const LeftNavbar = ({user}:Props) => {
                 <Link
                   key={appRoute.path}
                   href={appRoute.path}
-                  className="flex gap-2 items-center py-3 hover:bg-[#2047c5] rounded-xl transition-colors duration-300 whitespace-nowrap "
+                  className={`flex gap-2 items-center py-3 hover:bg-[#2047c5] rounded-xl transition-colors duration-300 whitespace-nowrap 
+                    ${pathname.endsWith(appRoute.path)&&'bg-[#001c77]'}
+                    `}
                 >
                   <Image
                     alt={appRoute.label}
