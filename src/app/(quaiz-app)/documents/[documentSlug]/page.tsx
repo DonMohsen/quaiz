@@ -14,10 +14,8 @@ const DocumentsPage = async({params}:Props) => {
 
   const user = await currentUser();
     const doc=await getDocumentById(slug)
-   if (!user) return (notFound())
-    if (!doc) return (
-    notFound()
-    )
+    if (!user||!doc) return (notFound())
+      
     
   return (
          <DocumentDetails currentUser={{email:user?.emailAddresses[0]?.emailAddress,firstName:user.firstName,id:user.id,image:user.imageUrl

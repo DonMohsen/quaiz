@@ -51,15 +51,15 @@ const DocumentCard = ({doc}:{doc:DocumentWithRelations}) => {
         {/* //!The bottom parts */}
         <div className='flex items-center justify-start gap-5'>
 
-         <div className='rounded-full mt-5  text-white p-2 text-[16px] min-w-[80px] bg-gradient-to-br from-[#1c3ca9] to-[#a05dfa] flex items-center justify-center w-fit'>
+         <div className='rounded-full mt-5  text-white p-2 text-[12px] min-w-[80px] bg-gradient-to-br from-[#1c3ca9] to-[#a05dfa] flex items-center justify-center w-fit'>
         {doc.quaizzes.length||"No"}    Quaiz{doc.quaizzes.length>1||doc.quaizzes.length===0?'zes':""}
           </div>
-          <div className='rounded-full mt-5  text-white p-2 text-[16px] min-w-[80px] bg-gradient-to-br from-[#a05dfa] to-[#1c3ca9] flex items-center justify-center w-fit'>
+          <div className='rounded-full mt-5  text-white p-2 text-[12px] min-w-[80px] bg-gradient-to-br from-[#a05dfa] to-[#1c3ca9] flex items-center justify-center w-fit'>
         {doc.flashCards.length||"No"}    Flashcard{doc.flashCards.length>1||doc.flashCards.length===0?'s':""}
           </div>
         </div>
-        <div className='w-full flex items-center justify-end'>
-
+        <div className='w-full flex items-end justify-between'>
+          <p className='text-[12px] text-black/[0.4]'>{doc.views.length} view{doc.views.length>1&&'s'}</p>
         <Button 
         onClick={()=>router.push(`documents/${doc.slug}`)}
         className='mt-5 bg-gradient-to-r bg-white text-black border-[#a05dfa] border-2 sm:hover:bg-[#1c3ca9] sm:hover:text-white transition-all duration-300'>

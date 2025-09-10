@@ -10,14 +10,15 @@ import { usePathname } from "next/navigation";
 import { User } from "@prisma/client";
 import { Button } from "../ui/Button";
 import { useModalStore } from "@/store/ModalStore";
+import { useRecentViews } from "@/hooks/useRecentViews";
 
 const SIDEBAR_WIDTH = 240;
 type Props={
   user:User
 }
 const LeftNavbar = ({user}:Props) => {
+  const { data: views, isLoading:viewsLoading } = useRecentViews(user.id);
   const { menuState, setMenuState } = useMenuStore();
-  const{data:allDocs,error:allDocsError,isLoading:allDocsLoading}=useAllDocuments()
   const { data:userDocs, isLoading:userDocsLoading, error:userDocsError } = useUserDocuments(user.id)
 
   const pathname=usePathname();
@@ -130,23 +131,23 @@ const LeftNavbar = ({user}:Props) => {
             </div>
             }
             <p className=" font-extralight text-[14px] text-white/[0.7] mt-5 mb-2">Recent</p>
-            {allDocs?
+            {views?
             <div className="flex items-start justify-center flex-col gap-3">
-              {allDocs.map((doc)=>(
-                <Link href={`/documents/${doc.slug}`} key={doc.id} 
+              {views.map((view)=>(
+                <Link href={`/documents/${view.document.slug}`} key={view.id} 
                   className={` flex items-center justify-start gap-1 hover:bg-[#2047c5] w-full p-2 rounded-md
-                  ${pathname.endsWith(doc.slug)&&'bg-[#001c77]'}`}>
+                  ${pathname.endsWith(view.document.slug)&&'bg-[#001c77]'}`}>
 
-                  <Image alt={doc.slug} src={doc.image||'/placeholder.webp'} height={200} width={200} className="rounded-md w-6 h-6"/>
+                  <Image alt={view.document.slug} src={view.document.image||'/placeholder.webp'} height={200} width={200} className="rounded-md w-6 h-6"/>
                   <p className="text-[14px] font-bold">
                     
-                  {doc.title}
+                  {view.document.title}
                   </p>
                   
                   </Link>
               ))}
             </div>
-            :allDocsLoading?
+            :viewsLoading?
               <div className="flex flex-col gap-3 border-b border-white/[0.2] pb-4 w-full">
     {Array.from({ length: 1 }).map((_, i) => (
       <div

@@ -1,4 +1,4 @@
-import { Prisma } from "@prisma/client";
+import { DocumentView, Prisma } from "@prisma/client";
 
 export type DocumentWithRelations = Prisma.DocumentGetPayload<{
   include: {
@@ -12,4 +12,9 @@ export type DocumentWithRelations = Prisma.DocumentGetPayload<{
       };
     };
   };
+}>;
+
+// Type for DocumentView including its related document
+export type DocumentViewWithDocument = Prisma.DocumentViewGetPayload<{
+  include: { document: true };
 }>;

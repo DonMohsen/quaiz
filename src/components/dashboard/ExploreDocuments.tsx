@@ -48,11 +48,11 @@ const ExploreDocuments = ({userId}:{userId:string}) => {
 </div>
         <div className='grid grid-cols-3 max-xl:grid-cols-2 max-sm:grid-cols-1 gap-8'>
       {data?.map((doc)=>(
-        <>
+        
        <DocumentCard key={doc.id} doc={doc}/>
       
         
-        </>
+        
       ))}
       
         </div>

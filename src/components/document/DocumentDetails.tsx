@@ -1,7 +1,7 @@
 "use client";
 import useMenuStore from "@/store/useMenuStore";
 import { DocumentWithRelations } from "@/types/document.types";
-import React from "react";
+import React, { useEffect } from "react";
 import Image from "next/image";
 import { Button } from "../ui/Button";
 import { ChevronDown, ChevronLeft } from "lucide-react";
@@ -16,6 +16,7 @@ import CircularProgress from "../ui/CircularProgressProps";
 import CircularProgressBar from "../ui/CircularProgressProps";
 import { getColorByValue } from "@/lib/utils/getColorByValue";
 import { getTextDirection } from "@/lib/utils/getTextDirection";
+import { useAddViewToDocument } from "@/hooks/useAddViewToDocument";
 type Props = {
   doc: DocumentWithRelations
   currentUser:User
@@ -23,7 +24,11 @@ type Props = {
 const DocumentDetails = ({ doc,currentUser }: Props) => {
   const openModal = useModalStore((s) => s.openModal);
 const { data: quaizzes, isLoading:quaizzesLoading, error:quaizzesError, } = useQuaizzes({userId:currentUser.id});
-
+  const { mutate: addView, isPending } = useAddViewToDocument(doc.slug);
+  useEffect(() => {
+    addView(currentUser.id)
+  }, [])
+  
   const router = useRouter();
 
   const { menuState } = useMenuStore();
