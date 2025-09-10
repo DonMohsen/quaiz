@@ -14,6 +14,7 @@ const Demo = () => {
     <div className="w-full h-full bg-white rounded-[10px]">Enter some samples in future....</div>
   </div>
 </div>
+<p id="about"></p>
     </div>
 
   );

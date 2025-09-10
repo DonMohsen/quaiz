@@ -11,9 +11,11 @@ import Link from "next/link";
 
 const LandingContent = () => {
   return (
-    <div className="w-full relative">
+    <div
+     className="w-full relative">
       {/* //!.......................................................The 3 steps.............................................................. */}
-      <p className="landing-padding text-[#12338b] z-20 text-[48px] relative max-md:text-[36px] font-bold text-center">
+      <p
+        className="landing-padding text-[#12338b] z-20 text-[48px] relative max-md:text-[36px] font-bold text-center">
         How Quaiz Works?
       </p>
       <div className="w-full landing-padding flex flex-col gap-[60px] mt-[70px] relative z-20">
@@ -165,7 +167,7 @@ const LandingContent = () => {
       {/* //!.......................................................The Footer Ninja........................................................... */}
 
       <div className="w-full  h-full mt-6 bg-[#eaf7ff]">
-        <div className="landing-padding ">
+        <div className="landing-padding bg-transparent z-10">
           <p className="text-[48px] max-md:text-[36px] w-full text-center font-bold text-[#12338b] pt-20">
             Lets Start Growing Your Skills{" "}
           </p>
@@ -182,12 +184,12 @@ const LandingContent = () => {
             </Button>
           </div>
         </div>
-        <div className="relative h-full landing-padding overflow-x-hidden">
+        <div className="relative h-full landing-padding">
                   {/* //?The polygon on top left */}
 
-        <div className="absolute -top-10 max-md:-top-20 left-0 bottom-left-poly bg-[#dff2ff] w-[200px] h-[100px] z-10" />
+        <div className="absolute -top-10 left-0 bottom-left-poly bg-gradient-to-r from-[#c0e2f9] to-[#eaf7ff] w-[200px] h-[100px] z-10" />
         {/* //?The empty polygon on right */}
-<div className="absolute top-[50%] right-0 w-[300px] max-sm:w-[200px] h-[100px] translate-x-4 z-10">
+<div className="absolute top-[50%] right-0 w-[300px] max-sm:w-[200px] h-[100px]  z-10">
         <div className="absolute w-full h-full top-left-poly border-box bg-[#0097fe] z-10" />
 
         <div className=" absolute w-[calc(100%-4px)] h-[calc(100%-4px)] top-[2px] left-[2px] z-10 top-left-poly bg-[#1b2d99] " />
@@ -203,9 +205,10 @@ const LandingContent = () => {
               <p>Here are the ways to contact me</p>
               <div className="w-full flex items-center justify-start max-md:justify-center pt-5 gap-4">
                 {contactMe.map((c) => (
-                  <div
+                  <Link
+                  href={c.link}
                     key={c.name}
-                    className="bg-[#4963ba] p-3 rounded-[10px] "
+                    className="bg-[#4963ba] p-3 rounded-[10px] cursor-pointer hover:brightness-150 transition-all duration-300"
                   >
                     <Image
                       alt={c.name}
@@ -214,7 +217,7 @@ const LandingContent = () => {
                       height={100}
                       className="w-5 h-5"
                     />
-                  </div>
+                  </Link>
                 ))}
               </div>
             </div>
