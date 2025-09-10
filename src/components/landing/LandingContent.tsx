@@ -1,18 +1,23 @@
-import React from "react";
+"use server";
 import { Button } from "../ui/Button";
 import Image from "next/image";
-import { whoCanBenefit, whyQuaizWorks } from "@/lib/consts/landingContent";
+import {
+  contactMe,
+  whoCanBenefit,
+  whyQuaizWorks,
+} from "@/lib/consts/landingContent";
 import { MoveRight } from "lucide-react";
+import Link from "next/link";
 
 const LandingContent = () => {
   return (
-    <div className="w-full">
+    <div className="w-full relative">
       {/* //!.......................................................The 3 steps.............................................................. */}
-      <p className="text-[48px] max-md:text-[36px] font-bold text-center">
+      <p className="landing-padding text-[#12338b] z-20 text-[48px] relative max-md:text-[36px] font-bold text-center">
         How Quaiz Works?
       </p>
-      <div className="w-full flex flex-col gap-[60px] mt-[70px]">
-        <div className="w-full flex items-center justify-center gap-[100px]">
+      <div className="w-full landing-padding flex flex-col gap-[60px] mt-[70px] relative z-20">
+        <div className="w-full flex max-md:flex-col items-center justify-center gap-[100px]">
           <div className="w-full flex flex-col gap-5 items-start justify-center">
             <p className="text-[30px] font-bold">
               Step 1-Create Or Select A Document
@@ -33,7 +38,7 @@ const LandingContent = () => {
             />
           </div>
         </div>
-        <div className="w-full flex items-center justify-center gap-[100px]">
+        <div className="w-full flex max-md:flex-col items-center justify-center gap-[100px]">
           <div className="w-full">
             <Image
               alt="Steps"
@@ -53,14 +58,14 @@ const LandingContent = () => {
             <Button>Get Started Now</Button>
           </div>
         </div>
-        <div className="w-full flex items-center justify-center gap-[100px]">
+        <div className="w-full flex max-md:flex-col items-center justify-center gap-[100px]">
           <div className="w-full flex flex-col gap-5 items-start justify-center">
             <p className="text-[30px] font-bold">
               Step 3-Prove Yourself With Quaiz
             </p>
             <p className="text-[18px] font-light">
-              Now that you&apos;re ready, joining the proving grounds of Quaizzes is
-              the way to go
+              Now that you&apos;re ready, joining the proving grounds of
+              Quaizzes is the way to go
             </p>
             <Button>Get Started Now</Button>
           </div>
@@ -76,52 +81,174 @@ const LandingContent = () => {
         </div>
       </div>
       {/* //!.......................................................Why it works really???.............................................................. */}
-      <p className="text-[48px] max-md:text-[36px] font-bold text-center my-[80px]">
-        How Quaiz Works?
-      </p>
-      <div className="w-full grid grid-cols-5 max-sm:grid-cols-1 max-md:grid-cols-2 max-xl:grid-cols-3 gap-10 ">
-        {whyQuaizWorks.map((w)=>(
+      <div className="relative py-[150px] overflow-y-hidden">
+        <div className="absolute left-0 top-[50%] top-right-poly bg-[#0097fe]/[0.5] w-[100px] h-[100px] z-10" />
+        <div className="absolute right-0 top-[20%] top-right-poly bg-[#0097fe] w-[200px] h-[100px] z-10" />
+
+        {/* Background polygon */}
+        <div className="second-clipped second-clipped-md" />
+
+        {/* Your content */}
+        <p className="text-[48px] text-white landing-padding max-md:text-[36px] font-bold text-center my-[80px] z-10 relative">
+          Why This Works?
+        </p>
+
+        <div className="w-full landing-padding grid grid-cols-5 max-sm:grid-cols-1 max-md:grid-cols-2 max-xl:grid-cols-3 gap-10 z-10 relative">
+          {whyQuaizWorks.map((w) => (
             <div
-             key={w.title} 
-            className="border rounded-2xl border-black/[0.1]">
-                <div className="h-[180px] p-1 bg-[#dcdffe] rounded-lg m-2 flex items-center justify-center">
-                    <Image alt={w.title} src={w.imageUrl} width={70} height={70} className="w-[80px] h-[80px]"/>
-                </div>
-                <div className="py-4 px-3">
+              key={w.title}
+              className="border rounded-2xl border-black/[0.1] bg-white"
+            >
+              <div className="h-[180px] p-1 bg-[#dcdffe] rounded-lg m-2 flex items-center justify-center">
+                <Image
+                  alt={w.title}
+                  src={w.imageUrl}
+                  width={70}
+                  height={70}
+                  className="w-[80px] h-[80px]"
+                />
+              </div>
+              <div className="py-4 px-3">
                 <p className="text-[18px] font-medium mb-1">{w.title}</p>
-                                <p className="text-[16px] font-light text-black/[0.6]">{w.description}</p>
-
-                </div>
+                <p className="text-[16px] font-light text-black/[0.6]">
+                  {w.description}
+                </p>
+              </div>
             </div>
-        ))}
-      </div>
-      <div className="flex items-center justify-center w-full">
+          ))}
+        </div>
 
-      <Button className="my-[80px] bg-gradient-to-br from-[#763afe] to-[#a75de3] font-bold text-white text-[16px]">
-        Get Started
-      </Button>
+        <div className="flex items-center justify-center w-full">
+          <Button className="my-[80px] bg-gradient-to-br from-[#763afe] to-[#a75de3] font-bold text-white text-[16px]">
+            Get Started
+          </Button>
+        </div>
       </div>
-            {/* //!.......................................................who it even helps???.............................................................. */}
 
-<p className="text-[48px] max-md:text-[36px] font-bold text-center mt-[80px]">
+      {/* //!.......................................................who it even helps???.............................................................. */}
+
+      <p className="text-[48px] text-[#12338b] landing-padding max-md:text-[36px] font-bold text-center mt-[80px]">
         Who can benefit?
       </p>
-      <div className="flex max-lg:flex-col gap-7 w-full my-[80px]">
-        {whoCanBenefit.map((h)=>(
-            <div key={h.title} className="flex flex-col gap-3 w-full ">
-                <div className="flex items-center justify-start gap-4">
-                    <Image alt={h.title} src={h.imageUrl} width={50} height={50} className="w-12 h-12 p-3 bg-[#c2c4fe] rounded-full "/>
-                    <p className="font-bold">{h.title}</p>
-                </div>
-                <p className="text-black/[0.6]">{h.description}</p>
-                <p className="flex items-center justify-start gap-2 cursor-pointer  transition-transform duration-300 text-[#2a42b0] font-main">Get Started <MoveRight className="w-3 h-3" /></p>
 
-
+      <div className="flex landing-padding  max-lg:flex-col gap-7 w-full  my-[80px]">
+        {whoCanBenefit.map((h) => (
+          <div key={h.title} className="flex flex-col gap-3 w-full ">
+            <div className="flex items-center justify-start gap-4">
+              <Image
+                alt={h.title}
+                src={h.imageUrl}
+                width={50}
+                height={50}
+                className="w-12 h-12 p-3 bg-[#c2c4fe] rounded-full "
+              />
+              <p className="font-bold">{h.title}</p>
             </div>
-        ))}
-
-      </div>
+            <p className="text-black/[0.6]">{h.description}</p>
+            <p className="flex items-center justify-start gap-2 cursor-pointer  transition-transform duration-300 text-[#2a42b0] font-main">
+              Get Started <MoveRight className="w-3 h-3" />
+            </p>
           </div>
+        ))}
+      </div>
+      {/* //!......................................The all poly shards in page independantly............................................... */}
+
+      <div className="absolute left-0 top-0 top-right-poly bg-[#f7fcff] w-[200px] h-[100px] z-10" />
+
+      {/* <div className="absolute left-0 top-[60px] top-right-poly bg-black w-[200px] h-[100px]" /> */}
+
+      <div className="absolute top-[60px] left-0 w-[300px] h-[100px] -translate-x-4 z-10">
+        <div className="absolute w-full h-full top-left-poly border-box bg-[#eaf7ff] z-10" />
+
+        <div className=" absolute w-[calc(100%-4px)] h-[calc(100%-4px)] top-[2px] left-[2px] z-10 top-left-poly bg-white" />
+      </div>
+      {/* //!.......................................................The Footer Ninja........................................................... */}
+
+      <div className="w-full  h-full mt-6 bg-[#eaf7ff]">
+        <div className="landing-padding ">
+          <p className="text-[48px] max-md:text-[36px] w-full text-center font-bold text-[#12338b] pt-20">
+            Lets Start Growing Your Skills{" "}
+          </p>
+          <p className="w-full text-center text-black/[0.5] pt-5 pb-10">
+            Begin your journey with us by creating an account to get acccess to
+            all the free tier features, or maybe log into your previous One!
+          </p>
+          <div className="flex items-center justify-center gap-4 max-md:flex-col">
+            <Button className="bg-gradient-to-br from-[#763afb] to-[#a95ae6] font-bold text-[16px] z-20 text-white px-6 py-4 w-[180px]">
+              Create Account
+            </Button>
+            <Button className=" font-bold text-[16px] px-6 py-4 text-[#a95ae6] border-[#a95ae6] z-20 border w-[180px]">
+              Signin
+            </Button>
+          </div>
+        </div>
+        <div className="relative h-full landing-padding overflow-x-hidden">
+                  {/* //?The polygon on top left */}
+
+        <div className="absolute -top-10 max-md:-top-20 left-0 bottom-left-poly bg-[#dff2ff] w-[200px] h-[100px] z-10" />
+        {/* //?The empty polygon on right */}
+<div className="absolute top-[50%] right-0 w-[300px] max-sm:w-[200px] h-[100px] translate-x-4 z-10">
+        <div className="absolute w-full h-full top-left-poly border-box bg-[#0097fe] z-10" />
+
+        <div className=" absolute w-[calc(100%-4px)] h-[calc(100%-4px)] top-[2px] left-[2px] z-10 top-left-poly bg-[#1b2d99] " />
+      </div>
+          <div className="footer-clipped-md footer-clipped " />
+          <div className="flex items-center gap-10 max-md:flex-col justify-center border-b border-white/[0.2] text-white relative py-[200px] max-md:py-[100px]">
+            <div className="w-full max-md:text-center">
+              <p className="font-bold text-[36px] w-full pb-2">Quaiz</p>
+              <p>
+                A self driven AI Agent personal project which is planned,
+                designed, and fully created by Mohsen Khojasteh nezhad.
+              </p>
+              <p>Here are the ways to contact me</p>
+              <div className="w-full flex items-center justify-start max-md:justify-center pt-5 gap-4">
+                {contactMe.map((c) => (
+                  <div
+                    key={c.name}
+                    className="bg-[#4963ba] p-3 rounded-[10px] "
+                  >
+                    <Image
+                      alt={c.name}
+                      src={c.imageUrl}
+                      width={100}
+                      height={100}
+                      className="w-5 h-5"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="w-full z-20">
+              <p className="font-bold text-[36px] pb-2">Pages</p>
+              <ul className="flex flex-wrap gap-4 flex-col text-white/[0.7]">
+                <li>
+                  <Link href="/">Home</Link>
+                </li>
+                <li>
+                  <Link href="/#about">About</Link>
+                </li>
+                <li>
+                  <Link href="/sign-in">Signin</Link>
+                </li>
+                <li>
+                  <Link href="/sign-up">Signup</Link>
+                </li>
+
+                <li>
+                  <Link href="/dashboard">Dashboard</Link>
+                </li>
+                <li>
+                  <Link href="/documents">Explore documents</Link>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div className="relative py-10 w-full text-center text-white text-[12px] font-bold">
+            Copyright Stairs | Designed by <a className="text-[#0098fd]" href="donmohsen.ir">Mohsen </a> 
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 

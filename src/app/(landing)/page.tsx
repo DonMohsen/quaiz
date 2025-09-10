@@ -7,7 +7,7 @@ export default function Home() {
   <div className="">
     <Hero/>
     {/* <Loading/> */}
-    <div className="mt-10 px-[180px] max-md:px-5  max-lg:px-[80px] w-full">
+    <div className="mt-10  w-full">
         <LandingContent/>
       </div>
   </div>

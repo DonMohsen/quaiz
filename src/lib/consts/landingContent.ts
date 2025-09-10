@@ -42,3 +42,21 @@ export const whoCanBenefit=[
         imageUrl:"/business.png"
     },
 ]
+export const contactMe=[
+    {
+        name:"Mohsen Khojasteh nezhad Portfolio Website Donmohsen",
+        imageUrl:"/website.png"
+    },
+    {
+        name:"Mohsen Khojasteh nezhad Telegram ",
+        imageUrl:"/telegram.png"
+    },
+     {
+        name:"Mohsen Khojasteh nezhad Github account",
+        imageUrl:"/github.png"
+    },
+     {
+        name:"Mohsen Khojasteh nezhad Linkedin account",
+        imageUrl:"/linkedin.png"
+    },
+]

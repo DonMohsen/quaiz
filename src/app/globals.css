@@ -51,6 +51,12 @@
 }
 /* globals.css */
 @layer utilities {
+  .landing-padding {
+    @apply px-[180px] max-lg:px-[80px] max-md:px-5;
+  }
+.trapezoid {
+  clip-path: polygon(0% 20%, 100% 0%, 100% 80%, 0% 100%);
+}
   .bottom-clipped{
 
   clip-path: polygon(0% 0%, 100% 0%, 100% 70%, 0% 100%);
@@ -68,7 +74,7 @@
 
   }
   .top-left-poly{
-        clip-path: polygon(0% 30%, 100% 0%, 100% 70%, 0% 100%);
+        clip-path: polygon(0% 50%, 100% 0%, 100% 50%, 0% 100%);
 
   }
   .bottom-left-poly{
@@ -82,6 +88,43 @@
     clip-path: polygon(0 0, 1550 0, 1550 550, 0 770);
 
   }
+/* Global CSS or imported file */
+.second-clipped {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  clip-path: polygon(0% 15%, 100% 0%, 100% 85%, 0% 100%);
+  background-color: #1b2d99;
+  z-index: 0;
+  pointer-events: none;
+}
+
+@media (max-width: 768px) {
+  .second-clipped-md {
+    clip-path: polygon(0% 2%, 100% 0%, 100% 98%, 0% 100%);
+  }
+}
+.footer-clipped{
+
+position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  clip-path: polygon(0% 15%, 100% 0%, 100% 100%, 0% 100%);
+  background-color: #1b2d99;
+  z-index: 0;
+  pointer-events: none;
+}
+
+@media (max-width: 768px) {
+  .footer-clipped-md {
+    clip-path: polygon(0% 5%, 100% 0%, 100% 100%, 0% 100%);
+  }
+}
+
 }
 
 ::-webkit-scrollbar {

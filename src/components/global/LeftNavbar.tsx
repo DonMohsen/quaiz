@@ -1,7 +1,6 @@
 "use client";
 import { motion, AnimatePresence } from "framer-motion";
 import useMenuStore from "@/store/useMenuStore";
-import Logo from "./Logo";
 import Image from "next/image";
 import { appRoutes } from "@/lib/consts/appRoutes";
 import Link from "next/link";
