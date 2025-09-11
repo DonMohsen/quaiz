@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Modal from "../ui/Modal";
 import { DocumentWithRelations } from "@/types/document.types";
 import { Button } from "../ui/Button";
@@ -35,6 +35,7 @@ import {
 import Quaiz from "../quaiz/Quaiz";
 import { usePathname, useRouter } from "next/navigation";
 import { useCreateQuaiz } from "@/hooks/useCreateQuaiz";
+import { LoadingButton } from "../ui/LoadingButton";
 export type GetPayloadQuaizType={
 quaiz:{
   quaiz:QuaizWithRelations
@@ -56,6 +57,7 @@ const QuaizMakerForm = ({
       difficulty: "MEDIUM",
     },
   });
+const [loading, setLoading] = useState(false)
 
   const { quaiz, setQuaiz, currentQuestion, setCurrentQuestion } =useQuaizStore();
       const pathName=usePathname();
@@ -63,10 +65,9 @@ const QuaizMakerForm = ({
 
 // inside your component
 // const { mutateAsync: createQuaiz, isPending, isError, error } = useCreateQuaiz();
-
 async function onSubmit(values: z.output<typeof quaizSchema>) {
     try {
-      
+      setLoading(true)
       // 1. Fetch AI-generated quiz data
       const aiRes = await fetch("/api/answering-ai", {
         method: "POST",
@@ -134,6 +135,8 @@ Answer only with one array of objects and the questions and options in the same 
       // Optional: show success UI, reset form, navigate, etc.
     } catch (error) {
       console.error("Error in onSubmit:", error);
+    }finally{
+      setLoading(false)
     }
   }
   useEffect(() => {
@@ -152,22 +155,25 @@ Answer only with one array of objects and the questions and options in the same 
           {/* Create Quiz Button */}
           <div className="absolute bottom-0 w-full flex items-center justify-end">
             <Button
+            loading={loading}
               type="submit"
               form="quizForm"
-              className="bg-[#4f36f4] text-white font-semibold text-[18px] shadow-[#382b96] shadow-md md:hover:brightness-150"
+              disabled={loading}
+              className="bg-[#4f36f4]  text-white font-semibold text-[18px] shadow-[#382b96] shadow-md md:hover:brightness-150"
             >
-              Create Quiz
+              {loading?'...':'Create Quiz'}
+              
             </Button>
           </div>
 
           <p className="text-[30px] font-semibold text-center max-md:text-[24px]">
-            How would you like your Quiz?
+            How would you like <br /> your Quaiz?
           </p>
           <p className="text-[16px] font-medium text-center max-md:text-[14px] mt-2 mb-10 text-black/[0.5]">
             adjust your quaiz settings below
           </p>
           {/* //!The form  */}
-          <div className="w-[700px] mx-auto max-lg:w-full">
+          <div className="w-full mx-auto max-lg:w-full">
             <Form {...form}>
               <form
                 id="quizForm"
@@ -189,7 +195,7 @@ Answer only with one array of objects and the questions and options in the same 
                             field.onChange(val === "auto" ? "auto" : val)
                           }
                         >
-                          <SelectTrigger className="w-[100%]">
+                          <SelectTrigger className="w-full">
                             <SelectValue placeholder="Select an option" />
                           </SelectTrigger>
                           <SelectContent className="z-[99999]">

@@ -7,7 +7,7 @@ export const quickStarts: QuickStartType[] = [
     description:
       "you can analaize your imported document and chat with it like your friend! maybe even generate something from it",
     imageUrl: "/chat.png",
-    href:'chat'
+    href:'/documents'
   },
   {
     kind: QuickStartKind.QUAIZ,
@@ -16,7 +16,7 @@ export const quickStarts: QuickStartType[] = [
     description:
     "Generate a fully customizable test from a document and prove yourself with a high score!",
     imageUrl: "/quaiz.png",
-    href:''
+    href:'/documents'
   },
   {
     kind: QuickStartKind.FLASHCARD,
@@ -25,6 +25,6 @@ export const quickStarts: QuickStartType[] = [
     description:
       "Not ready for a Quaiz yet? then start to studying a document by flash cards is the way to go",
     imageUrl: "/flash-card.png",
-    href:''
+    href:'/documents'
   },
 ];

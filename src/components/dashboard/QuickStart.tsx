@@ -59,9 +59,12 @@ const QuickStartCard = ({
   onClick: () => void;
 }) => {
   return (
-    <div className="flex flex-col justify-between bg-[#eaf7ff] p-4 gap-4 rounded-2xl h-[330px]">
-      <div className="flex flex-col items-center gap-4 text-center">
-        <div className="rounded-[10px] w-14 h-14 bg-[#c7d2fd]">
+    <div className="flex flex-col justify-between bg-[#eaf7ff] p-4 gap-4 rounded-2xl h-[330px]  relative overflow-hidden">
+      <div className="flex flex-col items-center gap-4 text-center  ">
+      {/* //!The polies */}
+      <div className="quickstart-top-poly bg-[#d8effe] absolute top-0 w-full h-[30%] z-10"/>
+
+        <div className="rounded-[10px] w-14 h-14 bg-[#c7d2fd] z-20">
           <Image
             alt={quickStart.title}
             src={quickStart.imageUrl}
@@ -70,20 +73,22 @@ const QuickStartCard = ({
             className="w-full h-full p-1"
           />
         </div>
-        <p className="text-[18px] font-medium text-[#5d7dff]">
+        <p className="text-[18px] font-medium text-[#5d7dff] z-20">
           {quickStart.title}
         </p>
         <p className="text-[16px] font-light text-center">
           {quickStart.description}
         </p>
       </div>
+    <div className="w-full flex items-center justify-center">
 
       <Button
         onClick={onClick}
         className="mx-10 bg-gradient-to-br from-[#763cfc] text-white from-[1%] to-[#a65ce7] to-[99%]"
-      >
+        >
         <span>Let&apos;s Go!</span>
       </Button>
+        </div>
     </div>
   );
 };

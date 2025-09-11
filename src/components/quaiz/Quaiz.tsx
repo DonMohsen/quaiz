@@ -110,6 +110,7 @@ const Quaiz = ({userId}:{userId:string}) => {
       <div className="absolute bottom-4 right-4">
         {userAnswerState !== null && (
           <Button
+          loading={loading}
           className={`text-white font-medium ${currentQuestion + 1 === quaiz.questions.length ?'bg-purple-600':'bg-sky-500'}`}
           disabled={loading}
             onClick={

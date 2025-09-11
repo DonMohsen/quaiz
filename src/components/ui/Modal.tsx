@@ -45,7 +45,7 @@ const Modal = ({
               mass: 1,
             }}
             onClick={(e) => e.stopPropagation()}
-            className="w-[80%] max-md:w-[100%] h-[80%] max-md:h-[100dvh] relative bg-white rounded-[16px] max-md:rounded-none border-white/[0.1] border p-5"
+            className="w-[40%] max-md:w-[100%] h-[80%] max-md:h-[100dvh] relative bg-white rounded-[16px] max-md:rounded-none border-white/[0.1] border p-5"
           >
             <div
               onClick={handleClose}

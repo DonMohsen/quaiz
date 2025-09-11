@@ -81,6 +81,11 @@
         clip-path: polygon(0% 30%, 100% 0%, 100% 70%, 0% 100%);
 
   }
+  .quickstart-top-poly{
+            clip-path: polygon(0% 0%, 100% 0%, 100% 70%, 0% 100%);
+
+  }
+  
 
   .clipped{
     width: 1550px;

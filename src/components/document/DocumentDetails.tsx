@@ -70,7 +70,7 @@ console.log(quaizzes);
         <div className="w-full py-5 border-b border-black/[0.1] flex items-center justify-between">
         <div className="flex items-center justify-center gap-2">
 
-        <Button className="bg-[#1c3ca9] h-full hover:brightness-125">
+        <Button className="bg-[#1c3ca9] !w-[60px] h-full hover:brightness-125">
           <ChevronLeft
           onClick={()=>router.push('/dashboard')}
           className="text-white"/>
@@ -84,7 +84,7 @@ console.log(quaizzes);
               Edit Document
             </Button>
             
-            <Button className="bg-white border border-[#1c3ca9] p-10 text-[#1c3ca9]">
+            <Button className="bg-white border !w-[60px] border-[#1c3ca9] p-10 text-[#1c3ca9]">
               <ChevronDown />
             </Button>
           </div>

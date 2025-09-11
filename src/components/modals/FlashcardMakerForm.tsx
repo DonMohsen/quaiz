@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Modal from "../ui/Modal";
 import { DocumentWithRelations } from "@/types/document.types";
 import { Button } from "../ui/Button";
@@ -47,10 +47,12 @@ const FlashcardMakerForm = ({
   user: User;
 }) => {
   const { flashcards, setFlashcards,setCurrentFlashcard } = useFlashcardsStore();
+  const [loading, setLoading] = useState(false)
   async function onSubmit(
     values: z.output<typeof flashcardsPreferencesSchema>
   ) {
     try {
+      setLoading(true)
       // 1. Fetch AI-generated quiz data
       const aiRes = await fetch("/api/answering-ai", {
         method: "POST",
@@ -110,6 +112,8 @@ const FlashcardMakerForm = ({
       // Optional: show success UI, reset form, navigate, etc.
     } catch (error) {
       console.error("Error in onSubmit:", error);
+    }finally{
+      setLoading(false)
     }
   }
 const form = useForm<z.infer<typeof flashcardsPreferencesSchema>>({
@@ -128,22 +132,23 @@ const form = useForm<z.infer<typeof flashcardsPreferencesSchema>>({
           {/* Create Quiz Button */}
           <div className="absolute bottom-0 w-full flex items-center justify-end">
             <Button
+            loading={loading}
               type="submit"
               form="quizForm"
               className="bg-[#4f36f4] text-white font-semibold text-[18px] shadow-[#382b96] shadow-md md:hover:brightness-150"
             >
-              Generate Flash cards
+              Generate 
             </Button>
           </div>
 
           <p className="text-[30px] font-semibold text-center max-md:text-[24px]">
-            How would you like your Flash cards?
+            How would you like your <br /> Flash cards?
           </p>
           <p className="text-[16px] font-medium text-center max-md:text-[14px] mt-2 mb-10 text-black/[0.5]">
             adjust your preferences below
           </p>
           {/* //!The form  */}
-          <div className="w-[700px] mx-auto max-lg:w-full">
+          <div className="w-full mx-auto max-lg:w-full">
             <Form {...form}>
               <form
                 id="quizForm"

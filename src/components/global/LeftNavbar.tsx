@@ -10,18 +10,25 @@ import { User } from "@prisma/client";
 import { Button } from "../ui/Button";
 import { useModalStore } from "@/store/ModalStore";
 import { useRecentViews } from "@/hooks/useRecentViews";
+import LandingLeftNavbar from "./LandingLeftNavbar";
+import { UserButton } from "@clerk/nextjs";
 
 const SIDEBAR_WIDTH = 240;
-type Props={
-  user:User
-}
-const LeftNavbar = ({user}:Props) => {
-  const { data: views, isLoading:viewsLoading } = useRecentViews(user.id);
+type Props = {
+  user: User;
+};
+const LeftNavbar = ({ user }: Props) => {
   const { menuState, setMenuState } = useMenuStore();
-  const { data:userDocs, isLoading:userDocsLoading, error:userDocsError } = useUserDocuments(user.id)
 
-  const pathname=usePathname();
-  const{openModal}=useModalStore()
+  const { data: views, isLoading: viewsLoading } = useRecentViews(user.id);
+  const {
+    data: userDocs,
+    isLoading: userDocsLoading,
+    error: userDocsError,
+  } = useUserDocuments(user.id);
+
+  const pathname = usePathname();
+  const { openModal } = useModalStore();
   return (
     <>
       {/* fake early and late navbar for visual */}
@@ -60,12 +67,18 @@ const LeftNavbar = ({user}:Props) => {
           <div className="px-4 w-full">
             {/* <Logo /> */}
             <div className=" mt-5 flex flex-col border-b border-white/[0.2] w-full pb-2">
+              <div className="py-5 w-full flex items-center justify-start">
+                <div className="flex items-center justify-center gap-2 rounded-full px-4 py-2 bg-gradient-to-br from-[#7e3ff8] to-[#1c3ca9]">
+                  <UserButton />
+                  {user.userName}
+                </div>
+              </div>
               {appRoutes.map((appRoute) => (
                 <Link
                   key={appRoute.path}
                   href={appRoute.path}
                   className={`flex gap-2 items-center py-3 hover:bg-[#2047c5] rounded-xl transition-colors duration-300 whitespace-nowrap 
-                    ${pathname.endsWith(appRoute.path)&&'bg-[#001c77]'}
+                    ${pathname.endsWith(appRoute.path) && "bg-[#001c77]"}
                     `}
                 >
                   <Image
@@ -79,96 +92,109 @@ const LeftNavbar = ({user}:Props) => {
                 </Link>
               ))}
             </div>
-              {/* //? The Documents section */}
-          <div className="w-full  h-full whitespace-nowrap">
-            <p className=" font-extralight text-[14px] text-white/[0.7] mt-5 mb-2">My documents</p>
-            {userDocs&&userDocs.length>0?
-            <div className="flex items-start justify-center flex-col gap-3 border-b border-white/[0.2] pb-4 ">
-              {userDocs.map((doc)=>(
-                <Link href={`/documents/${doc.slug}`} key={doc.id}
-                 className={` flex items-center justify-start gap-1 hover:bg-[#2047c5] w-full p-2 rounded-md
-                  ${pathname.endsWith(doc.slug)&&'bg-[#001c77]'}`}>
-
-                  <Image alt={doc.slug} src={doc.image||'/placeholder.webp'} height={200} width={200} className="rounded-md w-6 h-6"/>
-                  <p className="text-[14px] font-bold">
-                    
-                  {doc.title}
-                  </p>
-                  
-                  </Link>
-              ))}
-            </div>
-            :userDocsLoading?
-              <div className="flex flex-col gap-3 border-b border-white/[0.2] pb-4 w-full">
-    {Array.from({ length: 1 }).map((_, i) => (
-      <div
-        key={i}
-        className="flex items-center justify-start gap-2 w-full p-2 rounded-md"
-      >
-        {/* Avatar/Image Skeleton */}
-        <div className="w-6 h-6 rounded-md bg-white/20 animate-pulse" />
-
-        {/* Title Skeleton */}
-        <div className="h-4 w-32 rounded bg-white/20 animate-pulse" />
-      </div>
-    ))}
-  </div>
-            :userDocsError?
-            <div className="border-b border-white/[0.2]">
-              Something went wrong!
-            </div>:
-             <div className=" w-full border-b border-white/[0.2]">
-              <p className="w-full pb-5 text-[14px] text-white/[0.8] text-center">
-
-              No Documents yet!
+            {/* //? The Documents section */}
+            <div className="w-full  h-full whitespace-nowrap">
+              <p className=" font-extralight text-[14px] text-white/[0.7] mt-5 mb-2">
+                My documents
               </p>
-              <Button
-              onClick={()=>openModal("CREATE_EDIT_DOCUMENT",{user:user})}
-              className=" w-full bg-[#7497ff] hover:bg-[#beceff] mb-5">
-                Create Document
-              </Button>
-            </div>
-            }
-            <p className=" font-extralight text-[14px] text-white/[0.7] mt-5 mb-2">Recent</p>
-            {views?
-            <div className="flex items-start justify-center flex-col gap-3">
-              {views.map((view)=>(
-                <Link href={`/documents/${view.document.slug}`} key={view.id} 
-                  className={` flex items-center justify-start gap-1 hover:bg-[#2047c5] w-full p-2 rounded-md
-                  ${pathname.endsWith(view.document.slug)&&'bg-[#001c77]'}`}>
+              {userDocs && userDocs.length > 0 ? (
+                <div className="flex items-start justify-center flex-col gap-3 border-b border-white/[0.2] pb-4 ">
+                  {userDocs.map((doc) => (
+                    <Link
+                      href={`/documents/${doc.slug}`}
+                      key={doc.id}
+                      className={` flex items-center justify-start gap-1 hover:bg-[#2047c5] w-full p-2 rounded-md
+                  ${pathname.endsWith(doc.slug) && "bg-[#001c77]"}`}
+                    >
+                      <Image
+                        alt={doc.slug}
+                        src={doc.image || "/placeholder.webp"}
+                        height={200}
+                        width={200}
+                        className="rounded-md w-6 h-6"
+                      />
+                      <p className="text-[14px] font-bold">{doc.title}</p>
+                    </Link>
+                  ))}
+                </div>
+              ) : userDocsLoading ? (
+                <div className="flex flex-col gap-3 border-b border-white/[0.2] pb-4 w-full">
+                  {Array.from({ length: 1 }).map((_, i) => (
+                    <div
+                      key={i}
+                      className="flex items-center justify-start gap-2 w-full p-2 rounded-md"
+                    >
+                      {/* Avatar/Image Skeleton */}
+                      <div className="w-6 h-6 rounded-md bg-white/20 animate-pulse" />
 
-                  <Image alt={view.document.slug} src={view.document.image||'/placeholder.webp'} height={200} width={200} className="rounded-md w-6 h-6"/>
-                  <p className="text-[14px] font-bold">
-                    
-                  {view.document.title}
+                      {/* Title Skeleton */}
+                      <div className="h-4 w-32 rounded bg-white/20 animate-pulse" />
+                    </div>
+                  ))}
+                </div>
+              ) : userDocsError ? (
+                <div className="border-b border-white/[0.2]">
+                  Something went wrong!
+                </div>
+              ) : (
+                <div className=" w-full border-b border-white/[0.2]">
+                  <p className="w-full pb-5 text-[14px] text-white/[0.8] text-center">
+                    No Documents yet!
                   </p>
-                  
-                  </Link>
-              ))}
+                  <Button
+                    onClick={() =>
+                      openModal("CREATE_EDIT_DOCUMENT", { user: user })
+                    }
+                    className=" w-full bg-[#7497ff] hover:bg-[#beceff] mb-5"
+                  >
+                    Create Document
+                  </Button>
+                </div>
+              )}
+              <p className=" font-extralight text-[14px] text-white/[0.7] mt-5 mb-2">
+                Recent
+              </p>
+              {views ? (
+                <div className="flex items-start justify-center flex-col gap-3">
+                  {views.map((view) => (
+                    <Link
+                      href={`/documents/${view.document.slug}`}
+                      key={view.id}
+                      className={` flex items-center justify-start gap-1 hover:bg-[#2047c5] w-full p-2 rounded-md
+                  ${pathname.endsWith(view.document.slug) && "bg-[#001c77]"}`}
+                    >
+                      <Image
+                        alt={view.document.slug}
+                        src={view.document.image || "/placeholder.webp"}
+                        height={200}
+                        width={200}
+                        className="rounded-md w-6 h-6"
+                      />
+                      <p className="text-[14px] font-bold">
+                        {view.document.title}
+                      </p>
+                    </Link>
+                  ))}
+                </div>
+              ) : viewsLoading ? (
+                <div className="flex flex-col gap-3 border-b border-white/[0.2] pb-4 w-full">
+                  {Array.from({ length: 1 }).map((_, i) => (
+                    <div
+                      key={i}
+                      className="flex items-center justify-start gap-2 w-full p-2 rounded-md"
+                    >
+                      {/* Avatar/Image Skeleton */}
+                      <div className="w-6 h-6 rounded-md bg-white/20 animate-pulse" />
+
+                      {/* Title Skeleton */}
+                      <div className="h-4 w-32 rounded bg-white/20 animate-pulse" />
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div>No documents yet!</div>
+              )}
             </div>
-            :viewsLoading?
-              <div className="flex flex-col gap-3 border-b border-white/[0.2] pb-4 w-full">
-    {Array.from({ length: 1 }).map((_, i) => (
-      <div
-        key={i}
-        className="flex items-center justify-start gap-2 w-full p-2 rounded-md"
-      >
-        {/* Avatar/Image Skeleton */}
-        <div className="w-6 h-6 rounded-md bg-white/20 animate-pulse" />
-
-        {/* Title Skeleton */}
-        <div className="h-4 w-32 rounded bg-white/20 animate-pulse" />
-      </div>
-    ))}
-  </div>:
-            <div>
-              No documents yet!
-            </div>
-            }
-
-
-          </div>
-          
           </div>
           <div className="border-t border-white/[0.2] p-4 w-full flex gap-2 items-center justify-start cursor-pointer hover:bg-[#3450b3]">
             <Image
@@ -185,7 +211,6 @@ const LeftNavbar = ({user}:Props) => {
               </p>
             </div>
           </div>
-        
         </div>
       </motion.div>
     </>

@@ -27,20 +27,7 @@ const DocumentCard = ({doc}:{doc:DocumentWithRelations}) => {
       className='rounded-[16px] w-full min-w-full border border-black/[0.1] bg-white flex flex-col  overflow-hidden'>
 
           <Image alt={doc.slug} src={doc.image||"/placeholder.webp"} width={1000} height={1000} className='object-cover w-full h-[200px]  '/>
-        {/* <div className='flex items-center justify-start gap-2 p-5 pb-0 '>
-          {doc?.quaizzes.length>0&&
-          <div className='rounded-[20px] bg-[#3c3d42] text-white p-2 text-[16px] flex items-center justify-center w-fit'>
-            Quaiz
-          </div>
-        
-        }
-         {doc?.flashCards.length>0&&
-          <div className='rounded-[20px] bg-[#3c3d42] text-white p-2 text-[16px] flex items-center justify-center w-fit'>
-            Flash Card
-          </div>
-        
-        }
-        </div> */}
+      
         <div className='p-5'>
 
         <p className=' font-medium w-full text-[20px]'>{doc.title}</p>

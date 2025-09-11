@@ -20,7 +20,7 @@ const Hero = () => {
           className="absolute top-0 left-0 w-[400px] h-[400px] pointer-events-none z-0"
           style={{
             background:
-              "radial-gradient(circle at top left, rgba(147, 197, 253, 0.3) 6%, transparent 70%)",
+              "radial-gradient(circle at top left, rgba(147, 197, 253, 0.3) 6%, transparent 50%)",
           }}
         />
         <div
@@ -44,13 +44,11 @@ const Hero = () => {
       </div>
       {/* //!Finally!!!!! A Hero!!!!!! */}
       <div className="text-white z-10 max-md:mt-[100px] px-4 mt-[150px] text-center flex flex-col items-center justify-start w-full">
-        <p className="text-[40px] font-medium">
+        <p className="text-[40px] font-bold">
           Advanced quiz generator with AI
         </p>
         <p className="text-[20px] font-light mt-2 max-w-[400px] mx-auto">
-          Quaiz is a fantastic way to start your learning journies. Just give us
-          the documents and get ready to solve Quaizzes with variety of
-          difficulities!
+          Give us the document, then the lesson starts!
         </p>
 
         <div className="w-full flex items-center justify-center max-md:flex-col gap-4 mt-7">

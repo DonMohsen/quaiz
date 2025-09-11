@@ -77,10 +77,16 @@ useEffect(() => {
           )}
         </AnimatePresence>
       </div>
-      <div className="md:hidden max-md:w-full h-full flex items-center justify-center">
-        <HamMenu />
-      </div>
 
+    
+      <div className="md:hidden max-md:w-fit h-full flex items-center justify-center  relative">
+
+        <HamMenu />
+        
+      </div>
+      
+
+     
       <div className={`flex items-center max-md:hidden  justify-center gap-7 text-[12px] font-light px-[20px] h-full w-full ${varient==="app"&&'hidden'}`}>
         {routes.map((route) => (
           <p
@@ -115,6 +121,7 @@ useEffect(() => {
           </Button>
         </SignedOut>
       </div>
+            
     </header>
   );
 };

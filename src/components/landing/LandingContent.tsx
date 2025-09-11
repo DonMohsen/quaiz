@@ -6,7 +6,7 @@ import {
   whoCanBenefit,
   whyQuaizWorks,
 } from "@/lib/consts/landingContent";
-import { MoveRight } from "lucide-react";
+import { BookCheck, FileCheck, GraduationCap, MoveRight } from "lucide-react";
 import Link from "next/link";
 
 const LandingContent = () => {
@@ -20,16 +20,23 @@ const LandingContent = () => {
       </p>
       <div className="w-full landing-padding flex flex-col gap-[60px] mt-[70px] relative z-20">
         <div className="w-full flex max-md:flex-col items-center justify-center gap-[100px]">
-          <div className="w-full flex flex-col gap-5 items-start justify-center">
-            <p className="text-[30px] font-bold">
+          <div className="w-full flex flex-col gap-5 items-start justify-center transition-colors duration-300">
+            <div className="p-3 bg-gradient-to-bl from-[#13368a] to-[#0189ed] rounded-[10px]">
+
+            <FileCheck className=" text-white" />
+            </div>
+            <p className="text-[30px] font-bold text-[#006fba]">
               Step 1-Create Or Select A Document
             </p>
             <p className="text-[18px] font-light">
               A document is the text given by you which is used to generate
               various ways to study it with AI
             </p>
-            <Button>Get Started Now</Button>
-          </div>
+ <Button 
+ redirect={'/dashboard'}
+ className="bg-gradient-to-br  transition-all duration-300 from-[#763afb] to-[#a95ae6] font-bold text-[16px] z-20 text-white px-6 py-4 w-[180px]">
+              Get started Now
+            </Button>          </div>
           <div className="w-full">
             <Image
               alt="Steps"
@@ -51,26 +58,40 @@ const LandingContent = () => {
             />
           </div>
           <div className="w-full flex flex-col gap-5 items-start justify-center">
-            <p className="text-[30px] font-bold">Step 2-Study And Learn</p>
+            <div className="p-3 bg-gradient-to-bl from-[#13368a] to-[#0189ed] rounded-[10px]">
+
+            <BookCheck  className=" text-white" />
+            </div>
+            <p className="text-[30px] font-bold text-[#006fba]">Step 2-Study And Learn</p>
             <p className="text-[18px] font-light">
               With the great power of our AI, you can speed up the proccess of
               learning your document by generating flashcards or even chat with
               your own document
             </p>
-            <Button>Get Started Now</Button>
-          </div>
+<Button 
+redirect={'/dashboard'}
+className="bg-gradient-to-br from-[#763afb] to-[#a95ae6] font-bold text-[16px] z-20 text-white px-6 py-4 w-[180px]">
+              Get started Now
+            </Button>            </div>
         </div>
         <div className="w-full flex max-md:flex-col items-center justify-center gap-[100px]">
           <div className="w-full flex flex-col gap-5 items-start justify-center">
-            <p className="text-[30px] font-bold">
+             <div className="p-3 bg-gradient-to-bl from-[#13368a] to-[#0189ed] rounded-[10px]">
+
+            <GraduationCap className=" text-white" />
+            </div>
+            <p className="text-[30px] font-bold text-[#006fba]">
               Step 3-Prove Yourself With Quaiz
             </p>
             <p className="text-[18px] font-light">
               Now that you&apos;re ready, joining the proving grounds of
               Quaizzes is the way to go
             </p>
-            <Button>Get Started Now</Button>
-          </div>
+<Button 
+redirect={'/dashboard'}
+className="bg-gradient-to-br from-[#763afb] to-[#a95ae6] font-bold text-[16px] z-20 text-white px-6 py-4 w-[180px]">
+              Get started Now
+            </Button>            </div>
           <div className="w-full">
             <Image
               alt="Steps"
@@ -119,12 +140,14 @@ const LandingContent = () => {
             </div>
           ))}
         </div>
-
-        <div className="flex items-center justify-center w-full">
-          <Button className="my-[80px] bg-gradient-to-br from-[#763afe] to-[#a75de3] font-bold text-white text-[16px]">
-            Get Started
-          </Button>
+        <div className="flex items-center justify-center w-full relative">
+         <Button 
+         redirect={'/dashboard'}
+         className="bg-gradient-to-br my-[80px] from-[#763afb] to-[#a95ae6] font-bold text-[16px] z-20 text-white px-6 py-4 w-[180px]">
+              Get started Now
+            </Button>  
         </div>
+
       </div>
 
       {/* //!.......................................................who it even helps???.............................................................. */}
@@ -147,9 +170,11 @@ const LandingContent = () => {
               <p className="font-bold">{h.title}</p>
             </div>
             <p className="text-black/[0.6]">{h.description}</p>
-            <p className="flex items-center justify-start gap-2 cursor-pointer  transition-transform duration-300 text-[#2a42b0] font-main">
-              Get Started <MoveRight className="w-3 h-3" />
-            </p>
+            <Button 
+            redirect={'/dashboard'}
+            className="bg-gradient-to-br from-[#763afb] to-[#a95ae6] font-bold text-[16px] z-20 text-white px-6 py-4 w-[180px]">
+              Get started Now
+            </Button>  
           </div>
         ))}
       </div>
@@ -176,10 +201,15 @@ const LandingContent = () => {
             all the free tier features, or maybe log into your previous One!
           </p>
           <div className="flex items-center justify-center gap-4 max-md:flex-col">
-            <Button className="bg-gradient-to-br from-[#763afb] to-[#a95ae6] font-bold text-[16px] z-20 text-white px-6 py-4 w-[180px]">
+            <Button 
+            redirect={'/sign-up'}
+            className="bg-gradient-to-br from-[#763afb] to-[#a95ae6] font-bold text-[16px] z-20 text-white px-6 py-4 w-[180px]">
               Create Account
             </Button>
-            <Button className=" font-bold text-[16px] px-6 py-4 text-[#a95ae6] border-[#a95ae6] z-20 border w-[180px]">
+            <Button
+                        redirect={'/sign-in'}
+
+            className=" font-bold text-[16px] px-6 py-4 text-[#a95ae6] border-[#a95ae6] z-20 border w-[180px]">
               Signin
             </Button>
           </div>
