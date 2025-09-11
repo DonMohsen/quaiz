@@ -49,7 +49,7 @@ const LandingLeftNavbar = () => {
         }}
         className="fixed top-0 md:left-0 h-[100dvh] bg-[#1c3ca9] text-white overflow-hidden z-40 max-md:right-0 select-none"
       >
-        <div className="flex flex-col items-start justify-between w-full h-full pt-[50px]">
+        <div className="flex flex-col items-start justify-between w-full h-full pt-[70px]">
           <div className="px-4 w-full">
             <Logo />
             <SignedOut>

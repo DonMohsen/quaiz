@@ -10,7 +10,7 @@ const Dashboard = ({user}:{user:User} ) => {
 
 return (
   <div
-    className={`w-[85%] max-md:w-[95%] mx-auto min-h-[300vh] h-full transition-all duration-300 pt-[110px] ${menuState&&'lg:pl-[165px]'}`}
+    className={`w-[85%] max-md:w-[95%] mx-auto h-full transition-all duration-300 pt-[110px] ${menuState&&'lg:pl-[165px]'}`}
   >
     <Welcome user={user} />
     <QuickStart />

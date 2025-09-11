@@ -31,6 +31,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "Quaiz",
   description: "Advanced AI quiz maker",
+  
 };
 
 export default function RootLayout({
