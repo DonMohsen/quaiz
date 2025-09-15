@@ -2,15 +2,18 @@ import { prisma } from "@/lib/prisma";
 
 export const getDocumentBySlug = async (slug: string) => {
   try {
+    // decode %20 back into spaces (and other URL-encoded chars)
+    const decodedSlug = decodeURIComponent(slug);
+
     const document = await prisma.document.findUnique({
-      where: { slug },
+      where: { slug: decodedSlug },
       include: {
         user: true,
-        views: {include:{user:true}},
+        views: { include: { user: true } },
         flashCards: true,
-        chats:{
-          include:{
-            messages:true
+        chats: {
+          include: {
+            messages: true,
           },
         },
         quaizzes: true,
@@ -20,8 +23,6 @@ export const getDocumentBySlug = async (slug: string) => {
     return document;
   } catch (error) {
     console.error("❌ Failed to fetch one document:", error);
-
-    // Handle known Prisma error types if needed
     throw new Error("Something went wrong while fetching one document.");
   }
 };

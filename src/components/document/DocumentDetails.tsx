@@ -27,7 +27,7 @@ const DocumentDetails = ({ doc, currentUser }: Props) => {
     data: quaizzes,
     isLoading: quaizzesLoading,
     error: quaizzesError,
-  } = useQuaizzes({ userId: currentUser.id });
+  } = useQuaizzes({ userId: currentUser.id,documentSlug:doc.slug });
   const { mutate: addView, isPending } = useAddViewToDocument(doc.slug);
   const [docDetailMenuOpen, setDocDetailMenuOpen] = useState(false);
   useEffect(() => {
@@ -123,7 +123,9 @@ const DocumentDetails = ({ doc, currentUser }: Props) => {
                     >
                       <Info className="text-[#1c3ca9]" /> Details
                     </button>
-                    <button className="w-full px-4 py-2 text-left text-sm font-medium text-gray-700 flex items-center justify-start gap-2 hover:bg-gray-100 transition">
+                    <button
+                    onClick={()=>openModal("DELETE_DOCUMENT",{document:doc,user:currentUser})}
+                    className="w-full px-4 py-2 text-left text-sm font-medium text-gray-700 flex items-center justify-start gap-2 hover:bg-gray-100 transition">
                       <Trash className="text-[#eb2e2e]" /> Delete
                     </button>
                     <button

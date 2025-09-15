@@ -3,19 +3,40 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getAuth } from "@clerk/nextjs/server";
 
+
 export async function DELETE(
   request: NextRequest,
   { params }: { params: Promise<{ documentSlug: string }> }
 ) {
   try {
-    const { documentSlug } = await params;
+    const { userId } = getAuth(request);
+    if (!userId) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
 
-    if (!documentSlug)
+    const { documentSlug } = await params;
+    if (!documentSlug) {
       return NextResponse.json(
         { error: "Invalid documentSlug" },
         { status: 400 }
       );
+    }
 
+    // ✅ Find document
+    const existingDoc = await prisma.document.findUnique({
+      where: { slug: documentSlug },
+    });
+
+    if (!existingDoc) {
+      return NextResponse.json({ error: "Document not found" }, { status: 404 });
+    }
+
+    // ✅ Check ownership
+    if (existingDoc.userId !== userId) {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    }
+
+    // ✅ Delete if owner
     const deleted = await prisma.document.delete({
       where: { slug: documentSlug },
     });
@@ -29,7 +50,6 @@ export async function DELETE(
     );
   }
 }
-
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ documentSlug: string }> }

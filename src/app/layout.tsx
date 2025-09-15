@@ -4,6 +4,7 @@ import { Geist, Geist_Mono, Open_Sans, Inter, Manrope } from "next/font/google";
 import "./globals.css";
 import ReactQueryProvider from "@/providers/ReactQueryProvider";
 import { ModalRenderer } from "@/components/modals/ModalRenderer";
+import { Toaster } from "@/components/ui/sonner";
   const manrope = Manrope({
   subsets: ["latin"],
   display: "swap",
@@ -46,6 +47,7 @@ export default function RootLayout({
         <body className={`${manrope.variable} font-sans ` }>
           <ReactQueryProvider>
             <ModalRenderer />
+            <Toaster/>
             {children}
           </ReactQueryProvider>
         </body>

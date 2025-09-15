@@ -29,7 +29,7 @@ model Chat {
   messages    Message[]  // 1 Chat → many Messages
 
   documentSlug String
-  document   Document @relation(fields: [documentSlug], references: [slug])
+  document   Document @relation(fields: [documentSlug], references: [slug],onDelete: Cascade)
 
   userId     String?
   user       User?    @relation(fields: [userId], references: [id])
@@ -54,7 +54,7 @@ model FlashCard {
   image String?
   tip String?
   documentId Int
-  document   Document @relation(fields: [documentId], references: [id])
+  document   Document @relation(fields: [documentId], references: [id],onDelete: Cascade)
 
   userId String
   user   User @relation(fields: [userId], references: [id])
@@ -76,7 +76,7 @@ model Quaiz {
   questionCount Int // Number of questions in this quiz
 
   documentSlug String
-  document   Document @relation(fields: [documentSlug], references: [slug])
+  document   Document @relation(fields: [documentSlug], references: [slug],onDelete: Cascade)
 
   userId String
   user   User @relation(fields: [userId], references: [id])
@@ -149,7 +149,7 @@ model DocumentView {
   id Int @id @default(autoincrement())
 
   documentId Int
-  document   Document @relation(fields: [documentId], references: [id])
+  document   Document @relation(fields: [documentId], references: [id],onDelete: Cascade)
 
   userId String
   user   User @relation(fields: [userId], references: [id])
@@ -167,8 +167,8 @@ model User {
   lastName  String?
   image     String?
 
-  documents   Document[]
   chats       Chat[]
+  documents   Document[]
   flashCards  FlashCard[]
   quaizzes    Quaiz[]
   answers     UserAnswer[]

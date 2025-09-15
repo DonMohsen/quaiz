@@ -103,7 +103,7 @@ const LeftNavbar = ({ user }: Props) => {
                     <Link
                       href={`/documents/${doc.slug}`}
                       key={doc.id}
-                      className={` flex items-center justify-start gap-1 hover:bg-[#2047c5] w-full p-2 rounded-md
+                      className={` flex items-center justify-start gap-1 whitespace-nowrap hover:bg-[#2047c5] w-full p-2 rounded-md
                   ${pathname.endsWith(doc.slug) && "bg-[#001c77]"}`}
                     >
                       <Image
@@ -160,7 +160,7 @@ const LeftNavbar = ({ user }: Props) => {
                     <Link
                       href={`/documents/${view.document.slug}`}
                       key={view.id}
-                      className={` flex items-center justify-start gap-1 hover:bg-[#2047c5] w-full p-2 rounded-md
+                      className={` flex items-center justify-start gap-1 whitespace-nowrap hover:bg-[#2047c5] w-full p-2 rounded-md
                   ${pathname.endsWith(view.document.slug) && "bg-[#001c77]"}`}
                     >
                       <Image

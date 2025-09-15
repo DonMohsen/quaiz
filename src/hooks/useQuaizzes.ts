@@ -1,9 +1,13 @@
 "use client";
 
-import { keepPreviousData, useQuery, type UseQueryResult } from "@tanstack/react-query";
-// If you prefer exact Prisma types (recommended):
+import {
+  keepPreviousData,
+  useQuery,
+  type UseQueryResult,
+} from "@tanstack/react-query";
 import { QuaizWithResults } from "@/types/quaiz.types";
 
+// ---- fetch helper ----
 async function fetchJSON<T>(input: string): Promise<T> {
   const res = await fetch(input, { credentials: "same-origin" });
 
@@ -19,18 +23,16 @@ async function fetchJSON<T>(input: string): Promise<T> {
     let message = `Request failed (${res.status} ${res.statusText})`;
 
     if (payload && typeof payload === "object" && payload !== null) {
-      // Try to read error or message from payload
       const obj = payload as Record<string, unknown>;
       if (typeof obj.error === "string") message = obj.error;
       else if (typeof obj.message === "string") message = obj.message;
     }
 
-    throw new Error(message); // always a string now
+    throw new Error(message);
   }
 
   return payload as T;
 }
-
 
 function buildQS(params?: Record<string, string | undefined>) {
   const sp = new URLSearchParams();
@@ -47,13 +49,15 @@ function buildQS(params?: Record<string, string | undefined>) {
  * List hook: fetch many quizzes (optionally filtered).
  * GET /api/quaiz?userId=...&documentSlug=...
  */
-export function useQuaizzes(params?: { userId?: string; documentSlug?: string }) {
-  const qs = buildQS(params as Record<string, string | undefined>);
+export function useQuaizzes(params?: {
+  userId?: string;
+  documentSlug?: string;
+}) {
+  const qs = buildQS(params);
 
   return useQuery<QuaizWithResults[], Error>({
     queryKey: ["quaiz", "list", params ?? {}],
     queryFn: () => fetchJSON<QuaizWithResults[]>(`/api/quaiz${qs}`),
-    // Nice defaults; tweak as you like
     staleTime: 30_000,
     gcTime: 5 * 60_000,
     placeholderData: keepPreviousData,
@@ -70,7 +74,7 @@ export function useQuaiz(id?: string) {
   return useQuery<QuaizWithResults, Error>({
     queryKey: ["quaiz", "detail", id],
     queryFn: () => fetchJSON<QuaizWithResults>(`/api/quaiz${qs}`),
-    enabled: !!id, // don't run until id exists
+    enabled: !!id,
     staleTime: 30_000,
     gcTime: 5 * 60_000,
   });

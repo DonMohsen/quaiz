@@ -11,6 +11,8 @@ import { Button } from "../ui/Button";
 import { Textarea } from "../ui/textarea";
 import { Input } from "../ui/input";
 import { useCreateDocument, useEditDocument } from "@/hooks/useDocument";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 type Props = {
   document: DocumentWithRelations | null;
@@ -42,7 +44,7 @@ const DocumentModal = ({ document, onClose, user }: Props) => {
       content: document?.text ?? "",
     },
   });
-
+  const router = useRouter();
   const createDoc = useCreateDocument();
   const editDoc = useEditDocument();
 
@@ -60,6 +62,7 @@ const DocumentModal = ({ document, onClose, user }: Props) => {
         {
           onSuccess: (updatedDoc) => {
             console.log("Document updated ✅", updatedDoc);
+            toast(`Document ${updatedDoc.title} updated !`)
             onClose();
           },
           onError: (err: unknown) => {
@@ -79,6 +82,9 @@ const DocumentModal = ({ document, onClose, user }: Props) => {
         {
           onSuccess: (newDocument) => {
             console.log("Document created ✅", newDocument);
+                        toast(`Document ${newDocument.title} created !`)
+
+            router.push(`/documents/${data.slug}`);
             onClose();
           },
           onError: (err: unknown) => {
@@ -137,6 +143,8 @@ const DocumentModal = ({ document, onClose, user }: Props) => {
         {/* Submit */}
         <div className="absolute bottom-4 right-4 flex items-center justify-end">
           <Button
+            loading={document ? editDoc.isPending : createDoc.isPending} // ✅ show loading
+            disabled={document ? editDoc.isPending : createDoc.isPending} // optional: prevent double clicks
             type="submit"
             className="bg-[#4f36f4] text-white font-semibold text-[18px] shadow-[#382b96] shadow-md md:hover:brightness-150"
           >

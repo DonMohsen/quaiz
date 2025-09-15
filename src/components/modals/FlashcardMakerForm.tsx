@@ -37,6 +37,7 @@ import { FlashCardCreatePayload } from "@/types/flashcards.types";
 import useFlashcardsStore from "@/store/flashcardsStore";
 import { FlashCardCreateResponse } from "@/app/api/flash-card/route";
 import Flashcard from "../Flashcard/Flashcard";
+import { toast } from "sonner";
 const FlashcardMakerForm = ({
   onClose,
   document,
@@ -69,6 +70,8 @@ const FlashcardMakerForm = ({
       });
 
       if (!aiRes.ok) {
+                                  toast(`AI is corrently overloaded !`)
+
         console.error("AI response error:", aiRes.statusText);
         return;
       }
@@ -99,6 +102,8 @@ const FlashcardMakerForm = ({
         headers: { "Content-Type": "application/json" },
       });
       if (!saveRes.ok) {
+                                  toast(`AI response wasn't good enough ! Try it again now`)
+
         console.error("Failed to save quiz:", saveRes.statusText);
         return;
       }
@@ -106,6 +111,8 @@ const FlashcardMakerForm = ({
       const { flashcards: flashcardsRes }: FlashCardCreateResponse =
         await saveRes.json();
       console.log("flashcards saved successfully:", flashcardsRes);
+                                toast(`${flashcardsRes.length} flashcards are ready to be used !`)
+
       setFlashcards(flashcardsRes);
       setCurrentFlashcard(0)
       

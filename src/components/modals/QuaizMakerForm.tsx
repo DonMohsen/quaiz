@@ -36,6 +36,7 @@ import Quaiz from "../quaiz/Quaiz";
 import { usePathname, useRouter } from "next/navigation";
 import { useCreateQuaiz } from "@/hooks/useCreateQuaiz";
 import { LoadingButton } from "../ui/LoadingButton";
+import { toast } from "sonner";
 export type GetPayloadQuaizType={
 quaiz:{
   quaiz:QuaizWithRelations
@@ -84,6 +85,8 @@ Answer only with one array of objects and the questions and options in the same 
 
       if (!aiRes.ok) {
         console.error("AI response error:", aiRes.statusText);
+                          toast(`AI is corrently overloaded !`)
+
         return;
       }
       type AiQuizResponse = Array<{
@@ -124,6 +127,8 @@ Answer only with one array of objects and the questions and options in the same 
         headers: { "Content-Type": "application/json" },
       });
       if (!saveRes.ok) {
+                                  toast(`Seems like AI got confused ! Try again please`)
+
         console.error("Failed to save quiz:", saveRes.statusText);
         return;
       }
@@ -131,9 +136,12 @@ Answer only with one array of objects and the questions and options in the same 
       const savedQuiz:QuaizWithRelations  = await saveRes.json();
       console.log("Quiz saved successfully:", savedQuiz);
       setQuaiz(savedQuiz)
+                                toast(`Your quaiz is ready !`)
+
 
       // Optional: show success UI, reset form, navigate, etc.
     } catch (error) {
+
       console.error("Error in onSubmit:", error);
     }finally{
       setLoading(false)

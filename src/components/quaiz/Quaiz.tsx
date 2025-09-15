@@ -5,14 +5,16 @@ import useAnswersStore from "@/store/answersStore";
 import { useQuaizAnswers } from "@/hooks/useQuaizAnswers";
 import { useQuaizzes } from "@/hooks/useQuaizzes";
 import { useModalStore } from "@/store/ModalStore";
+import { toast } from "sonner";
 
-const Quaiz = ({userId}:{userId:string}) => {
-    const { saveAnswers, loading, error } = useQuaizAnswers();
-  const {closeModal}=useModalStore()
+const Quaiz = ({ userId }: { userId: string }) => {
+  const { saveAnswers, loading, error } = useQuaizAnswers();
+  const { closeModal } = useModalStore();
   const [userAnswerState, setUserAnswerState] = useState<number | null>(null);
-  const { currentQuestion, setCurrentQuestion, quaiz, setQuaiz } =useQuaizStore();
+  const { currentQuestion, setCurrentQuestion, quaiz, setQuaiz } =
+    useQuaizStore();
   const { addAnswer, answers, resetAnswers } = useAnswersStore();
-  const {refetch} = useQuaizzes({userId});
+  const { refetch } = useQuaizzes({ userId });
 
   if (!quaiz || currentQuestion === null) {
     return null;
@@ -49,7 +51,7 @@ const Quaiz = ({userId}:{userId:string}) => {
     setUserAnswerState(null); // reset for next question
   };
 
-    const onFinished = async () => {
+  const onFinished = async () => {
     try {
       const saved = await saveAnswers({
         userId: quaiz.userId,
@@ -63,14 +65,13 @@ const Quaiz = ({userId}:{userId:string}) => {
       setQuaiz(null);
       setCurrentQuestion(null);
       resetAnswers();
-      closeModal()
-      refetch()
-
+      closeModal();
+      refetch();
+      toast(`Quaiz is completed and the score was:${saved.quizResult.score}`);
     } catch (err) {
       console.error("Failed to save quiz:", err);
     }
   };
-
 
   return (
     <div className="w-full h-full flex flex-col items-center justify-start relative">
@@ -110,18 +111,24 @@ const Quaiz = ({userId}:{userId:string}) => {
       <div className="absolute bottom-4 right-4">
         {userAnswerState !== null && (
           <Button
-          loading={loading}
-          className={`text-white font-medium ${currentQuestion + 1 === quaiz.questions.length ?'bg-purple-600':'bg-sky-500'}`}
-          disabled={loading}
+            loading={loading}
+            className={`text-white font-medium ${
+              currentQuestion + 1 === quaiz.questions.length
+                ? "bg-purple-600"
+                : "bg-sky-500"
+            }`}
+            disabled={loading}
             onClick={
               currentQuestion + 1 === quaiz.questions.length
                 ? onFinished
                 : handleClick
             }
           >
-            {loading?'wait...':
-            currentQuestion + 1 === quaiz.questions.length ? "Finish" : "Next"
-            }
+            {loading
+              ? "wait..."
+              : currentQuestion + 1 === quaiz.questions.length
+              ? "Finish"
+              : "Next"}
           </Button>
         )}
       </div>
@@ -129,12 +136,11 @@ const Quaiz = ({userId}:{userId:string}) => {
       {/* Save progress button */}
       <div className="absolute bottom-4 left-4">
         <Button
-        disabled={loading}
+          disabled={loading}
           className="bg-red-500 text-white font-medium hover:bg-red-400 transition-all duration-300"
           onClick={onFinished}
         >
-                      {loading&&'wait...'}
-
+          {loading && "wait..."}
           Forfiet
         </Button>
       </div>

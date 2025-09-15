@@ -19,6 +19,10 @@ async function createDocument(data: Prisma.DocumentCreateInput): Promise<Documen
   const response = await axios.post<Document>("/api/document", data)
   return response.data
 }
+async function deleteDocument(slug: string): Promise<Document> {
+  const response = await axios.delete<Document>(`/api/document/${slug}`);
+  return response.data;
+}
 
 // ✅ All documents
 export function useAllDocuments() {
@@ -76,3 +80,13 @@ export function useEditDocument() {
     },
   });
 }
+export function useDeleteDocument() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (slug: string) => deleteDocument(slug),
+    onSuccess: (deletedDoc) => {
+      queryClient.invalidateQueries({ queryKey: ["documents"] });
+      queryClient.invalidateQueries({ queryKey: ["documents", deletedDoc.userId] });
+    },
+  });}

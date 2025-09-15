@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { z } from 'zod';
-import { Difficulty } from '@prisma/client';
+import { Difficulty, Prisma } from '@prisma/client';
 
 // Map Prisma Difficulty enum to Zod enum
 const difficultyEnum = z.enum([Difficulty.EASY, Difficulty.MEDIUM, Difficulty.HARD]);
@@ -74,14 +74,18 @@ return NextResponse.json(createdQuaiz);
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
+
     const quaizId = Number(searchParams.get("id"));
     const userId = searchParams.get("userId");
     const documentSlug = searchParams.get("documentSlug");
 
-    let where = {};
+    let where: Prisma.QuaizWhereInput  = {};
 
     if (quaizId) {
-      where = { quaizId };
+      where = { id: quaizId }; // single quiz by ID
+    } else if (userId && documentSlug) {
+      // both conditions together
+      where = { userId, documentSlug };
     } else if (userId) {
       where = { userId };
     } else if (documentSlug) {
@@ -91,16 +95,14 @@ export async function GET(request: Request) {
     // If `id` is passed → return one quiz
     if (quaizId) {
       const quiz = await prisma.quaiz.findUnique({
-        where: { id:quaizId },
+        where: { id: quaizId },
         include: {
-                  document:true,
-                  user:true,
-
-          results:true,
+          document: true,
+          user: true,
+          results: true,
           questions: {
             include: {
-                          userAnswers:true,
-
+              userAnswers: true,
               options: true,
             },
           },
@@ -110,7 +112,7 @@ export async function GET(request: Request) {
       if (!quiz) {
         return NextResponse.json({ error: "Quiz not found" }, { status: 404 });
       }
-      
+
       return NextResponse.json(quiz);
     }
 
@@ -118,22 +120,24 @@ export async function GET(request: Request) {
     const quizzes = await prisma.quaiz.findMany({
       where,
       include: {
-        document:true,
-        user:true,
-        results:true,
+        document: true,
+        user: true,
+        results: true,
         questions: {
           include: {
-            userAnswers:true,
+            userAnswers: true,
             options: true,
           },
         },
       },
     });
-      console.log("this is payload in server============>",quizzes);
 
     return NextResponse.json(quizzes);
   } catch (error) {
     console.error("Error fetching quizzes:", error);
-    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
   }
 }
