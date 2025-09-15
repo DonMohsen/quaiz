@@ -6,7 +6,7 @@ export const getDocumentBySlug = async (slug: string) => {
       where: { slug },
       include: {
         user: true,
-        views: true,
+        views: {include:{user:true}},
         flashCards: true,
         chats:{
           include:{

@@ -4,7 +4,7 @@ import { QuaizWithResults } from "@/types/quaiz.types";
 import { User } from "@prisma/client";
 import { create } from "zustand";
 
-type ModalType = "CREATE_QUAIZ" | "CREATE_FLASHCARD"|"QUAIZ_RESULTS"|"FLASHCARDS_RESULTS"|"CREATE_EDIT_DOCUMENT"| null;
+type ModalType = "CREATE_QUAIZ" | "CREATE_FLASHCARD"|"QUAIZ_RESULTS"|"FLASHCARDS_RESULTS"|"CREATE_EDIT_DOCUMENT"|"DOCUMENT_DETAILS"| null;
 
 interface ModalState {
   document: DocumentWithRelations | null;

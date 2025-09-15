@@ -44,11 +44,11 @@ const Hero = () => {
       </div>
       {/* //!Finally!!!!! A Hero!!!!!! */}
       <div className="text-white z-10 max-md:mt-[100px] px-4 mt-[150px] text-center flex flex-col items-center justify-start w-full">
-        <p className="text-[40px] font-bold">
+        <p className="text-[50px] font-bold max-md:text-[36px]">
           Advanced quiz generator with AI
         </p>
-        <p className="text-[20px] font-light mt-2 max-w-[400px] mx-auto">
-          Give us the document, then the lesson starts!
+        <p className="text-[18px] font-extralight mt-2 max-w-[500px] mx-auto ">
+  From quizzes to flashcards and chat-to-doc, our AI turns your study material into interactive tools that make learning easier
         </p>
 
         <div className="w-full flex items-center justify-center max-md:flex-col gap-4 mt-7">

@@ -6,6 +6,7 @@ import QuaizMakerForm from "./QuaizMakerForm";
 import FlashcardMakerForm from "./FlashcardMakerForm";
 import QuaizResultsForm from "./QuaizResultsForm";
 import DocumentModal from "./DocumentModal";
+import DocumentDetailsModal from "./DocumentDetailsModal";
 
 export function ModalRenderer() {
   const { type, closeModal,document,user,quaiz } = useModalStore();
@@ -25,6 +26,10 @@ export function ModalRenderer() {
         case "CREATE_EDIT_DOCUMENT":
         if (user) {
           return <DocumentModal onClose={closeModal} document={document} user={user}/>
+        }
+        case "DOCUMENT_DETAILS":
+        if (document&&user) {
+          return <DocumentDetailsModal userId={user.id} onClose={closeModal} document={document}/>
         }
 
     case "CREATE_FLASHCARD":

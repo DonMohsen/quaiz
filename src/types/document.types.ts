@@ -2,7 +2,11 @@ import { DocumentView, Prisma } from "@prisma/client";
 
 export type DocumentWithRelations = Prisma.DocumentGetPayload<{
   include: {
-    views: true;
+    views: {
+      include:{
+        user:true
+      }
+    }
     flashCards: true;
     quaizzes: true;
     user: true;

@@ -1,22 +1,22 @@
-"use client"
+"use client";
 
-import { DocumentWithRelations } from "@/types/document.types"
-import React from "react"
-import Modal from "../ui/Modal"
-import { User } from "@prisma/client"
-import { z } from "zod"
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { Button } from "../ui/Button"
-import { Textarea } from "../ui/textarea"
-import { Input } from "../ui/input"
-import { useCreateDocument } from "@/hooks/useDocument"
+import { DocumentWithRelations } from "@/types/document.types";
+import React from "react";
+import Modal from "../ui/Modal";
+import { User } from "@prisma/client";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Button } from "../ui/Button";
+import { Textarea } from "../ui/textarea";
+import { Input } from "../ui/input";
+import { useCreateDocument, useEditDocument } from "@/hooks/useDocument";
 
 type Props = {
-  document: DocumentWithRelations | null
-  onClose: () => void
-  user: User
-}
+  document: DocumentWithRelations | null;
+  onClose: () => void;
+  user: User;
+};
 
 // ✅ Form schema
 const DocumentSchema = z.object({
@@ -26,17 +26,9 @@ const DocumentSchema = z.object({
     .string()
     .min(50, "Content must be at least 50 characters")
     .max(500, "Content must be at most 500 characters"),
-})
+});
 
-type DocumentFormData = z.infer<typeof DocumentSchema>
-function isAxiosError(err: unknown): err is { response?: { data?: unknown } } {
-  return (
-    typeof err === "object" &&
-    err !== null &&
-    "response" in err &&
-    typeof (err as { response?: unknown }).response === "object"
-  )
-}
+type DocumentFormData = z.infer<typeof DocumentSchema>;
 const DocumentModal = ({ document, onClose, user }: Props) => {
   const {
     register,
@@ -49,36 +41,53 @@ const DocumentModal = ({ document, onClose, user }: Props) => {
       slug: document?.slug ?? "",
       content: document?.text ?? "",
     },
-  })
-const createDoc = useCreateDocument()
+  });
+
+  const createDoc = useCreateDocument();
+  const editDoc = useEditDocument();
 
   const onSubmit = (data: DocumentFormData) => {
-  createDoc.mutate(
-    {
-      title: data.title,
-      slug: data.slug,
-      text: data.content, // your form field is 'content'
-      user: { connect: { id: user.id } }, // connect relation for Prisma
-    },
-    {
-      onSuccess: (newDocument) => {
-        console.log("Document created ✅", newDocument)
-        onClose() // close the modal after successful creation
-      },
-   onError: (err: unknown) => {
-  if (err instanceof Error) {
-    console.error("Failed to create document ❌", err.message)
-  } else if (isAxiosError(err)) {
-    console.error("Failed to create document ❌", err.response?.data)
-  } else {
-    console.error("Failed to create document ❌", err)
-  }
-}
-
+    if (document) {
+      // ✅ Edit existing doc
+      editDoc.mutate(
+        {
+          slug: document.slug,
+          data: {
+            title: data.title,
+            text: data.content, // slug ignored by backend
+          },
+        },
+        {
+          onSuccess: (updatedDoc) => {
+            console.log("Document updated ✅", updatedDoc);
+            onClose();
+          },
+          onError: (err: unknown) => {
+            console.error("Failed to update document ❌", err);
+          },
+        }
+      );
+    } else {
+      // ✅ Create new doc
+      createDoc.mutate(
+        {
+          title: data.title,
+          slug: data.slug,
+          text: data.content,
+          user: { connect: { id: user.id } },
+        },
+        {
+          onSuccess: (newDocument) => {
+            console.log("Document created ✅", newDocument);
+            onClose();
+          },
+          onError: (err: unknown) => {
+            console.error("Failed to create document ❌", err);
+          },
+        }
+      );
     }
-  )
-}
-
+  };
 
   return (
     <Modal onClose={onClose}>
@@ -108,6 +117,7 @@ const createDoc = useCreateDocument()
           placeholder="Unique name (e.g. my-document)"
           {...register("slug")}
           className="w-full"
+          disabled={!!document} // 🚫 disable slug when editing
         />
         {errors.slug && (
           <p className="text-red-500 text-sm">{errors.slug.message}</p>
@@ -130,12 +140,12 @@ const createDoc = useCreateDocument()
             type="submit"
             className="bg-[#4f36f4] text-white font-semibold text-[18px] shadow-[#382b96] shadow-md md:hover:brightness-150"
           >
-            Create Document
+            {document ? "Update Document" : "Create Document"}
           </Button>
         </div>
       </form>
     </Modal>
-  )
-}
+  );
+};
 
-export default DocumentModal
+export default DocumentModal;

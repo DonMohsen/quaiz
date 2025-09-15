@@ -46,7 +46,7 @@ useEffect(() => {
             ? "bg-[#1f3dab]/90 backdrop-blur-md shadow-md"
             : "bg-[#1c3ca9]"
           : scrolled
-          ? "bg-[#1f3dab]/70 backdrop-blur-md shadow-md"
+          ? "bg-[#1f3dab]/90 backdrop-blur-md shadow-md"
           : "bg-transparent shadow-none"
       )}
     >

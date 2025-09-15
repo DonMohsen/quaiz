@@ -11,19 +11,16 @@ import Link from "next/link";
 
 const LandingContent = () => {
   return (
-    <div
-     className="w-full relative">
+    <div className="w-full relative">
       {/* //!.......................................................The 3 steps.............................................................. */}
-      <p
-        className="landing-padding text-[#12338b] z-20 text-[48px] relative max-md:text-[36px] font-bold text-center">
+      <p className="landing-padding text-[#12338b] z-20 text-[48px] relative max-md:text-[36px] font-bold text-center">
         How Quaiz Works?
       </p>
       <div className="w-full landing-padding flex flex-col gap-[60px] mt-[70px] relative z-20">
         <div className="w-full flex max-md:flex-col items-center justify-center gap-[100px]">
           <div className="w-full flex flex-col gap-5 items-start justify-center transition-colors duration-300">
             <div className="p-3 bg-gradient-to-bl from-[#13368a] to-[#0189ed] rounded-[10px]">
-
-            <FileCheck className=" text-white" />
+              <FileCheck className=" text-white" />
             </div>
             <p className="text-[30px] font-bold text-[#006fba]">
               Step 1-Create Or Select A Document
@@ -32,11 +29,13 @@ const LandingContent = () => {
               A document is the text given by you which is used to generate
               various ways to study it with AI
             </p>
- <Button 
- redirect={'/dashboard'}
- className="bg-gradient-to-br  transition-all duration-300 from-[#763afb] to-[#a95ae6] font-bold text-[16px] z-20 text-white px-6 py-4 w-[180px]">
+            <Button
+              redirect={"/dashboard"}
+              className="bg-gradient-to-br  transition-all duration-300 from-[#763afb] to-[#a95ae6] font-bold text-[16px] z-20 text-white px-6 py-4 w-[180px]"
+            >
               Get started Now
-            </Button>          </div>
+            </Button>
+          </div>
           <div className="w-full">
             <Image
               alt="Steps"
@@ -59,26 +58,28 @@ const LandingContent = () => {
           </div>
           <div className="w-full flex flex-col gap-5 items-start justify-center">
             <div className="p-3 bg-gradient-to-bl from-[#13368a] to-[#0189ed] rounded-[10px]">
-
-            <BookCheck  className=" text-white" />
+              <BookCheck className=" text-white" />
             </div>
-            <p className="text-[30px] font-bold text-[#006fba]">Step 2-Study And Learn</p>
+            <p className="text-[30px] font-bold text-[#006fba]">
+              Step 2-Study And Learn
+            </p>
             <p className="text-[18px] font-light">
               With the great power of our AI, you can speed up the proccess of
               learning your document by generating flashcards or even chat with
               your own document
             </p>
-<Button 
-redirect={'/dashboard'}
-className="bg-gradient-to-br from-[#763afb] to-[#a95ae6] font-bold text-[16px] z-20 text-white px-6 py-4 w-[180px]">
+            <Button
+              redirect={"/dashboard"}
+              className="bg-gradient-to-br from-[#763afb] to-[#a95ae6] font-bold text-[16px] z-20 text-white px-6 py-4 w-[180px]"
+            >
               Get started Now
-            </Button>            </div>
+            </Button>{" "}
+          </div>
         </div>
         <div className="w-full flex max-md:flex-col items-center justify-center gap-[100px]">
           <div className="w-full flex flex-col gap-5 items-start justify-center">
-             <div className="p-3 bg-gradient-to-bl from-[#13368a] to-[#0189ed] rounded-[10px]">
-
-            <GraduationCap className=" text-white" />
+            <div className="p-3 bg-gradient-to-bl from-[#13368a] to-[#0189ed] rounded-[10px]">
+              <GraduationCap className=" text-white" />
             </div>
             <p className="text-[30px] font-bold text-[#006fba]">
               Step 3-Prove Yourself With Quaiz
@@ -87,11 +88,13 @@ className="bg-gradient-to-br from-[#763afb] to-[#a95ae6] font-bold text-[16px] z
               Now that you&apos;re ready, joining the proving grounds of
               Quaizzes is the way to go
             </p>
-<Button 
-redirect={'/dashboard'}
-className="bg-gradient-to-br from-[#763afb] to-[#a95ae6] font-bold text-[16px] z-20 text-white px-6 py-4 w-[180px]">
+            <Button
+              redirect={"/dashboard"}
+              className="bg-gradient-to-br from-[#763afb] to-[#a95ae6] font-bold text-[16px] z-20 text-white px-6 py-4 w-[180px]"
+            >
               Get started Now
-            </Button>            </div>
+            </Button>{" "}
+          </div>
           <div className="w-full">
             <Image
               alt="Steps"
@@ -141,13 +144,13 @@ className="bg-gradient-to-br from-[#763afb] to-[#a95ae6] font-bold text-[16px] z
           ))}
         </div>
         <div className="flex items-center justify-center w-full relative">
-         <Button 
-         redirect={'/dashboard'}
-         className="bg-gradient-to-br my-[80px] from-[#763afb] to-[#a95ae6] font-bold text-[16px] z-20 text-white px-6 py-4 w-[180px]">
-              Get started Now
-            </Button>  
+          <Button
+            redirect={"/dashboard"}
+            className="bg-gradient-to-br my-[80px] from-[#763afb] to-[#a95ae6] font-bold text-[16px] z-20 text-white px-6 py-4 w-[180px]"
+          >
+            Get started Now
+          </Button>
         </div>
-
       </div>
 
       {/* //!.......................................................who it even helps???.............................................................. */}
@@ -170,11 +173,12 @@ className="bg-gradient-to-br from-[#763afb] to-[#a95ae6] font-bold text-[16px] z
               <p className="font-bold">{h.title}</p>
             </div>
             <p className="text-black/[0.6]">{h.description}</p>
-            <Button 
-            redirect={'/dashboard'}
-            className="bg-gradient-to-br from-[#763afb] to-[#a95ae6] font-bold text-[16px] z-20 text-white px-6 py-4 w-[180px]">
+            <Button
+              redirect={"/dashboard"}
+              className="bg-gradient-to-br from-[#763afb] to-[#a95ae6] font-bold text-[16px] z-20 text-white px-6 py-4 w-[180px]"
+            >
               Get started Now
-            </Button>  
+            </Button>
           </div>
         ))}
       </div>
@@ -201,29 +205,30 @@ className="bg-gradient-to-br from-[#763afb] to-[#a95ae6] font-bold text-[16px] z
             all the free tier features, or maybe log into your previous One!
           </p>
           <div className="flex items-center justify-center gap-4 max-md:flex-col">
-            <Button 
-            redirect={'/sign-up'}
-            className="bg-gradient-to-br from-[#763afb] to-[#a95ae6] font-bold text-[16px] z-20 text-white px-6 py-4 w-[180px]">
+            <Button
+              redirect={"/sign-up"}
+              className="bg-gradient-to-br from-[#763afb] to-[#a95ae6] font-bold text-[16px] z-20 text-white px-6 py-4 w-[180px]"
+            >
               Create Account
             </Button>
             <Button
-                        redirect={'/sign-in'}
-
-            className=" font-bold text-[16px] px-6 py-4 text-[#a95ae6] border-[#a95ae6] z-20 border w-[180px]">
+              redirect={"/sign-in"}
+              className=" font-bold text-[16px] px-6 py-4 text-[#a95ae6] border-[#a95ae6] z-20 border w-[180px]"
+            >
               Signin
             </Button>
           </div>
         </div>
         <div className="relative h-full landing-padding">
-                  {/* //?The polygon on top left */}
+          {/* //?The polygon on top left */}
 
-        <div className="absolute -top-10 left-0 bottom-left-poly bg-gradient-to-r from-[#c0e2f9] to-[#eaf7ff] w-[200px] h-[100px] z-10" />
-        {/* //?The empty polygon on right */}
-<div className="absolute top-[50%] right-0 w-[300px] max-sm:w-[200px] h-[100px]  z-10">
-        <div className="absolute w-full h-full top-left-poly border-box bg-[#0097fe] z-10" />
+          <div className="absolute -top-10 left-0 bottom-left-poly bg-gradient-to-r from-[#c0e2f9] to-[#eaf7ff] w-[200px] h-[100px] z-10" />
+          {/* //?The empty polygon on right */}
+          <div className="absolute top-[50%] right-0 w-[300px] max-sm:w-[200px] h-[100px]  z-10">
+            <div className="absolute w-full h-full top-left-poly border-box bg-[#0097fe] z-10" />
 
-        <div className=" absolute w-[calc(100%-4px)] h-[calc(100%-4px)] top-[2px] left-[2px] z-10 top-left-poly bg-[#1b2d99] " />
-      </div>
+            <div className=" absolute w-[calc(100%-4px)] h-[calc(100%-4px)] top-[2px] left-[2px] z-10 top-left-poly bg-[#1b2d99] " />
+          </div>
           <div className="footer-clipped-md footer-clipped " />
           <div className="flex items-center gap-10 max-md:flex-col justify-center border-b border-white/[0.2] text-white relative py-[200px] max-md:py-[100px]">
             <div className="w-full max-md:text-center">
@@ -236,7 +241,7 @@ className="bg-gradient-to-br from-[#763afb] to-[#a95ae6] font-bold text-[16px] z
               <div className="w-full flex items-center justify-start max-md:justify-center pt-5 gap-4">
                 {contactMe.map((c) => (
                   <Link
-                  href={c.link}
+                    href={c.link}
                     key={c.name}
                     className="bg-[#4963ba] p-3 rounded-[10px] cursor-pointer hover:brightness-150 transition-all duration-300"
                   >
@@ -277,7 +282,10 @@ className="bg-gradient-to-br from-[#763afb] to-[#a95ae6] font-bold text-[16px] z
             </div>
           </div>
           <div className="relative py-10 w-full text-center text-white text-[12px] font-bold">
-            Copyright Stairs | Designed by <a className="text-[#0098fd]" href="donmohsen.ir">Mohsen </a> 
+            Copyright Stairs | Designed by{" "}
+            <a className="text-[#0098fd]" href="donmohsen.ir">
+              Mohsen{" "}
+            </a>
           </div>
         </div>
       </div>

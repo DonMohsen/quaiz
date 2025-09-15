@@ -41,7 +41,9 @@ export async function GET(req: NextRequest) {
     const documents = await prisma.document.findMany({
       where: userId ? { userId } : undefined,
       include: {
-        views: true,
+        views: {
+          include:{user:true}
+        },
         flashCards: true,
         quaizzes: true,
         user: true,

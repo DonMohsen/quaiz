@@ -58,3 +58,21 @@ export function useCreateDocument() {
     },
   })
 }
+async function editDocument(slug: string, data: Partial<Document>): Promise<Document> {
+  const response = await axios.put<Document>(`/api/document/${slug}`, data);
+  return response.data;
+}
+
+export function useEditDocument() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ slug, data }: { slug: string; data: Partial<Document> }) =>
+      editDocument(slug, data),
+    onSuccess: (updatedDoc) => {
+      // Invalidate relevant queries
+      queryClient.invalidateQueries({ queryKey: ["documents"] });
+      queryClient.invalidateQueries({ queryKey: ["documents", updatedDoc.userId] });
+    },
+  });
+}
