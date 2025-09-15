@@ -4,6 +4,7 @@ import Welcome from './Welcome'
 import QuickStart from './QuickStart'
 import { User } from '@prisma/client'
 import useMenuStore from '@/store/useMenuStore'
+import RecentDocuments from '../document/RecentDocuments'
 
 const Dashboard = ({user}:{user:User} ) => {
     const{menuState}=useMenuStore();
@@ -14,6 +15,7 @@ return (
   >
     <Welcome user={user} />
     <QuickStart />
+    <RecentDocuments  userId={user.id}/>
   </div>
 );
 

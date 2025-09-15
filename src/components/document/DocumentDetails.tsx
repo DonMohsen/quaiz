@@ -35,9 +35,11 @@ const DocumentDetails = ({ doc, currentUser }: Props) => {
   }, []);
 
   const router = useRouter();
-
   const { menuState } = useMenuStore();
-
+  useEffect(() => {
+    setDocDetailMenuOpen(false)
+  }, [menuState])
+  
   const handleActionClick = (kind: QuickStartKind) => {
     switch (kind) {
       case QuickStartKind.CHAT:
@@ -124,7 +126,7 @@ const DocumentDetails = ({ doc, currentUser }: Props) => {
                       <Info className="text-[#1c3ca9]" /> Details
                     </button>
                     <button
-                    onClick={()=>openModal("DELETE_DOCUMENT",{document:doc,user:currentUser})}
+                    onClick={()=>{openModal("DELETE_DOCUMENT",{document:doc,user:currentUser}),setDocDetailMenuOpen(false)}}
                     className="w-full px-4 py-2 text-left text-sm font-medium text-gray-700 flex items-center justify-start gap-2 hover:bg-gray-100 transition">
                       <Trash className="text-[#eb2e2e]" /> Delete
                     </button>

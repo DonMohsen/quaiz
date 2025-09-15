@@ -1,7 +1,7 @@
 "use client"
 import { deleteDocumentById } from '@/actions/deleteDocumentById'
 import { getTextDirection } from '@/lib/utils/getTextDirection'
-import { DocumentWithRelations } from '@/types/document.types'
+import { DocumentViewWithDocument, DocumentWithRelations } from '@/types/document.types'
 import { Document } from '@prisma/client'
 import { Trash } from 'lucide-react'
 import Image from 'next/image'
@@ -10,18 +10,15 @@ import { GoTrash } from 'react-icons/go'
 import { Button } from '../ui/Button'
 import { useRouter } from 'next/navigation'
 
-const DocumentCard = ({doc}:{doc:DocumentWithRelations}) => {
-  const handleDeleteDocument=async(id:number)=>{
-  try {
-    await deleteDocumentById(id);
-    // Optionally re-fetch documents or use router.refresh()
-  } catch (err) {
-    console.error(err);
-  
-};
-  }
+type Props={
+  doc?:DocumentWithRelations
+  view?:DocumentViewWithDocument
+}
+const DocumentCard = ({doc,view}:Props) => {
+ 
   const router=useRouter()
-  return (
+  if(doc){
+ return (
       <div
       // href={`/documents/${doc.slug}`} 
       className='rounded-[16px] w-full min-w-full border border-black/[0.1] bg-white flex flex-col  overflow-hidden'>
@@ -72,6 +69,52 @@ const DocumentCard = ({doc}:{doc:DocumentWithRelations}) => {
 
         </div>
   )
+  }else if(view){
+    return(
+        <div
+      // href={`/documents/${doc.slug}`} 
+      className='rounded-[16px] w-full min-w-full border border-black/[0.1] bg-white flex flex-col  overflow-hidden'>
+
+          <Image alt={view.document.slug} src={view.document.image||"/placeholder.webp"} width={1000} height={1000} className='object-cover w-full h-[200px]  '/>
+      
+        <div className='p-5'>
+
+        <p className=' font-medium w-full text-[20px]'>{view.document.title}</p>
+        {/* <p className=' font-medium text-black/[0.5] w-full text-[16px]'>Created by {view.document.user.userName}</p> */}
+        <p dir={getTextDirection(view.document.text ||"ltr")} className='text-left font-light line-clamp-2 my-3  '>{view.document.text}</p>
+        {/* //!The line */}
+        <p className='w-full h-[12px]  border-b-2 border-black/[0.1]'></p>
+        {/* //!The bottom parts */}
+       
+        <div className='w-full flex items-end justify-between'>
+        <Button 
+        onClick={()=>router.push(`documents/${view.document.slug}`)}
+        className='mt-5 bg-gradient-to-r bg-white text-black border-[#a05dfa] border-2 sm:hover:bg-[#1c3ca9] sm:hover:text-white transition-all duration-300'>
+          Check it out
+        </Button>
+        </div>
+        </div>
+        {/* <div className='p-5 pb-5 text-[18px] font-medium flex gap-2 items-center justify-between'>
+          {doc.title}
+             <button
+        onClick={(e) => {
+          e.stopPropagation();
+          e.preventDefault(); // prevent <Link> from triggering
+          handleDeleteDocument(doc.id);
+        }}
+        className="hover:text-red-500"
+      >
+
+        <GoTrash/>
+        </button>
+        </div> */}
+          
+
+        </div>
+
+    )
+  }
+ 
 }
 
 export default DocumentCard
