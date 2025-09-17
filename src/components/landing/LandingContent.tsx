@@ -47,7 +47,7 @@ const LandingContent = () => {
           </div>
         </div>
         <div className="w-full flex max-md:flex-col items-center justify-center gap-[100px]">
-           <div className="w-full max-sm:hidden bg-[#5a50ff] rounded-xl h-[300px] flex items-center justify-center">
+          <div className="w-full max-sm:hidden bg-[#5a50ff] rounded-xl h-[300px] flex items-center justify-center">
             <Image
               alt="Steps"
               src={"/studying.webp"}
@@ -116,15 +116,25 @@ const LandingContent = () => {
         </div>
       </div>
       {/* //!.......................................................Why it works really???.............................................................. */}
-      <div className="relative py-[150px] overflow-y-hidden">
-        <div className="absolute left-0 top-[50%] top-right-poly bg-[#0097fe]/[0.5] w-[100px] h-[100px] z-10" />
-        <div className="absolute right-0 top-[20%] top-right-poly bg-[#0097fe] w-[200px] h-[100px] z-10" />
+      <div
+      className="relative py-[150px] overflow-y-hidden">
+        <div 
+
+        className="absolute left-0 top-[50%] top-right-poly bg-[#0097fe]/[0.5] w-[100px] h-[100px] z-10" />
+        <div
+        
+        className="absolute right-0 top-[20%] top-right-poly bg-[#0097fe] w-[200px] h-[100px] z-10" />
 
         {/* Background polygon */}
-        <div className="second-clipped second-clipped-md" />
+        <div
+                      id="reasons"
+
+        className="second-clipped second-clipped-md" />
 
         {/* Your content */}
-        <p className="text-[48px] text-white landing-padding max-md:text-[36px] font-bold text-center my-[80px] z-10 relative">
+        <p
+        
+        className="text-[48px] text-white landing-padding max-md:text-[36px] font-bold text-center my-[80px] z-10 relative">
           Why This Works?
         </p>
 
@@ -246,7 +256,7 @@ const LandingContent = () => {
                 A self driven AI Agent personal project which is planned,
                 designed, and fully created by Mohsen Khojasteh nezhad.
               </p>
-              <p>Here are the ways to contact me</p>
+              <p id="about-me">Here are the ways to contact me</p>
               <div className="w-full flex items-center justify-start max-md:justify-center pt-5 gap-4">
                 {contactMe.map((c) => (
                   <Link
@@ -272,7 +282,7 @@ const LandingContent = () => {
                   <Link href="/">Home</Link>
                 </li>
                 <li>
-                  <Link href="/#about">About</Link>
+                  <Link href="/#features">Features</Link>
                 </li>
                 <li>
                   <Link href="/sign-in">Signin</Link>
@@ -292,8 +302,11 @@ const LandingContent = () => {
           </div>
           <div className="relative py-10 w-full text-center text-white text-[12px] font-bold">
             Copyright Stairs | Designed by{" "}
-            <a className="text-[#0098fd]" href="donmohsen.ir">
-              Mohsen{" "}
+            <a 
+              target="_blank"
+  rel="noopener noreferrer"
+            className="text-[#0098fd]" href="https://donmohsen.ir">
+              Mohsen
             </a>
           </div>
         </div>

@@ -26,7 +26,7 @@ const Demo = () => {
           </div>
         </div>
       </div>
-      <p id="about"></p>
+      <p id="features"></p>
     </div>
   );
 };

@@ -11,12 +11,12 @@ export const useRoutes = () => {
       path: '/#features'
     },
     {
-      label: 'Pricing',
-      path: '/pricing'
+      label: 'Reasons',
+      path: '/#reasons'
     },
     {
       label: 'About me',
-      path: '/#about',
+      path: '/#about-me',
     },
     
   ]

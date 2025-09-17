@@ -10,6 +10,7 @@ import useMenuStore from "@/store/useMenuStore";
 import { PanelTopOpen } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Logo from "./Logo";
+import Link from "next/link";
 
 type HeaderProps = {
   varient: "landing" | "app";
@@ -89,7 +90,8 @@ useEffect(() => {
      
       <div className={`flex items-center max-md:hidden  justify-center gap-7 text-[12px] font-light px-[20px] h-full w-full ${varient==="app"&&'hidden'}`}>
         {routes.map((route) => (
-          <p
+          <Link
+          href={route.path}
             key={route.label}
             className={clsx(
               `tracking-tight cursor-pointer`,
@@ -97,7 +99,7 @@ useEffect(() => {
             )}
           >
             {route.label}
-          </p>
+          </Link>
         ))}
       </div>
       <div className="max-md:hidden flex items-center justify-end w-[30%] text-[12px] font-light gap-2">

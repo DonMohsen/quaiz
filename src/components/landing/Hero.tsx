@@ -58,10 +58,10 @@ const Hero = () => {
             Start Now
           </Button>
           <Button
-            redirect={"/#about"}
-            className="max-md:w-full py-5 bg-transparent border font-semibold md:px-[40px]"
+            redirect={"/#features"}
+            className="max-md:w-full py-5 bg-transparent border font-semibold md:px-[30px]"
           >
-            About us
+            Learn More
           </Button>
         </div>
       </div>
