@@ -1,10 +1,8 @@
-// hooks/useQuaizAnswers.ts
-"use client";
-
 import { UserAnswerInput } from "@/types/questions.types";
-import { useState } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-
+export function useQuaizAnswers() {
+  const queryClient = useQueryClient();
 
 interface SaveAnswersPayload {
   userId: string;
@@ -13,16 +11,15 @@ interface SaveAnswersPayload {
   total: number;
   answers: UserAnswerInput[];
 }
-
-export function useQuaizAnswers() {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const saveAnswers = async (payload: SaveAnswersPayload) => {
-    try {
-      setLoading(true);
-      setError(null);
-
+interface SaveAnswersResponse {
+  quizResult: {
+    score: number;
+    total: number;
+    id: string;
+  };
+}
+  return useMutation<SaveAnswersResponse, Error, SaveAnswersPayload>({
+    mutationFn: async (payload: SaveAnswersPayload) => {
       const res = await fetch("/api/quaiz/answers", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -34,20 +31,11 @@ export function useQuaizAnswers() {
         throw new Error(errMsg || "Failed to save quiz result");
       }
 
-      return await res.json();
-    }  catch (err: unknown) {
-  if (err instanceof Error) {
-    setError(err.message);
-  } else if (typeof err === "string") {
-    setError(err);
-  } else {
-    setError("Unknown error");
-  }
-  throw err; // still rethrow for the caller
-}finally {
-      setLoading(false);
-    }
-  };
-
-  return { saveAnswers, loading, error };
+      return res.json() as Promise<SaveAnswersResponse>;
+    },
+    onSuccess: (_data, variables) => {
+      queryClient.invalidateQueries({ queryKey: ["quaiz", "list"] });
+      queryClient.invalidateQueries({ queryKey: ["quaiz", "detail", variables.quaizId] });
+    },
+  });
 }

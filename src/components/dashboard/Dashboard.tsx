@@ -15,7 +15,7 @@ return (
   >
     <Welcome user={user} />
     <QuickStart />
-    <RecentDocuments  userId={user.id}/>
+    <RecentDocuments  user={user}/>
   </div>
 );
 

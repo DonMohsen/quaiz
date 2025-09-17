@@ -99,12 +99,13 @@ const DocumentModal = ({ document, onClose, user }: Props) => {
     <Modal onClose={onClose}>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="w-full h-full mt-5 flex flex-col items-center justify-start gap-4 px-[20%] max-md:px-[10%]"
+        className="w-full p-5 h-full mt-5 flex flex-col items-center justify-start gap-4 px-[20%] max-md:px-[10%]"
       >
-        <p className="text-[30px] font-semibold text-center max-md:text-[24px]">
+        
+        <p className={`"text-[30px] font-semibold text-center max-md:text-[24px]" ${document&&'hidden'}`}>
           How would you like your document?
         </p>
-        <p className="text-[16px] font-medium text-center max-md:text-[14px] mt-2 mb-6 text-black/[0.5]">
+        <p className="text-[16px] font-medium text-center max-md:text-[14px]  mb-6 text-black/[0.5]">
           Adjust your document details below
         </p>
 

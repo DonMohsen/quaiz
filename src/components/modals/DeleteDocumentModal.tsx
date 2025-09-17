@@ -61,10 +61,10 @@ finally {
 
   return (
     <Modal onClose={onClose}>
-      <h2 className="text-lg font-semibold mb-4 w-full text-left pb-5 border-b">
+      <h2 className="text-lg font-semibold mb-4 w-full text-left pb-5 border-b p-5">
         Delete Document
       </h2>
-      <div className="w-full h-full flex items-start justify-start flex-col">
+      <div className="w-full h-full flex items-start justify-start flex-col p-5">
         <p className="mb-2">
           Are you sure to delete{" "}
           <span className="font-bold">{document.slug}</span> document?
@@ -97,7 +97,7 @@ finally {
         </div>
 
         {/* Actions */}
-        <div className="flex w-full justify-between items-end h-full gap-2 mb-[60px]">
+        <div className="flex w-full justify-between items-end h-full gap-2 mb-[80px]">
           <Button
             className="border-2 border-black/[0.2]"
             onClick={onClose}

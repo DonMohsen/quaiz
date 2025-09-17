@@ -65,7 +65,7 @@ const dir = useMemo(() => getTextDirection(currentF?.text ?? ""), [currentF]);
   return (
     <div
       style={{ textAlign: dir === "rtl" ? "right" : "left" }}
-      className="w-full h-full flex flex-col items-center justify-center relative"
+      className="w-full h-full flex flex-col items-center justify-center relative p-5"
       dir={dir}
     >
       <AnimatePresence initial={false} custom={direction}>
@@ -117,7 +117,7 @@ const dir = useMemo(() => getTextDirection(currentF?.text ?? ""), [currentF]);
       <div className="absolute bottom-4 left-4">
         <Button
           disabled={currentFlashcard === 0}
-          className={`font-medium text-white transition-all duration-300
+          className={`font-medium !max-w-[100px] text-white transition-all duration-300
       ${
         currentFlashcard === 0
           ? "bg-red-300 cursor-not-allowed"
@@ -132,14 +132,14 @@ const dir = useMemo(() => getTextDirection(currentF?.text ?? ""), [currentF]);
       <div className="absolute bottom-4 right-4">
         <Button
           // disabled={currentFlashcard >= flashcards.length - 1}
-          className={`font-medium text-white transition-all duration-300
+          className={`font-medium text-white transition-all !max-w-[100px] duration-300
       bg-red-500 hover:bg-red-400`}
           onClick={handleNext}
         >
           {currentFlashcard >= flashcards.length - 1?'Finish':'Next'}
         </Button>
       </div>
-      <div className="absolute top-0 w-[50%] max-md:w-[80%] ">
+      <div className="absolute top-5 w-[50%] max-md:w-[80%] ">
       <MarkerBar current={currentFlashcard} max={flashcards.length-1} />
 
       </div>

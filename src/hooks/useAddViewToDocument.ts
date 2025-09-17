@@ -7,7 +7,10 @@ export function useAddViewToDocument(slug: string) {
 
   return useMutation({
     mutationFn: async (userId: string) => {
-      const res = await axios.put(`/api/document/${slug}`, { userId });
+      const res = await axios.post("/api/document/views", {
+        userId,
+        slug, // send slug so backend can resolve the documentId
+      });
       return res.data;
     },
     onSuccess: () => {

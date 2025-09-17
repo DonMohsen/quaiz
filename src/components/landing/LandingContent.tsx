@@ -36,24 +36,24 @@ const LandingContent = () => {
               Get started Now
             </Button>
           </div>
-          <div className="w-full">
+          <div className="w-full bg-[#5a50ff] rounded-xl h-[300px] flex items-center justify-center">
             <Image
               alt="Steps"
-              src={"/placeholder.webp"}
+              src={"/landing-document.png"}
               width={500}
-              height={300}
-              className="rounded-xl w-full h-[300px]"
+              height={500}
+              className="rounded-xl  w-[200px] h-[200px]"
             />
           </div>
         </div>
         <div className="w-full flex max-md:flex-col items-center justify-center gap-[100px]">
-          <div className="w-full">
+           <div className="w-full max-sm:hidden bg-[#5a50ff] rounded-xl h-[300px] flex items-center justify-center">
             <Image
               alt="Steps"
-              src={"/placeholder.webp"}
+              src={"/studying.webp"}
               width={500}
-              height={300}
-              className="rounded-xl w-full h-[300px]"
+              height={500}
+              className="rounded-xl  w-[300px] h-[300px]"
             />
           </div>
           <div className="w-full flex flex-col gap-5 items-start justify-center">
@@ -73,7 +73,16 @@ const LandingContent = () => {
               className="bg-gradient-to-br from-[#763afb] to-[#a95ae6] font-bold text-[16px] z-20 text-white px-6 py-4 w-[180px]"
             >
               Get started Now
-            </Button>{" "}
+            </Button>
+          </div>
+          <div className="w-full sm:hidden bg-[#5a50ff] rounded-xl h-[300px] flex items-center justify-center">
+            <Image
+              alt="Steps"
+              src={"/studying.webp"}
+              width={500}
+              height={500}
+              className="rounded-xl  w-[300px] h-[300px]"
+            />
           </div>
         </div>
         <div className="w-full flex max-md:flex-col items-center justify-center gap-[100px]">
@@ -95,13 +104,13 @@ const LandingContent = () => {
               Get started Now
             </Button>{" "}
           </div>
-          <div className="w-full">
+          <div className="w-full bg-[#5a50ff] rounded-xl h-[300px] flex items-center justify-center">
             <Image
               alt="Steps"
-              src={"/placeholder.webp"}
+              src={"/landing-quaiz.webp"}
               width={500}
-              height={300}
-              className="rounded-xl w-full h-[300px]"
+              height={500}
+              className="rounded-xl  w-[400px] h-[400px]"
             />
           </div>
         </div>

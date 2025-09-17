@@ -47,13 +47,14 @@ const FlashcardMakerForm = ({
   document: DocumentWithRelations;
   user: User;
 }) => {
-  const { flashcards, setFlashcards,setCurrentFlashcard } = useFlashcardsStore();
-  const [loading, setLoading] = useState(false)
+  const { flashcards, setFlashcards, setCurrentFlashcard } =
+    useFlashcardsStore();
+  const [loading, setLoading] = useState(false);
   async function onSubmit(
     values: z.output<typeof flashcardsPreferencesSchema>
   ) {
     try {
-      setLoading(true)
+      setLoading(true);
       // 1. Fetch AI-generated quiz data
       const aiRes = await fetch("/api/answering-ai", {
         method: "POST",
@@ -70,7 +71,7 @@ const FlashcardMakerForm = ({
       });
 
       if (!aiRes.ok) {
-                                  toast(`AI is corrently overloaded !`)
+        toast(`AI is corrently overloaded !`);
 
         console.error("AI response error:", aiRes.statusText);
         return;
@@ -102,7 +103,7 @@ const FlashcardMakerForm = ({
         headers: { "Content-Type": "application/json" },
       });
       if (!saveRes.ok) {
-                                  toast(`AI response wasn't good enough ! Try it again now`)
+        toast(`AI response wasn't good enough ! Try it again now`);
 
         console.error("Failed to save quiz:", saveRes.statusText);
         return;
@@ -111,40 +112,40 @@ const FlashcardMakerForm = ({
       const { flashcards: flashcardsRes }: FlashCardCreateResponse =
         await saveRes.json();
       console.log("flashcards saved successfully:", flashcardsRes);
-                                toast(`${flashcardsRes.length} flashcards are ready to be used !`)
+      toast(`${flashcardsRes.length} flashcards are ready to be used !`);
 
       setFlashcards(flashcardsRes);
-      setCurrentFlashcard(0)
-      
+      setCurrentFlashcard(0);
+
       // Optional: show success UI, reset form, navigate, etc.
     } catch (error) {
       console.error("Error in onSubmit:", error);
-    }finally{
-      setLoading(false)
+    } finally {
+      setLoading(false);
     }
   }
-const form = useForm<z.infer<typeof flashcardsPreferencesSchema>>({
-  resolver: zodResolver(flashcardsPreferencesSchema),
-  defaultValues: {
-    numberOfFlashcards: "5", // must be string
-  },
-});
+  const form = useForm<z.infer<typeof flashcardsPreferencesSchema>>({
+    resolver: zodResolver(flashcardsPreferencesSchema),
+    defaultValues: {
+      numberOfFlashcards: "5", // must be string
+    },
+  });
 
   return (
     <Modal onClose={onClose}>
       {flashcards ? (
         <Flashcard />
       ) : (
-        <div className="w-full h-full bg-white relative">
+        <div className="w-full h-full  relative p-7">
           {/* Create Quiz Button */}
-          <div className="absolute bottom-0 w-full flex items-center justify-end">
+          <div className="absolute bottom-7 right-7 w-full flex items-center justify-end">
             <Button
-            loading={loading}
+              loading={loading}
               type="submit"
               form="quizForm"
               className="bg-[#4f36f4] text-white font-semibold text-[18px] shadow-[#382b96] shadow-md md:hover:brightness-150"
             >
-              Generate 
+              Generate
             </Button>
           </div>
 

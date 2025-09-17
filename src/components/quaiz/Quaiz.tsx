@@ -6,9 +6,12 @@ import { useQuaizAnswers } from "@/hooks/useQuaizAnswers";
 import { useQuaizzes } from "@/hooks/useQuaizzes";
 import { useModalStore } from "@/store/ModalStore";
 import { toast } from "sonner";
+import { getTextDirection } from "@/lib/utils/getTextDirection";
+import MarkerBar from "../modals/MarkerBar";
+import { motion } from "framer-motion";
 
 const Quaiz = ({ userId }: { userId: string }) => {
-  const { saveAnswers, loading, error } = useQuaizAnswers();
+const { mutate: saveAnswers, isPending:loading, error } = useQuaizAnswers();
   const { closeModal } = useModalStore();
   const [userAnswerState, setUserAnswerState] = useState<number | null>(null);
   const { currentQuestion, setCurrentQuestion, quaiz, setQuaiz } =
@@ -51,61 +54,98 @@ const Quaiz = ({ userId }: { userId: string }) => {
     setUserAnswerState(null); // reset for next question
   };
 
-  const onFinished = async () => {
-    try {
-      const saved = await saveAnswers({
-        userId: quaiz.userId,
-        quaizId: quaiz.id,
-        score: answers.filter((a) => a.isCorrect).length,
-        total: quaiz.questions.length,
-        answers,
-      });
+const onFinished = async () => {
+  try {
+    const saved = await saveAnswers({
+      userId: quaiz.userId,
+      quaizId: quaiz.id,
+      score: answers.filter((a) => a.isCorrect).length,
+      total: quaiz.questions.length,
+      answers,
+    });
 
-      console.log("Quiz result saved successfully:", saved);
-      setQuaiz(null);
-      setCurrentQuestion(null);
-      resetAnswers();
-      closeModal();
-      refetch();
-      toast(`Quaiz is completed and the score was:${saved.quizResult.score}`);
-    } catch (err) {
-      console.error("Failed to save quiz:", err);
-    }
-  };
+    // everything here runs *after* the mutation is finished
+    setQuaiz(null);
+    setCurrentQuestion(null);
+    resetAnswers();
+    closeModal();
+    refetch();
+
+    toast(`Quaiz is completed, Now wait for the results!`);
+  } catch (err) {
+    console.error("Failed to save quiz:", err);
+  }
+};
 
   return (
-    <div className="w-full h-full flex flex-col items-center justify-start relative">
-      <p className="w-full text-center">
-        {currentQuestion + 1}/{quaiz.questions.length}
-      </p>
+    <div className="w-full h-full flex flex-col items-center justify-start relative p-5">
+       <div className="absolute top-0 w-[50%] max-md:w-[80%] ">
+      <MarkerBar current={currentQuestion} max={quaiz.questions.length-1} />
 
-      <p dir="rtl">{currentQ.text}</p>
-
-      <div className="flex items-center justify-center flex-col w-full gap-5">
-        {currentQ.options.map((option, index) => (
-          <div
-            onClick={() => handleUserAnswer(option.id, option.isCorrect, index)}
-            key={option.id}
-            className={`w-full rounded-md px-3 py-4 text-right flex items-center justify-end gap-5 ${
-              userAnswerState === null && "cursor-pointer hover:bg-slate-200"
-            }
-              ${
-                userAnswerState === null
-                  ? "bg-slate-300"
-                  : option.isCorrect
-                  ? "bg-green-400"
-                  : index === userAnswerState
-                  ? "bg-red-400"
-                  : "bg-slate-300"
-              }`}
-          >
-            <p dir="rtl">{option.text}</p>
-            <p className="p-2 rounded-[8px] bg-slate-100 w-10 h-10 text-center">
-              {index + 1}
-            </p>
-          </div>
-        ))}
       </div>
+      {/* <p className="w-full text-center">
+        {currentQuestion + 1}/{quaiz.questions.length}
+      </p> */}
+
+<motion.p
+  className="mt-[70px] text-xl font-semibold text-center px-4"
+  dir={getTextDirection(currentQ.text)}
+  initial={{ opacity: 0, y: -10 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.4 }}
+>
+  {currentQ.text}
+</motion.p>
+     <div className="flex flex-col w-full gap-4 mt-6">
+  {currentQ.options.map((option, index) => {
+    const isSelected = userAnswerState === index;
+    const isCorrect = option.isCorrect && userAnswerState !== null;
+
+    return (
+      <motion.div
+        key={option.id}
+        onClick={() =>
+          userAnswerState === null &&
+          handleUserAnswer(option.id, option.isCorrect, index)
+        }
+        className={`flex items-center justify-between w-full px-4 py-4 rounded-2xl shadow-sm border transition-all 
+          ${
+            userAnswerState === null
+              ? "cursor-pointer bg-white hover:shadow-md hover:bg-slate-50"
+              : isCorrect
+              ? "bg-green-400 text-white"
+              : isSelected
+              ? "bg-red-400 text-white"
+              : "bg-slate-200 text-gray-700"
+          }`}
+        whileTap={{ scale: 0.97 }}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3, delay: index * 0.05 }}
+      >
+        <p
+          className="flex-1 text-right font-medium"
+          dir={getTextDirection(option.text)}
+        >
+          {option.text}
+        </p>
+        <motion.div
+          className="flex items-center justify-center w-10 h-10 ml-2 rounded-xl bg-slate-100 font-semibold"
+          animate={
+            isCorrect
+              ? { scale: [1, 1.2, 1], backgroundColor: "#22c55e" }
+              : isSelected
+              ? { scale: [1, 1.1, 1], backgroundColor: "#ef4444", color: "#fff" }
+              : {}
+          }
+          transition={{ duration: 0.4 }}
+        >
+          {index + 1}
+        </motion.div>
+      </motion.div>
+    );
+  })}
+</div>
 
       {/* Next / Finish button */}
       <div className="absolute bottom-4 right-4">

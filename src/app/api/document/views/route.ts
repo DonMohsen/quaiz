@@ -30,3 +30,49 @@ console.log("The views===========>",views);
     return NextResponse.json({ error: "Failed to fetch recent views" }, { status: 500 });
   }
 }
+export async function POST(request: NextRequest) {
+  try {
+    const { userId, slug } = await request.json();
+
+    if (!userId || !slug) {
+      return NextResponse.json(
+        { error: "Missing userId or slug" },
+        { status: 400 }
+      );
+    }
+
+    // find the document by slug
+    const document = await prisma.document.findUnique({
+      where: { slug },
+    });
+
+    if (!document) {
+      return NextResponse.json({ error: "Document not found" }, { status: 404 });
+    }
+
+    // create the view
+    const newView = await prisma.documentView.upsert({
+  where: {
+    documentId_userId: {
+      documentId: document.id,
+      userId,
+    },
+  },
+  update: {
+    viewedAt: new Date(), // refresh the timestamp
+  },
+  create: {
+    userId,
+    documentId: document.id,
+  },
+});
+
+    return NextResponse.json(newView, { status: 201 });
+  } catch (error) {
+    console.error("Error creating document view:", error);
+    return NextResponse.json(
+      { error: "Failed to create document view" },
+      { status: 500 }
+    );
+  }
+}
