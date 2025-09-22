@@ -159,7 +159,7 @@ Answer only with one array of objects and the questions and options in the same 
       {quaiz&&currentQuestion!==null ? (
         <Quaiz userId={user.id}/>
       ) : (
-        <div className="w-full h-full  relative">
+        <div className="w-full h-full  relative p-5">
           {/* Create Quiz Button */}
           <div className="absolute bottom-0 w-full flex items-center justify-end">
             <Button

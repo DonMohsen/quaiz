@@ -108,7 +108,7 @@ const onFinished = async () => {
           userAnswerState === null &&
           handleUserAnswer(option.id, option.isCorrect, index)
         }
-        className={`flex items-center justify-between w-full px-4 py-4 rounded-2xl shadow-sm border transition-all 
+        className={`flex items-center cursor-pointer justify-between w-full px-4 py-4 rounded-2xl shadow-sm border transition-all 
           ${
             userAnswerState === null
               ? "cursor-pointer bg-white hover:shadow-md hover:bg-slate-50"

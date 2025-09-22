@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "No prompt or doc!" }, { status: 400 });
   }
   const safeHistory = (history || [])
-    .filter(
+    .filter(  
       (msg) =>
         typeof msg?.role === "string" &&
         typeof msg?.content === "string" &&
